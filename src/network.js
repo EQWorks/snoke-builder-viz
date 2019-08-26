@@ -27,6 +27,14 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
+const TYPES = [
+  'build_audience',
+  'enrich_audience',
+  'intersect_audience',
+  'deliver_segment',
+  'build_report',
+]
+
 const reducer = (data, { type, value }) =>{
   if (type === 'init') {
     return value
@@ -189,11 +197,11 @@ export const Network = () => {
                   value={active.type}
                   onChange={onActiveChange('type')}
                 >
-                  <MenuItem value='build_audience'>Build Audience</MenuItem>
-                  <MenuItem value='enrich_audience'>Enrich Audience</MenuItem>
-                  <MenuItem value='intersect_audience'>Intersect Audience</MenuItem>
-                  <MenuItem value='deliver_segment'>Deliver Segment</MenuItem>
-                  <MenuItem value='build_report'>Build Report</MenuItem>
+                  {TYPES.map(t => (
+                    <MenuItem key={t} value={t}>
+                      {t.split('_').map(v => `${v[0].toUpperCase()}${v.substring(1)}`).join(' ')}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
               <TextField
