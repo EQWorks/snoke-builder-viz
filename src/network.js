@@ -1,4 +1,4 @@
-import React, { useReducer, useRef, useState } from 'react'
+import React, { Fragment, useReducer, useRef, useState } from 'react'
 
 import { Graph } from 'react-d3-graph'
 import {
@@ -20,6 +20,8 @@ const useStyles = makeStyles(theme => ({
   formContainer: {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   formItem: {
     width: '100%',
@@ -44,13 +46,8 @@ const reducer = (data, { type, value }) =>{
   }
 
   const { nodes, links } = data
+  const newNodes = nodes.map(n => ({ ...n }))
   switch (type) {
-    case 'remove_node': {
-      const newNodes = nodes.map(n => ({ ...n }))
-      const idx = newNodes.findIndex(n => n.id === value.id)
-      newNodes.splice(idx, 1)
-      return { ...data, nodes: newNodes }
-    }
     case 'add_node': {
       return { ...data, nodes: [...nodes, value] }
     }
@@ -58,9 +55,13 @@ const reducer = (data, { type, value }) =>{
       return { ...data, links: [...links, value] }
     }
     case 'edit_node': {
-      const newNodes = nodes.map(n => ({ ...n }))
       const idx = newNodes.findIndex(n => n.id === value.id)
       newNodes.splice(idx, 1, { ...newNodes[idx], ...value })
+      return { ...data, nodes: newNodes }
+    }
+    case 'remove_node': {
+      const idx = newNodes.findIndex(n => n.id === value.id)
+      newNodes.splice(idx, 1)
       return { ...data, nodes: newNodes }
     }
     default: {
@@ -71,6 +72,7 @@ const reducer = (data, { type, value }) =>{
 const activeInit = () => ({
   name: '',
   type: '',
+  aud_type: '',
 })
 const activeReducer = (active, {type, value}) => {
   if (type === 'init') {
@@ -85,7 +87,7 @@ const activeReducer = (active, {type, value}) => {
 export const Network = () => {
   const classes = useStyles()
   const config = {
-    // automaticRearrangeAfterDropNode: true,
+    automaticRearrangeAfterDropNode: true,
     collapsible: false,
     directed: true,
     focusAnimationDuration: 0.75,
@@ -107,23 +109,23 @@ export const Network = () => {
     },
     node: {
       color: '#d3d3d3',
-      fontColor: "black",
-      "fontSize": 12,
-      "fontWeight": "normal",
-      "highlightColor": 'black',
-      "highlightFontSize": 12,
-      "highlightFontWeight": "normal",
-      "highlightStrokeColor": "SAME",
-      "highlightStrokeWidth": "SAME",
+      fontColor: '333333',
+      fontSize: 14,
+      fontWeight: 'normal',
+      highlightColor: '333333',
+      highlightFontSize: 14,
+      highlightFontWeight: '900',
+      highlightStrokeColor: 'SAME',
+      highlightStrokeWidth: 'SAME',
+      mouseCursor: "pointer",
+      opacity: 1,
+      renderLabel: true,
       labelProperty: ({ type, name }) => `${type}: ${name}`,
-      "mouseCursor": "pointer",
-      "opacity": 1,
-      "renderLabel": true,
-      "size": 200,
-      "strokeColor": "none",
-      "strokeWidth": 1.5,
-      "svg": "",
-      "symbolType": "circle"
+      size: 350,
+      strokeColor: 'none',
+      strokeWidth: 1.5,
+      svg: '',
+      symbolType: 'square'
     },
     "link": {
       "color": "#d3d3d3",
@@ -146,6 +148,7 @@ export const Network = () => {
   const newNode = node => ({
     ...node,
     id: uuid(),
+    // TODO: more reasonable algo for new node placement
     x: Math.floor(Math.random() * ((graphEl.current || {}).width || 400)),
     y: Math.floor(Math.random() * ((graphEl.current || {}).height || 200)),
   })
@@ -158,12 +161,9 @@ export const Network = () => {
   const [editMode, setEditMode] = useState(false)
 
   const onClickNode = (id) => {
-    dispatchActive({ type: 'init', value: data.nodes.find(n => String(n.id) === String(id)) })
+    const value = data.nodes.find(n => String(n.id) === String(id))
+    dispatchActive({ type: 'init', value })
     setEditMode(true)
-  }
-
-  const onActiveChange = type => ({ target: { value } }) => {
-    dispatchActive({ type, value })
   }
 
   const onCancel = () => {
@@ -185,6 +185,26 @@ export const Network = () => {
     onCancel()
   }
 
+  const onActiveChange = ({ target: { name: type, value } }) => {
+    dispatchActive({ type, value })
+  }
+
+  const audienceSubForm = () => (
+    <Fragment>
+      <FormControl className={classes.formItem}>
+        <InputLabel htmlFor='aud-type'>Audience Type</InputLabel>
+        <Select
+          value={active.aud_type}
+          onChange={onActiveChange}
+          inputProps={{ name: 'aud_type', id: 'aud-type' }}
+        >
+          <MenuItem value='beacon'>Beacon</MenuItem>
+          <MenuItem value='poi'>POIs</MenuItem>
+        </Select>
+      </FormControl>
+    </Fragment>
+  )
+
   return (
     <Container maxWidth='lg'>
       <Grid container spacing={3}>
@@ -195,7 +215,8 @@ export const Network = () => {
                 <InputLabel htmlFor='step-type'>Type</InputLabel>
                 <Select
                   value={active.type}
-                  onChange={onActiveChange('type')}
+                  onChange={onActiveChange}
+                  inputProps={{ name: 'type', id: 'step-type' }}
                 >
                   {TYPES.map(t => (
                     <MenuItem key={t} value={t}>
@@ -206,11 +227,13 @@ export const Network = () => {
               </FormControl>
               <TextField
                 className={classes.formItem}
+                name='name'
                 id='step-name'
                 label='Name'
                 value={active.name}
-                onChange={onActiveChange('name')}
+                onChange={onActiveChange}
               />
+              {active.type === 'build_audience' && audienceSubForm()}
               <ButtonGroup fullWidth variant='contained' className={classes.formItem}>
                 <Button
                   color='primary'
@@ -230,8 +253,9 @@ export const Network = () => {
               )}
             </div>
           ) : (
-            <div>
+            <div className={classes.formContainer}>
               <Button
+                className={classes.formItem}
                 variant='contained'
                 onClick={() => {
                   setEditMode(true)
@@ -239,7 +263,9 @@ export const Network = () => {
               >
                 Add a Step
               </Button>
-              <p>or click on a step to edit</p>
+              {data.nodes.length > 0 && (
+                <p>or click on a step to edit</p>
+              )}
             </div>
           )}
         </Grid>
