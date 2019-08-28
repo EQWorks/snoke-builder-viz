@@ -97,6 +97,16 @@ const activeReducer = (active, {type, value}) => {
 }
 
 export const Network = () => {
+  // these options to be provided through component props
+  const beaconOpts = [
+    { value: 1, text: 'some beacon' },
+    { value: 2, text: 'some other beacon' },
+  ]
+  const poiOpts = [
+    { value: 1, text: 'some POI list' },
+    { value: 2, text: 'some other list' },
+  ]
+
   const classes = useStyles()
   const config = {
     automaticRearrangeAfterDropNode: true,
@@ -171,15 +181,15 @@ export const Network = () => {
   })
   const [active, dispatchActive] = useReducer(activeReducer, null, activeInit)
   const [editMode, setEditMode] = useState(false)
-  const [canSave, setCanSave] = useState(false)
 
+  const [canSave, setCanSave] = useState(false)
   useEffect(() => {
     let canSave = active.type && active.name
     if (active.type === 'build_audience') {
       canSave = canSave && active.aud_type
       if (active.aud_type === 'beacon') {
         canSave = canSave && (active.beacons.length > 0)
-      } else {
+      } else if (active.aud_type === 'poi') {
         canSave = canSave && active.poi_list
       }
     }
@@ -239,17 +249,34 @@ export const Network = () => {
             renderValue={selected => (
               <div className={classes.chips}>
                 {selected.map(value => (
-                  <Chip key={value} label={value} className={classes.chip} />
+                  <Chip
+                    key={value}
+                    label={beaconOpts.find(b => b.value === value).text}
+                    className={classes.chip}
+                  />
                 ))}
               </div>
             )}
           >
-            {/* TODO: populate avail beacons from props */}
-            {['some beacon', 'some other beacon'].map(name => (
-              <MenuItem key={name} value={name}>
-                <Checkbox checked={active.beacons.indexOf(name) > -1} />
-                <ListItemText primary={name} />
+            {beaconOpts.map(({ value, text }) => (
+              <MenuItem key={value} value={value}>
+                <Checkbox checked={active.beacons.indexOf(value) > -1} />
+                <ListItemText primary={text} />
               </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
+      {active.aud_type === 'poi' && (
+        <FormControl className={classes.formItem}>
+          <InputLabel htmlFor='aud-poi'>Audience POIs</InputLabel>
+          <Select
+            value={active.poi_list}
+            onChange={onActiveChange}
+            inputProps={{ name: 'poi_list', id: 'aud-poi' }}
+          >
+            {poiOpts.map(({ value, text }) => (
+              <MenuItem key={value} value={value}>{text}</MenuItem>
             ))}
           </Select>
         </FormControl>
