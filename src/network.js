@@ -1,4 +1,4 @@
-import React, { Fragment, useReducer, useRef, useState } from 'react'
+import React, { Fragment, useReducer, useRef, useState, useEffect } from 'react'
 
 import { Graph } from 'react-d3-graph'
 import {
@@ -11,6 +11,9 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Checkbox,
+  ListItemText,
+  Chip,
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import uuid from 'uuid/v4'
@@ -26,6 +29,13 @@ const useStyles = makeStyles(theme => ({
   formItem: {
     width: '100%',
     margin: theme.spacing(1),
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  chip: {
+    margin: 2,
   },
 }))
 
@@ -73,6 +83,8 @@ const activeInit = () => ({
   name: '',
   type: '',
   aud_type: '',
+  poi_list: '',
+  beacons: [],
 })
 const activeReducer = (active, {type, value}) => {
   if (type === 'init') {
@@ -159,6 +171,20 @@ export const Network = () => {
   })
   const [active, dispatchActive] = useReducer(activeReducer, null, activeInit)
   const [editMode, setEditMode] = useState(false)
+  const [canSave, setCanSave] = useState(false)
+
+  useEffect(() => {
+    let canSave = active.type && active.name
+    if (active.type === 'build_audience') {
+      canSave = canSave && active.aud_type
+      if (active.aud_type === 'beacon') {
+        canSave = canSave && (active.beacons.length > 0)
+      } else {
+        canSave = canSave && active.poi_list
+      }
+    }
+    setCanSave(canSave)
+  }, [active])
 
   const onClickNode = (id) => {
     const value = data.nodes.find(n => String(n.id) === String(id))
@@ -202,6 +228,32 @@ export const Network = () => {
           <MenuItem value='poi'>POIs</MenuItem>
         </Select>
       </FormControl>
+      {active.aud_type === 'beacon' && (
+        <FormControl className={classes.formItem}>
+          <InputLabel htmlFor='aud-beacons'>Beacons</InputLabel>
+          <Select
+            multiple
+            value={active.beacons}
+            onChange={onActiveChange}
+            inputProps={{ name: 'beacons', id: 'aud-beacons' }}
+            renderValue={selected => (
+              <div className={classes.chips}>
+                {selected.map(value => (
+                  <Chip key={value} label={value} className={classes.chip} />
+                ))}
+              </div>
+            )}
+          >
+            {/* TODO: populate avail beacons from props */}
+            {['some beacon', 'some other beacon'].map(name => (
+              <MenuItem key={name} value={name}>
+                <Checkbox checked={active.beacons.indexOf(name) > -1} />
+                <ListItemText primary={name} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
     </Fragment>
   )
 
@@ -238,7 +290,7 @@ export const Network = () => {
                 <Button
                   color='primary'
                   onClick={onSave}
-                  disabled={!Object.keys(active).every(k => active[k])}
+                  disabled={!canSave}
                 >
                   Save
                 </Button>
