@@ -1,1 +1,2 @@
-export { Network } from './network'
+// export { Network } from './network'
+export { default as Visual } from './visual'
