@@ -1,174 +1,95 @@
 {
-    "steps": [
-      {
-        "name": "build_audience",
-        "parameters": {
-          "audience_id": "$1",
-          "poi_list": 1003,
-          "type": "wi",
-          "start": "2019-09-02T04:00:00.000Z",
-          "end": "2019-09-03T04:00:00.000Z",
-          "whitelabel": 4,
-          "customer": 10340
-        }
-      },
-      {
-        "name": "enrich_audience",
-        "parameters": {
-          "audience_id": "$2",
-          "ori_audience": "$1",
-          "type": "wi,xd",
-          "start": "2019-09-02T04:00:00.000Z",
-          "end": "2019-09-03T04:00:00.000Z",
-          "whitelabel": 4,
-          "customer": 10340
-        }
-      },
-      {
-        "name": "build_audience",
-        "parameters": {
-          "audience_id": "$3",
-          "poi_list": 1119,
-          "type": "wi",
-          "start": "2019-09-02T04:00:00.000Z",
-          "end": "2019-09-03T04:00:00.000Z",
-          "whitelabel": 4,
-          "customer": 10340
-        }
-      },
-      {
-        "name": "enrich_audience",
-        "parameters": {
-          "audience_id": "$4",
-          "ori_audience": "$3",
-          "type": "wi,xd",
-          "start": "2019-09-02T04:00:00.000Z",
-          "end": "2019-09-03T04:00:00.000Z",
-          "whitelabel": 4,
-          "customer": 10340
-        }
-      },
-      {
-        "name": "intersect_audience",
-        "parameters": {
-          "audience_id": "$5",
-          "pri_audience": "$2",
-          "sec_audience": "$4",
-          "type": "xwi,xd",
-          "intersect_type": "visit::xwi",
-          "start": "2019-09-02T04:00:00.000Z",
-          "end": "2019-09-03T04:00:00.000Z",
-          "whitelabel": 4,
-          "customer": 10340
-        }
-      },
-      {
-        "name": "deliver_segment",
-        "parameters": {
-          "audience_id": "$2",
-          "level": 1,
-          "type": "wi,xd",
-          "frequency_filter": "gte_1",
-          "start": "2019-09-02T04:00:00.000Z",
-          "end": "2019-09-03T04:00:00.000Z",
-          "whitelabel": 4,
-          "customer": 10340
-        }
-      },
-      {
-        "name": "build_report",
-        "parameters": {
-          "report": "$1",
-          "walkin_audid": "$2",
-          "period": "weekly",
-          "type": "wi,xd",
-          "xd": 1,
-          "start": "2019-09-02T04:00:00.000Z",
-          "end": "2019-09-03T04:00:00.000Z",
-          "whitelabel": 4,
-          "customer": 10340
-        }
-      },
-      {
-        "name": "build_report",
-        "parameters": {
-          "report": "$1",
-          "walkin_audid": "$2",
-          "cross_walkin_audid": "$5",
-          "period": "weekly",
-          "type": "xwi,xd",
-          "xd": 1,
-          "start": "2019-09-02T04:00:00.000Z",
-          "end": "2019-09-03T04:00:00.000Z",
-          "whitelabel": 4,
-          "customer": 10340
-        }
-      },
-      {
-        "name": "build_report",
-        "parameters": {
-          "report": "$1",
-          "walkin_audid": "$2",
-          "period": "monthly",
-          "type": "wi,xd",
-          "xd": 1,
-          "start": "2019-09-02T04:00:00.000Z",
-          "end": "2019-09-03T04:00:00.000Z",
-          "whitelabel": 4,
-          "customer": 10340
-        }
-      },
-      {
-        "name": "build_report",
-        "parameters": {
-          "report": "$1",
-          "walkin_audid": "$2",
-          "cross_walkin_audid": "$5",
-          "period": "monthly",
-          "type": "xwi,xd",
-          "xd": 1,
-          "start": "2019-09-02T04:00:00.000Z",
-          "end": "2019-09-03T04:00:00.000Z",
-          "whitelabel": 4,
-          "customer": 10340
-        }
-      },
-      {
-        "name": "cohort_repeat_visits",
-        "parameters": {
-          "report": "$1",
-          "visit_audience": "$2",
-          "start": "2019-09-02T04:00:00.000Z",
-          "end": "2019-09-03T04:00:00.000Z",
-          "whitelabel": 4,
-          "customer": 10340
-        }
-      },
-      {
-        "name": "propensity",
-        "parameters": {
-          "report": "$1",
-          "propensity_density": "postalcode,fsa,da,ct",
-          "audience_id": "$2",
-          "propensity_level": 0,
-          "start": "2019-09-02T04:00:00.000Z",
-          "end": "2019-09-03T04:00:00.000Z",
-          "whitelabel": 4,
-          "customer": 10340
-        }
+  "steps": [
+    {
+      "name": "build_audience",
+      "parameters": {
+        "audience_id": "$1",
+        "poi_list": 4,
+        "type": "wi",
+        "start": "2019-09-03T04:00:00.000Z",
+        "end": "2019-09-04T04:00:00.000Z",
+        "whitelabel": 4,
+        "customer": 10640
       }
-    ],
-    "parameters": {
-      "job_name": "test",
-      "job_io": "123",
-      "job_description": "",
-      "job_website": "",
-      "whitelabel": 4,
-      "customer": 10340,
-      "job_type": "xwi,xd",
-      "job_ver": "v3",
-      "schedule_frequency": "once",
-      "schedule_start": "2019-09-05T00:00:00.000Z",
-      "schedule_end": "2019-09-06T00:00:00.000Z"
+    },
+    {
+      "name": "enrich_audience",
+      "parameters": {
+        "audience_id": "$2",
+        "ori_audience": "$1",
+        "type": "wi,xd",
+        "start": "2019-09-03T04:00:00.000Z",
+        "end": "2019-09-04T04:00:00.000Z",
+        "whitelabel": 4,
+        "customer": 10640
+      }
+    },
+    {
+      "name": "deliver_segment",
+      "parameters": {
+        "audience_id": "$2",
+        "level": 1,
+        "type": "wi,xd",
+        "frequency_filter": "gte_1",
+        "start": "2019-09-03T04:00:00.000Z",
+        "end": "2019-09-04T04:00:00.000Z",
+        "whitelabel": 4,
+        "customer": 10640
+      }
+    },
+    {
+      "name": "build_report",
+      "parameters": {
+        "report": "$1",
+        "walkin_audid": "$2",
+        "period": "weekly",
+        "type": "wi,xd",
+        "xd": 1,
+        "start": "2019-09-03T04:00:00.000Z",
+        "end": "2019-09-04T04:00:00.000Z",
+        "whitelabel": 4,
+        "customer": 10640
+      }
+    },
+    {
+      "name": "build_report",
+      "parameters": {
+        "report": "$1",
+        "walkin_audid": "$2",
+        "period": "monthly",
+        "type": "wi,xd",
+        "xd": 1,
+        "start": "2019-09-03T04:00:00.000Z",
+        "end": "2019-09-04T04:00:00.000Z",
+        "whitelabel": 4,
+        "customer": 10640
+      }
+    },
+    {
+      "name": "propensity",
+      "parameters": {
+        "report": "$1",
+        "propensity_density": "fsa",
+        "audience_id": "$2",
+        "propensity_level": 0,
+        "start": "2019-09-03T04:00:00.000Z",
+        "end": "2019-09-04T04:00:00.000Z",
+        "whitelabel": 4,
+        "customer": 10640
+      }
     }
+  ],
+  "parameters": {
+    "job_name": "test",
+    "job_io": "123",
+    "job_description": "",
+    "job_website": "",
+    "whitelabel": 4,
+    "customer": 10640,
+    "job_type": "wi,xd",
+    "job_ver": "v3",
+    "schedule_frequency": "once",
+    "schedule_start": "2019-09-06T00:00:00.000Z",
+    "schedule_end": "2019-09-07T00:00:00.000Z"
   }
+}
