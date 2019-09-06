@@ -1,98 +1,38 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-
 import { Graph } from 'react-d3-graph'
-import uuid from 'uuid/v4'
 
+import { transform } from './utils'
 
-// transforms pipeline job steps into graph nodes and links
-const transform = ({ steps = [] }, { width, height }) => {
-  const nodes = []
-  const links = []
-
-  // stateful helpers
-  function buildLink(target, src) {
-    const { id: source } = nodes.find(n => n.audience_id === src) || {}
-    if (source === null) {
-      return
-    }
-    if (source === target) {
-      return
-    }
-    if (links.find(l => l.source === source && l.target === target)) {
-      return
-    }
-    links.push({ source, target })
-  }
-  function buildLinks(target, sources) {
-    sources.forEach((src) => {
-      buildLink(target, src)
-    })
-  }
-
-  steps.forEach(({ name, parameters }) => {
-    const id = uuid()
-    nodes.push({
-      id,
-      name,
-      ...parameters,
-      x: Math.floor(Math.random() * (width || 400)),
-      y: Math.floor(Math.random() * (height || 200)),
-    })
-    // build links
-    const {
-      ori_audience,
-      pri_audience,
-      sec_audience,
-      audience_id,
-      walkin_audid,
-      beacon_audid,
-      conversion_audid,
-      visit_audience,
-      beacon_audience,
-    } = parameters
-    if (name === 'enrich_audience') {
-      buildLink(id, ori_audience)
-    }
-    if (name === 'intersect_audience') {
-      buildLinks(id, [pri_audience, sec_audience])
-    }
-    if (['deliver_segment', 'propensity'].includes(name)) {
-      buildLink(id, audience_id)
-    }
-    if (name === 'build_report') {
-      buildLinks(id, [walkin_audid, beacon_audid, conversion_audid])
-    }
-    if (name === 'cohort_repeat_visits') {
-      buildLink(id, visit_audience)
-    }
-    if (name === 'cohort_converted_visitors') {
-      buildLinks(id, [visit_audience, beacon_audience])
-    }
-  })
-
-  console.log(JSON.stringify(Array.from(links)))
-  return { nodes, links: Array.from(links) }
-}
 
 const Visual = ({ config, job }) => {
   const graphEl = useRef(null)
-  const data = transform(job, graphEl.current || {})
+  const [wh, setWH] = useState({ width: 1024, height: 400 })
+
+  useEffect(() => {
+    if (graphEl.current) {
+      const { clientWidth: width, clientHeight: height } = graphEl.current
+      setWH({ width, height })
+    }
+  }, [graphEl])
+
+  const data = transform(job, wh)
   const baseConfig = {
     directed: true,
     nodeHighlightBehavior: true,
     automaticRearrangeAfterDropNode: true,
-    width: (graphEl.current || {}).width || 1024,
-    height: (graphEl.current || {}).width || 800,
+    ...wh, // width and height
     node: {
       labelProperty: ({ name, type }) => `${name}${type ? `: ${type}` : ''}`,
-      size: 350,
+      size: 225,
+      color: '#333',
       symbolType: 'square',
       highlightStrokeColor: 'teal',
     },
     link: {
       highlightColor: 'teal',
-    }
+      type: 'CURVE_SMOOTH',
+    },
   }
 
   if (!data || !Object.keys(data).length) {
@@ -100,12 +40,8 @@ const Visual = ({ config, job }) => {
   }
 
   return (
-    <div ref={graphEl}>
-      <Graph
-        id='pbj-time'
-        config={{ ...baseConfig, ...config }}
-        data={data}
-      />
+    <div ref={graphEl} style={{ width: '100%', height: '400px' }}>
+      <Graph id='pbj-time' config={{ ...baseConfig, ...config }} data={data} />
     </div>
   )
 }
