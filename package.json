@@ -1,5 +1,5 @@
 {
-  "name": "@eqworks/snoke-builder",
+  "name": "@eqworks/snoke-builder-viz",
   "private": false,
   "version": "0.1.0",
   "author": "woozyking <runzhou.li@gmail.com>",
@@ -25,7 +25,6 @@
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
-    "@material-ui/core": "^4.3.2",
     "@storybook/addon-actions": "^5.1.11",
     "@storybook/addon-links": "^5.1.11",
     "@storybook/addons": "^5.1.11",
@@ -40,7 +39,6 @@
     "rimraf": "^3.0.0"
   },
   "peerDependencies": {
-    "@material-ui/core": "^4.3.2",
     "d3": "^5.11.0",
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
