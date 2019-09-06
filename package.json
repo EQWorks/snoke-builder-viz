@@ -1,6 +1,6 @@
 {
   "name": "@eqworks/snoke-builder",
-  "private": true,
+  "private": false,
   "version": "0.1.0",
   "author": "woozyking <runzhou.li@gmail.com>",
   "license": "MIT",
