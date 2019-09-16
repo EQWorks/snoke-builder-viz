@@ -4,12 +4,12 @@
       "name": "build_audience",
       "parameters": {
         "audience_id": "$1",
-        "poi_list": 4,
+        "poi_list": 1003,
         "type": "wi",
-        "start": "2019-09-03T04:00:00.000Z",
-        "end": "2019-09-04T04:00:00.000Z",
+        "start": "2019-09-13T04:00:00.000Z",
+        "end": "2019-09-14T04:00:00.000Z",
         "whitelabel": 4,
-        "customer": 10640
+        "customer": 10340
       }
     },
     {
@@ -18,10 +18,50 @@
         "audience_id": "$2",
         "ori_audience": "$1",
         "type": "wi,xd",
-        "start": "2019-09-03T04:00:00.000Z",
-        "end": "2019-09-04T04:00:00.000Z",
+        "start": "2019-09-13T04:00:00.000Z",
+        "end": "2019-09-14T04:00:00.000Z",
         "whitelabel": 4,
-        "customer": 10640
+        "customer": 10340
+      }
+    },
+    {
+      "name": "build_audience",
+      "parameters": {
+        "audience_id": "$3",
+        "beacons": [
+          "239"
+        ],
+        "type": "beacon",
+        "start": "2019-09-13T04:00:00.000Z",
+        "end": "2019-09-14T04:00:00.000Z",
+        "whitelabel": 4,
+        "customer": 10340
+      }
+    },
+    {
+      "name": "enrich_audience",
+      "parameters": {
+        "audience_id": "$4",
+        "ori_audience": "$3",
+        "type": "beacon,xd",
+        "start": "2019-09-13T04:00:00.000Z",
+        "end": "2019-09-14T04:00:00.000Z",
+        "whitelabel": 4,
+        "customer": 10340
+      }
+    },
+    {
+      "name": "intersect_audience",
+      "parameters": {
+        "audience_id": "$5",
+        "pri_audience": "$2",
+        "sec_audience": "$4",
+        "type": "vwi,xd",
+        "intersect_type": "visit::vwi",
+        "start": "2019-09-13T04:00:00.000Z",
+        "end": "2019-09-14T04:00:00.000Z",
+        "whitelabel": 4,
+        "customer": 10340
       }
     },
     {
@@ -31,10 +71,10 @@
         "level": 1,
         "type": "wi,xd",
         "frequency_filter": "gte_1",
-        "start": "2019-09-03T04:00:00.000Z",
-        "end": "2019-09-04T04:00:00.000Z",
+        "start": "2019-09-13T04:00:00.000Z",
+        "end": "2019-09-14T04:00:00.000Z",
         "whitelabel": 4,
-        "customer": 10640
+        "customer": 10340
       }
     },
     {
@@ -45,10 +85,26 @@
         "period": "weekly",
         "type": "wi,xd",
         "xd": 1,
-        "start": "2019-09-03T04:00:00.000Z",
-        "end": "2019-09-04T04:00:00.000Z",
+        "start": "2019-09-13T04:00:00.000Z",
+        "end": "2019-09-14T04:00:00.000Z",
         "whitelabel": 4,
-        "customer": 10640
+        "customer": 10340
+      }
+    },
+    {
+      "name": "build_report",
+      "parameters": {
+        "report": "$1",
+        "walkin_audid": "$2",
+        "beacon_audid": "$4",
+        "conversion_audid": "$5",
+        "period": "weekly",
+        "type": "vwi,xd",
+        "xd": 1,
+        "start": "2019-09-13T04:00:00.000Z",
+        "end": "2019-09-14T04:00:00.000Z",
+        "whitelabel": 4,
+        "customer": 10340
       }
     },
     {
@@ -59,10 +115,49 @@
         "period": "monthly",
         "type": "wi,xd",
         "xd": 1,
-        "start": "2019-09-03T04:00:00.000Z",
-        "end": "2019-09-04T04:00:00.000Z",
+        "start": "2019-09-13T04:00:00.000Z",
+        "end": "2019-09-14T04:00:00.000Z",
         "whitelabel": 4,
-        "customer": 10640
+        "customer": 10340
+      }
+    },
+    {
+      "name": "build_report",
+      "parameters": {
+        "report": "$1",
+        "walkin_audid": "$2",
+        "beacon_audid": "$4",
+        "conversion_audid": "$5",
+        "period": "monthly",
+        "type": "vwi,xd",
+        "xd": 1,
+        "start": "2019-09-13T04:00:00.000Z",
+        "end": "2019-09-14T04:00:00.000Z",
+        "whitelabel": 4,
+        "customer": 10340
+      }
+    },
+    {
+      "name": "cohort_repeat_visits",
+      "parameters": {
+        "report": "$1",
+        "visit_audience": "$2",
+        "start": "2019-09-13T04:00:00.000Z",
+        "end": "2019-09-14T04:00:00.000Z",
+        "whitelabel": 4,
+        "customer": 10340
+      }
+    },
+    {
+      "name": "cohort_converted_visitors",
+      "parameters": {
+        "report": "$1",
+        "visit_audience": "$2",
+        "beacon_audience": "$4",
+        "start": "2019-09-13T04:00:00.000Z",
+        "end": "2019-09-14T04:00:00.000Z",
+        "whitelabel": 4,
+        "customer": 10340
       }
     },
     {
@@ -72,10 +167,10 @@
         "propensity_density": "fsa",
         "audience_id": "$2",
         "propensity_level": 0,
-        "start": "2019-09-03T04:00:00.000Z",
-        "end": "2019-09-04T04:00:00.000Z",
+        "start": "2019-09-13T04:00:00.000Z",
+        "end": "2019-09-14T04:00:00.000Z",
         "whitelabel": 4,
-        "customer": 10640
+        "customer": 10340
       }
     }
   ],
@@ -85,11 +180,11 @@
     "job_description": "",
     "job_website": "",
     "whitelabel": 4,
-    "customer": 10640,
-    "job_type": "wi,xd",
+    "customer": 10340,
+    "job_type": "vwi,xd",
     "job_ver": "v3",
     "schedule_frequency": "once",
-    "schedule_start": "2019-09-06T00:00:00.000Z",
-    "schedule_end": "2019-09-07T00:00:00.000Z"
+    "schedule_start": "2019-09-16T00:00:00.000Z",
+    "schedule_end": "2019-09-17T00:00:00.000Z"
   }
 }
