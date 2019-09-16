@@ -9,7 +9,7 @@ export const transform = ({ steps = [] }, { width, height }) => {
   // stateful helpers
   function buildLink(target, src) {
     const { id: source } = nodes.find(n => n.audience_id === src) || {}
-    if (source === null) {
+    if (source == null) {
       return
     }
     if (source === target) {
@@ -27,7 +27,7 @@ export const transform = ({ steps = [] }, { width, height }) => {
   }
   function buildReportLink(target, src) {
     const { id: source } = nodes.find(n => n.name === 'build_report' && n.report === src) || {}
-    if (source === null) {
+    if (source == null) {
       return
     }
     if (source === target) {

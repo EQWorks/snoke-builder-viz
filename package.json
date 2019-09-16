@@ -14,7 +14,8 @@
   "main": "dist/index.js",
   "source": "src/index.js",
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "dependencies": {
     "react-d3-graph": "^2.1.0",
