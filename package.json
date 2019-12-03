@@ -1,7 +1,7 @@
 {
   "name": "@eqworks/snoke-builder-viz",
   "private": false,
-  "version": "0.1.1",
+  "version": "0.2.0-beta",
   "author": "woozyking <runzhou.li@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -14,7 +14,8 @@
   "main": "dist/index.js",
   "source": "src/index.js",
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "dependencies": {
     "react-d3-graph": "^2.1.0",

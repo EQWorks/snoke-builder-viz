@@ -9,7 +9,7 @@ export const transform = ({ steps = [] }, { width, height }) => {
   // stateful helpers
   function buildLink(target, src) {
     const { id: source } = nodes.find(n => n.audience_id === src) || {}
-    if (source === null) {
+    if (source == null) {
       return
     }
     if (source === target) {
@@ -24,6 +24,19 @@ export const transform = ({ steps = [] }, { width, height }) => {
     sources.forEach((src) => {
       buildLink(target, src)
     })
+  }
+  function buildReportLink(target, src) {
+    const { id: source } = nodes.find(n => n.name === 'build_report' && n.report === src) || {}
+    if (source == null) {
+      return
+    }
+    if (source === target) {
+      return
+    }
+    if (links.find(l => l.source === source && l.target === target)) {
+      return
+    }
+    links.push({ source, target })
   }
 
   steps.forEach(({ name, parameters }) => {
@@ -46,6 +59,7 @@ export const transform = ({ steps = [] }, { width, height }) => {
       conversion_audid,
       visit_audience,
       beacon_audience,
+      report,
     } = parameters
     if (name === 'enrich_audience') {
       buildLink(id, ori_audience)
@@ -65,7 +79,17 @@ export const transform = ({ steps = [] }, { width, height }) => {
     if (name === 'cohort_converted_visitors') {
       buildLinks(id, [visit_audience, beacon_audience])
     }
+    if (['propensity', 'cohort_repeat_visits', 'cohort_converted_visitors'].includes(name)) {
+      buildReportLink(id, report)
+    }
   })
 
   return { nodes, links: Array.from(links) }
 }
+
+/**
+ *
+ * @param {string} s - separator between properties
+ * @param {Array} p - Array of strings or node properties for label formatting
+ */
+export const getLabel = (s, p) => n => (p.map(v => n[v]).filter(v => v).join(s))

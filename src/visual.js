@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Graph } from 'react-d3-graph'
 
-import { transform } from './utils'
+import { transform, getLabel } from './utils'
 
 
 const Visual = ({ config, job }) => {
@@ -23,7 +23,7 @@ const Visual = ({ config, job }) => {
     automaticRearrangeAfterDropNode: true,
     ...wh, // width and height
     node: {
-      labelProperty: ({ name, type }) => `${name}${type ? `: ${type}` : ''}`,
+      labelProperty: getLabel('-', ['name', 'type', 'period']),
       size: 225,
       color: '#333',
       symbolType: 'square',
