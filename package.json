@@ -1,7 +1,7 @@
 {
   "name": "@eqworks/snoke-builder-viz",
   "private": false,
-  "version": "0.2.1-beta",
+  "version": "0.2.1",
   "author": "woozyking <runzhou.li@gmail.com>",
   "license": "MIT",
   "scripts": {
