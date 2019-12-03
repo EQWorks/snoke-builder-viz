@@ -26,7 +26,7 @@ export const transform = ({ steps = [] }, { width, height }) => {
     })
   }
   function buildReportLink(target, src) {
-    const { id: source } = nodes.find(n => n.name === 'build_report' && n.report === src) || {}
+    const { id: source } = nodes.find(n => n.name.startsWith('report_') && n.report === src) || {}
     if (source == null) {
       return
     }
@@ -61,16 +61,16 @@ export const transform = ({ steps = [] }, { width, height }) => {
       beacon_audience,
       report,
     } = parameters
-    if (name === 'enrich_audience') {
+    if (name.startsWith('audience_enrich_')) {
       buildLink(id, ori_audience)
     }
-    if (name === 'intersect_audience') {
+    if (name.startsWith('audience_intersect_')) {
       buildLinks(id, [pri_audience, sec_audience])
     }
-    if (['deliver_segment', 'propensity'].includes(name)) {
+    if (['segment', 'propensity'].includes(name)) {
       buildLink(id, audience_id)
     }
-    if (name === 'build_report') {
+    if (name.startsWith('report_')) {
       buildLinks(id, [walkin_audid, beacon_audid, conversion_audid])
     }
     if (name === 'cohort_repeat_visits') {
