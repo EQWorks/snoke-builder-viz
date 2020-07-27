@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "test": "echo 'No test yet'",
+    "lint": "eslint src/",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build": "rimraf dist && babel src --out-dir dist --copy-files",
@@ -40,9 +41,6 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "rimraf": "^3.0.0"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
   },
   "peerDependencies": {
     "d3": "^5.11.0",
