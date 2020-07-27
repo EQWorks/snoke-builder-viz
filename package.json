@@ -19,6 +19,7 @@
   ],
   "dependencies": {
     "react-d3-graph": "^2.1.0",
+    "react-resize-aware": "^3.0.1",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
@@ -34,10 +35,14 @@
     "d3": "^5.11.0",
     "eslint": "^6.2.0",
     "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "rimraf": "^3.0.0"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "peerDependencies": {
     "d3": "^5.11.0",

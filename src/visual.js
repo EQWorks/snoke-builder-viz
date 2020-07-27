@@ -1,27 +1,22 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
+
 import { Graph } from 'react-d3-graph'
+import useResizeAware from 'react-resize-aware'
 
 import { transform, getLabel } from './utils'
 
 
 const Visual = ({ config, job }) => {
-  const graphEl = useRef(null)
-  const [wh, setWH] = useState({ width: 1024, height: 400 })
+  const [resizeListner, { width, height }] = useResizeAware()
 
-  useEffect(() => {
-    if (graphEl.current) {
-      const { clientWidth: width, clientHeight: height } = graphEl.current
-      setWH({ width, height })
-    }
-  }, [graphEl])
-
-  const data = transform(job, wh)
+  const data = transform(job, { width, height })
   const baseConfig = {
     directed: true,
     nodeHighlightBehavior: true,
     automaticRearrangeAfterDropNode: true,
-    ...wh, // width and height
+    width,
+    height,
     node: {
       labelProperty: getLabel('-', ['name', 'type', 'period']),
       size: 225,
@@ -40,7 +35,8 @@ const Visual = ({ config, job }) => {
   }
 
   return (
-    <div ref={graphEl} style={{ width: '100%', height: '400px' }}>
+    <div style={{ width: '100%', height: '100vh' }}>
+      {resizeListner}
       <Graph id='pbj-time' config={{ ...baseConfig, ...config }} data={data} />
     </div>
   )

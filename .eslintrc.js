@@ -6,12 +6,13 @@ module.exports = {
   settings: {
     react: {
       pragma: 'React',
-      version: '16.9',
+      version: 'detect',
     },
   },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
   ],
   globals: {
     Atomics: 'readonly',
@@ -24,9 +25,6 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-  ],
   rules: {
   },
 }

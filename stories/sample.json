@@ -1,164 +1,97 @@
 {
   "steps": [
     {
-      "name": "build_audience",
+      "name": "audience_build_wi",
       "parameters": {
         "audience_id": "$1",
-        "poi_list": 1003,
+        "poi_list": 1432,
         "type": "wi",
-        "start": "2019-09-13T04:00:00.000Z",
-        "end": "2019-09-14T04:00:00.000Z",
-        "whitelabel": 4,
-        "customer": 10340
-      }
+        "data_sources": "eq-reqdata,eq-sds,eq-sdr,eq-sdko",
+        "start": "2020-07-22T00:00:00.000Z",
+        "end": "2020-07-23T23:00:00.000Z",
+        "whitelabel": 8,
+        "customer": 10195
+      },
+      "price": {
+        "base": 1050,
+        "mult": 0.34
+      },
+      "i": 1
     },
     {
-      "name": "enrich_audience",
+      "name": "audience_enrich_aoi",
       "parameters": {
         "audience_id": "$2",
         "ori_audience": "$1",
-        "type": "wi,xd",
-        "start": "2019-09-13T04:00:00.000Z",
-        "end": "2019-09-14T04:00:00.000Z",
-        "whitelabel": 4,
-        "customer": 10340
-      }
+        "type": "wi,aoi",
+        "start": "2020-07-22T00:00:00.000Z",
+        "end": "2020-07-23T23:00:00.000Z",
+        "whitelabel": 8,
+        "customer": 10195
+      },
+      "price": {
+        "base": 1050,
+        "mult": 0.34
+      },
+      "i": 2
     },
     {
-      "name": "build_audience",
-      "parameters": {
-        "audience_id": "$3",
-        "beacons": [
-          "239"
-        ],
-        "type": "beacon",
-        "start": "2019-09-13T04:00:00.000Z",
-        "end": "2019-09-14T04:00:00.000Z",
-        "whitelabel": 4,
-        "customer": 10340
-      }
-    },
-    {
-      "name": "enrich_audience",
-      "parameters": {
-        "audience_id": "$4",
-        "ori_audience": "$3",
-        "type": "beacon,xd",
-        "start": "2019-09-13T04:00:00.000Z",
-        "end": "2019-09-14T04:00:00.000Z",
-        "whitelabel": 4,
-        "customer": 10340
-      }
-    },
-    {
-      "name": "intersect_audience",
-      "parameters": {
-        "audience_id": "$5",
-        "pri_audience": "$2",
-        "sec_audience": "$4",
-        "type": "vwi,xd",
-        "intersect_type": "visit::vwi",
-        "start": "2019-09-13T04:00:00.000Z",
-        "end": "2019-09-14T04:00:00.000Z",
-        "whitelabel": 4,
-        "customer": 10340
-      }
-    },
-    {
-      "name": "deliver_segment",
+      "name": "segment",
       "parameters": {
         "audience_id": "$2",
-        "level": 1,
-        "type": "wi,xd",
+        "level": 3,
+        "type": "wi,aoi",
         "frequency_filter": "gte_1",
-        "start": "2019-09-13T04:00:00.000Z",
-        "end": "2019-09-14T04:00:00.000Z",
-        "whitelabel": 4,
-        "customer": 10340
-      }
+        "job_segment_display": "8 10195 1432",
+        "start": "2020-07-22T00:00:00.000Z",
+        "end": "2020-07-23T23:00:00.000Z",
+        "whitelabel": 8,
+        "customer": 10195
+      },
+      "price": {
+        "base": 750,
+        "mult": 1,
+        "add": 75
+      },
+      "i": 3
     },
     {
-      "name": "build_report",
+      "name": "report_wi",
       "parameters": {
         "report": "$1",
         "walkin_audid": "$2",
         "period": "weekly",
-        "type": "wi,xd",
-        "xd": 1,
-        "start": "2019-09-13T04:00:00.000Z",
-        "end": "2019-09-14T04:00:00.000Z",
-        "whitelabel": 4,
-        "customer": 10340
-      }
+        "type": "wi,aoi",
+        "start": "2020-07-22T00:00:00.000Z",
+        "end": "2020-07-23T23:00:00.000Z",
+        "whitelabel": 8,
+        "customer": 10195
+      },
+      "price": {
+        "base": 300,
+        "mult": 0.34,
+        "add": 450
+      },
+      "i": 4
     },
     {
-      "name": "build_report",
-      "parameters": {
-        "report": "$1",
-        "walkin_audid": "$2",
-        "beacon_audid": "$4",
-        "conversion_audid": "$5",
-        "period": "weekly",
-        "type": "vwi,xd",
-        "xd": 1,
-        "start": "2019-09-13T04:00:00.000Z",
-        "end": "2019-09-14T04:00:00.000Z",
-        "whitelabel": 4,
-        "customer": 10340
-      }
-    },
-    {
-      "name": "build_report",
+      "name": "report_wi",
       "parameters": {
         "report": "$1",
         "walkin_audid": "$2",
         "period": "monthly",
-        "type": "wi,xd",
-        "xd": 1,
-        "start": "2019-09-13T04:00:00.000Z",
-        "end": "2019-09-14T04:00:00.000Z",
-        "whitelabel": 4,
-        "customer": 10340
-      }
-    },
-    {
-      "name": "build_report",
-      "parameters": {
-        "report": "$1",
-        "walkin_audid": "$2",
-        "beacon_audid": "$4",
-        "conversion_audid": "$5",
-        "period": "monthly",
-        "type": "vwi,xd",
-        "xd": 1,
-        "start": "2019-09-13T04:00:00.000Z",
-        "end": "2019-09-14T04:00:00.000Z",
-        "whitelabel": 4,
-        "customer": 10340
-      }
-    },
-    {
-      "name": "cohort_repeat_visits",
-      "parameters": {
-        "report": "$1",
-        "visit_audience": "$2",
-        "start": "2019-09-13T04:00:00.000Z",
-        "end": "2019-09-14T04:00:00.000Z",
-        "whitelabel": 4,
-        "customer": 10340
-      }
-    },
-    {
-      "name": "cohort_converted_visitors",
-      "parameters": {
-        "report": "$1",
-        "visit_audience": "$2",
-        "beacon_audience": "$4",
-        "start": "2019-09-13T04:00:00.000Z",
-        "end": "2019-09-14T04:00:00.000Z",
-        "whitelabel": 4,
-        "customer": 10340
-      }
+        "type": "wi,aoi",
+        "start": "2020-07-22T00:00:00.000Z",
+        "end": "2020-07-23T23:00:00.000Z",
+        "whitelabel": 8,
+        "customer": 10195
+      },
+      "price": {
+        "base": 90,
+        "mult": 0.34,
+        "add": 135
+      },
+      "i": 5
     },
     {
       "name": "propensity",
@@ -167,11 +100,16 @@
         "propensity_density": "fsa",
         "audience_id": "$2",
         "propensity_level": 0,
-        "start": "2019-09-13T04:00:00.000Z",
-        "end": "2019-09-14T04:00:00.000Z",
-        "whitelabel": 4,
-        "customer": 10340
-      }
+        "start": "2020-07-22T00:00:00.000Z",
+        "end": "2020-07-23T23:00:00.000Z",
+        "whitelabel": 8,
+        "customer": 10195
+      },
+      "price": {
+        "base": 450,
+        "mult": 0.34
+      },
+      "i": 6
     }
   ],
   "parameters": {
@@ -179,12 +117,15 @@
     "job_io": "123",
     "job_description": "",
     "job_website": "",
-    "whitelabel": 4,
-    "customer": 10340,
-    "job_type": "vwi,xd",
-    "job_ver": "v3",
+    "whitelabel": 8,
+    "customer": 10195,
+    "job_type": "wi,aoi",
+    "job_ver": "v3.5",
+    "job_origin": "ui",
     "schedule_frequency": "once",
-    "schedule_start": "2019-09-16T00:00:00.000Z",
-    "schedule_end": "2019-09-17T00:00:00.000Z"
+    "schedule_start": "2020-07-27T00:00:00.000Z",
+    "schedule_end": "2020-07-28T00:00:00.000Z",
+    "start_date": "2020-07-22T00:00:00.000Z",
+    "end_date": "2020-07-23T23:00:00.000Z"
   }
 }
