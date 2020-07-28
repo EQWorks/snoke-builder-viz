@@ -1,131 +1,379 @@
 {
-  "steps": [
+  "id": 3004,
+  "aws_id": "0519c0879d304e6f8e6b36451323ffa9",
+  "job_name": "FederatedCooperatives_GasBar1Attribution_April2020_8024",
+  "job_type": "vwi",
+  "job_parameters": {
+    "steps": [
+      {
+        "name": "audience_build_wi",
+        "parameters": {
+          "audience_id": 1766,
+          "poi_list": 2116,
+          "type": "wi",
+          "data_sources": "eq-reqdata,eq-sds,eq-sdr,eq-sdko",
+          "start": "2020040100",
+          "end": "2020043023",
+          "whitelabel": 8,
+          "customer": 13581,
+          "poi_file": "8_13581_2116@poi"
+        },
+        "price": {
+          "base": 1050,
+          "mult": 1
+        }
+      },
+      {
+        "name": "audience_build_beacon",
+        "parameters": {
+          "audience_id": 1767,
+          "beacons": [
+            "1926",
+            "1927",
+            "1928",
+            "1930",
+            "1931",
+            "1932",
+            "1933"
+          ],
+          "type": "beacon",
+          "start": "2020040100",
+          "end": "2020043023",
+          "whitelabel": 8,
+          "customer": 13581
+        },
+        "price": {
+          "base": 750,
+          "mult": 1
+        }
+      },
+      {
+        "name": "audience_enrich_xd",
+        "parameters": {
+          "audience_id": 1768,
+          "ori_audience": 1767,
+          "type": "beacon,xd",
+          "start": "2020040100",
+          "end": "2020043023",
+          "whitelabel": 8,
+          "customer": 13581
+        },
+        "price": {
+          "base": 300,
+          "mult": 1
+        }
+      },
+      {
+        "name": "audience_intersect_vwi",
+        "parameters": {
+          "audience_id": 1769,
+          "pri_audience": 1766,
+          "sec_audience": 1768,
+          "type": "vwi",
+          "intersect_type": "visit::vwi",
+          "start": "2020040100",
+          "end": "2020043023",
+          "whitelabel": 8,
+          "customer": 13581
+        },
+        "price": {
+          "base": 1050,
+          "mult": 1
+        }
+      },
+      {
+        "name": "segment",
+        "parameters": {
+          "audience_id": 1766,
+          "level": 1,
+          "type": "wi",
+          "frequency_filter": "gte_1",
+          "job_segment_display": "FederatedCooperatives_GasBar1Attribution_April2020_8024",
+          "start": "2020-04-01T00:00:00.000Z",
+          "end": "2020-04-30T23:00:00.000Z",
+          "whitelabel": 8,
+          "customer": 13581
+        },
+        "price": {
+          "base": 300,
+          "mult": 1,
+          "add": 75
+        }
+      },
+      {
+        "name": "report_vwi",
+        "parameters": {
+          "report": 2036,
+          "walkin_audid": 1766,
+          "beacon_audid": 1768,
+          "conversion_audid": 1769,
+          "period": "monthly",
+          "type": "vwi",
+          "xd": 0,
+          "start": "2020-04-01T00:00:00.000Z",
+          "end": "2020-04-30T23:00:00.000Z",
+          "whitelabel": 8,
+          "customer": 13581,
+          "aoi": 0
+        },
+        "price": {
+          "base": 135,
+          "mult": 1,
+          "add": 0
+        }
+      }
+    ],
+    "parameters": {
+      "job_name": "FederatedCooperatives_GasBar1Attribution_April2020_8024",
+      "job_io": "8024",
+      "job_description": "",
+      "job_website": "",
+      "whitelabel": 8,
+      "customer": 13581,
+      "job_type": "vwi",
+      "job_ver": "v3.5",
+      "job_origin": "ui",
+      "schedule_frequency": "once",
+      "schedule_start": "2020-05-25T00:00:00.000Z",
+      "schedule_end": "2020-05-26T00:00:00.000Z",
+      "start_date": "2020-04-01T00:00:00.000Z",
+      "end_date": "2020-04-30T23:00:00.000Z"
+    }
+  },
+  "schedule_start": "2020-05-25T00:00:00.000Z",
+  "schedule_end": "2020-05-26T00:00:00.000Z",
+  "schedule_frequency": "once",
+  "creation_time": "2020-05-25T16:10:17.106Z",
+  "time_used": 1192,
+  "time_need": 0,
+  "update_time_previous": null,
+  "update_time_next": null,
+  "whitelabel": 8,
+  "stage": null,
+  "results": {
+    "segments": [
+      {
+        "id": 130815,
+        "name": "FederatedCooperatives_GasBar1Attribution_April2020_8024",
+        "unique_user": 230238
+      }
+    ]
+  },
+  "status": "FINISHED",
+  "push_seg_status": null,
+  "financial_approve_user": "benjamun.ng@eqworks.com",
+  "financial_approve_time": "2020-05-26T16:43:14.772Z",
+  "financial_approve_status": true,
+  "dataops_approve_user": "dhruv.thapar@eqworks.com",
+  "dataops_approve_time": "2020-05-26T14:42:28.579Z",
+  "dataops_approve_status": true,
+  "author": "ben.goliath@f-media.ca",
+  "whitelabel_name": "FreeMedia",
+  "customer_name": "FCL",
+  "customer": 13581,
+  "logs": [
     {
-      "name": "audience_build_wi",
-      "parameters": {
-        "audience_id": "$1",
-        "poi_list": 1432,
-        "type": "wi",
-        "data_sources": "eq-reqdata,eq-sds,eq-sdr,eq-sdko",
-        "start": "2020-07-22T00:00:00.000Z",
-        "end": "2020-07-23T23:00:00.000Z",
-        "whitelabel": 8,
-        "customer": 10195
+      "id": 1947,
+      "aws_id": "0519c0879d304e6f8e6b36451323ffa9",
+      "details": {
+        "price": {
+          "run": {
+            "CPC_price": 155.54,
+            "CPM_price": 583.2
+          },
+          "steps": [
+            {
+              "name": "audience_build_wi",
+              "price": {
+                "base": 1050,
+                "mult": 1
+              }
+            },
+            {
+              "name": "audience_build_beacon",
+              "price": {
+                "base": 750,
+                "mult": 1
+              }
+            },
+            {
+              "name": "audience_enrich_xd",
+              "price": {
+                "base": 300,
+                "mult": 1
+              }
+            },
+            {
+              "name": "audience_intersect_vwi",
+              "price": {
+                "base": 1050,
+                "mult": 1
+              }
+            },
+            {
+              "name": "segment",
+              "price": {
+                "add": 75,
+                "base": 300,
+                "mult": 1
+              }
+            },
+            {
+              "name": "report_vwi",
+              "price": {
+                "add": 0,
+                "base": 135,
+                "mult": 1
+              }
+            }
+          ],
+          "total": {
+            "type": "steps",
+            "amount": 3660
+          }
+        }
       },
-      "price": {
-        "base": 1050,
-        "mult": 0.34
-      },
-      "i": 1
-    },
-    {
-      "name": "audience_enrich_aoi",
-      "parameters": {
-        "audience_id": "$2",
-        "ori_audience": "$1",
-        "type": "wi,aoi",
-        "start": "2020-07-22T00:00:00.000Z",
-        "end": "2020-07-23T23:00:00.000Z",
-        "whitelabel": 8,
-        "customer": 10195
-      },
-      "price": {
-        "base": 1050,
-        "mult": 0.34
-      },
-      "i": 2
-    },
-    {
-      "name": "segment",
-      "parameters": {
-        "audience_id": "$2",
-        "level": 3,
-        "type": "wi,aoi",
-        "frequency_filter": "gte_1",
-        "job_segment_display": "8 10195 1432",
-        "start": "2020-07-22T00:00:00.000Z",
-        "end": "2020-07-23T23:00:00.000Z",
-        "whitelabel": 8,
-        "customer": 10195
-      },
-      "price": {
-        "base": 750,
-        "mult": 1,
-        "add": 75
-      },
-      "i": 3
-    },
-    {
-      "name": "report_wi",
-      "parameters": {
-        "report": "$1",
-        "walkin_audid": "$2",
-        "period": "weekly",
-        "type": "wi,aoi",
-        "start": "2020-07-22T00:00:00.000Z",
-        "end": "2020-07-23T23:00:00.000Z",
-        "whitelabel": 8,
-        "customer": 10195
-      },
-      "price": {
-        "base": 300,
-        "mult": 0.34,
-        "add": 450
-      },
-      "i": 4
-    },
-    {
-      "name": "report_wi",
-      "parameters": {
-        "report": "$1",
-        "walkin_audid": "$2",
-        "period": "monthly",
-        "type": "wi,aoi",
-        "start": "2020-07-22T00:00:00.000Z",
-        "end": "2020-07-23T23:00:00.000Z",
-        "whitelabel": 8,
-        "customer": 10195
-      },
-      "price": {
-        "base": 90,
-        "mult": 0.34,
-        "add": 135
-      },
-      "i": 5
-    },
-    {
-      "name": "propensity",
-      "parameters": {
-        "report": "$1",
-        "propensity_density": "fsa",
-        "audience_id": "$2",
-        "propensity_level": 0,
-        "start": "2020-07-22T00:00:00.000Z",
-        "end": "2020-07-23T23:00:00.000Z",
-        "whitelabel": 8,
-        "customer": 10195
-      },
-      "price": {
-        "base": 450,
-        "mult": 0.34
-      },
-      "i": 6
+      "run_time": "2020-06-11T16:57:00",
+      "unit_type": 1,
+      "final_cost": 3660,
+      "unit_count": 6
     }
   ],
-  "parameters": {
-    "job_name": "test",
-    "job_io": "123",
-    "job_description": "",
-    "job_website": "",
-    "whitelabel": 8,
-    "customer": 10195,
-    "job_type": "wi,aoi",
-    "job_ver": "v3.5",
-    "job_origin": "ui",
-    "schedule_frequency": "once",
-    "schedule_start": "2020-07-27T00:00:00.000Z",
-    "schedule_end": "2020-07-28T00:00:00.000Z",
-    "start_date": "2020-07-22T00:00:00.000Z",
-    "end_date": "2020-07-23T23:00:00.000Z"
-  }
+  "report_id": 2036,
+  "report_name": "FederatedCooperatives_GasBar1Attribution_April2020_8024",
+  "map_id": 1373,
+  "poi_list_id": 2116,
+  "poi_list_name": "FCL Own Locations 2020",
+  "customer_id": 13581,
+  "whitelabel_id": 8,
+  "dag_tasks": [
+    {
+      "task_id": "2.audience_build_beacon",
+      "start_date": "2020-05-26T16:43:19.679779+00:00",
+      "end_date": "2020-05-26T17:12:05.299865+00:00",
+      "duration": 1725.620086,
+      "state": "success",
+      "try_number": 1,
+      "job_id": 817,
+      "pool": "default_pool",
+      "queue": "default",
+      "priority_weight": 6,
+      "operator": "KubernetesPodOperator",
+      "queued_dttm": "2020-05-26T16:43:18.001699+00:00",
+      "pid": 317,
+      "max_tries": 1
+    },
+    {
+      "task_id": "1.audience_build_wi",
+      "start_date": "2020-05-26T16:43:20.141704+00:00",
+      "end_date": "2020-05-27T11:53:23.087256+00:00",
+      "duration": 69002.945552,
+      "state": "success",
+      "try_number": 1,
+      "job_id": 818,
+      "pool": "default_pool",
+      "queue": "default",
+      "priority_weight": 6,
+      "operator": "KubernetesPodOperator",
+      "queued_dttm": "2020-05-26T16:43:18.001744+00:00",
+      "pid": 269,
+      "max_tries": 1
+    },
+    {
+      "task_id": "6.report_vwi",
+      "start_date": "2020-05-27T12:02:46.754335+00:00",
+      "end_date": "2020-05-27T12:14:59.702697+00:00",
+      "duration": 732.948362,
+      "state": "success",
+      "try_number": 1,
+      "job_id": 823,
+      "pool": "default_pool",
+      "queue": "default",
+      "priority_weight": 3,
+      "operator": "KubernetesPodOperator",
+      "queued_dttm": "2020-05-27T12:02:44.579735+00:00",
+      "pid": 350,
+      "max_tries": 1
+    },
+    {
+      "task_id": "5.segment",
+      "start_date": "2020-05-27T11:53:28.678083+00:00",
+      "end_date": "2020-05-27T12:35:47.259748+00:00",
+      "duration": 2538.581665,
+      "state": "success",
+      "try_number": 1,
+      "job_id": 822,
+      "pool": "default_pool",
+      "queue": "default",
+      "priority_weight": 3,
+      "operator": "KubernetesPodOperator",
+      "queued_dttm": "2020-05-27T11:53:26.582798+00:00",
+      "pid": 282,
+      "max_tries": 1
+    },
+    {
+      "task_id": "failed_dag_task",
+      "start_date": "2020-05-27T12:35:48.583275+00:00",
+      "end_date": "2020-05-27T12:35:48.583285+00:00",
+      "duration": null,
+      "state": "skipped",
+      "try_number": 0,
+      "job_id": null,
+      "pool": "default_pool",
+      "queue": "default",
+      "priority_weight": 1,
+      "operator": null,
+      "queued_dttm": null,
+      "pid": null,
+      "max_tries": 1
+    },
+    {
+      "task_id": "successful_dag_task",
+      "start_date": "2020-05-27T12:35:51.950473+00:00",
+      "end_date": "2020-05-27T12:35:52.215364+00:00",
+      "duration": 0.264891,
+      "state": "success",
+      "try_number": 1,
+      "job_id": 824,
+      "pool": "default_pool",
+      "queue": "default",
+      "priority_weight": 1,
+      "operator": "PythonOperator",
+      "queued_dttm": "2020-05-27T12:35:49.956899+00:00",
+      "pid": 357,
+      "max_tries": 1
+    },
+    {
+      "task_id": "3.audience_enrich_xd",
+      "start_date": "2020-05-26T17:12:07.56978+00:00",
+      "end_date": "2020-05-26T17:22:51.342065+00:00",
+      "duration": 643.772285,
+      "state": "success",
+      "try_number": 1,
+      "job_id": 819,
+      "pool": "default_pool",
+      "queue": "default",
+      "priority_weight": 5,
+      "operator": "KubernetesPodOperator",
+      "queued_dttm": "2020-05-26T17:12:05.831161+00:00",
+      "pid": 324,
+      "max_tries": 1
+    },
+    {
+      "task_id": "4.audience_intersect_vwi",
+      "start_date": "2020-05-27T11:53:28.243374+00:00",
+      "end_date": "2020-05-27T12:02:40.813809+00:00",
+      "duration": 552.570435,
+      "state": "success",
+      "try_number": 1,
+      "job_id": 821,
+      "pool": "default_pool",
+      "queue": "default",
+      "priority_weight": 4,
+      "operator": "KubernetesPodOperator",
+      "queued_dttm": "2020-05-27T11:53:26.582838+00:00",
+      "pid": 331,
+      "max_tries": 1
+    }
+  ]
 }

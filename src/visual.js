@@ -18,7 +18,7 @@ const Visual = ({ config, job }) => {
     width,
     height,
     node: {
-      labelProperty: getLabel('-', ['name', 'type', 'period']),
+      labelProperty: getLabel('-', ['i', 'name', 'type', 'period']),
       size: 225,
       color: '#333',
       symbolType: 'square',

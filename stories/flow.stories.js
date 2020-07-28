@@ -1,12 +1,21 @@
 import React from 'react'
 
-import { Visual } from '../src'
-import sample from './sample'
+import { FlowChartWithState } from '@mrblenny/react-flow-chart'
+
+import { Flow } from '../src'
+import sample from './sample.json'
+import dag from './dag'
 
 
 export default {
-  component: Visual,
-  title: 'Visual',
+  component: Flow,
+  title: 'Flow',
 }
 
-export const normal = () => (<Visual job={sample} />)
+export const normal = () => (
+  <Flow data={sample} />
+)
+
+export const flowExample = () => (
+  <FlowChartWithState initialValue={dag} />
+)
