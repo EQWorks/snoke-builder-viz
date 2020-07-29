@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import { FlowChartWithState } from '@mrblenny/react-flow-chart'
 
+import Port from './port'
+
 
 const stepNames = Object.freeze({
   audience_build_wi: 'Audience Build: Walk-in',
@@ -50,11 +52,11 @@ const transform = ({ job_parameters, dag_tasks, width = 1024, height = 400 }) =>
       id: `${source}-${target}`,
       from: {
         nodeId: source,
-        portId: 'port1',
+        portId: 'portOut',
       },
       to: {
         nodeId: target,
-        portId: 'port2',
+        portId: 'portIn',
       },
     })
   }
@@ -78,11 +80,11 @@ const transform = ({ job_parameters, dag_tasks, width = 1024, height = 400 }) =>
       id: `${source}-${target}`,
       from: {
         nodeId: source,
-        portId: 'port1',
+        portId: 'portIn',
       },
       to: {
         id: target,
-        portId: 'port2',
+        portId: 'portOut',
       },
     })
   }
@@ -102,12 +104,12 @@ const transform = ({ job_parameters, dag_tasks, width = 1024, height = 400 }) =>
         dag: dag_tasks.find(d => d.task_id === id),
       },
       ports: {
-        port2: {
-          id: 'port2',
-          type: 'input',
+        portOut: {
+          id: 'portOut',
+          type: 'output',
         },
-        port1: {
-          id: 'port1',
+        portIn: {
+          id: 'portIn',
           type: 'input',
         },
       },
@@ -148,8 +150,6 @@ const transform = ({ job_parameters, dag_tasks, width = 1024, height = 400 }) =>
     }
   })
 
-  console.log(JSON.stringify(nodes))
-
   data.nodes = nodes.reduce((acc, curr) => {
     acc[curr.id] = curr
     return acc
@@ -159,8 +159,6 @@ const transform = ({ job_parameters, dag_tasks, width = 1024, height = 400 }) =>
     return acc
   }, {})
 
-  console.log(JSON.stringify(data))
-
   return data
 }
 
@@ -168,7 +166,11 @@ const Flow = ({ data, config }) => {
   const initialValue = transform({ ...data })
 
   return (
-    <FlowChartWithState config={config} initialValue={initialValue} />
+    <FlowChartWithState
+      config={config}
+      initialValue={initialValue}
+      Components={{ Port }}
+    />
   )
 }
 
