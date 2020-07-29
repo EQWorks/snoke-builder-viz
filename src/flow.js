@@ -6,20 +6,59 @@ import { FlowChartWithState } from '@mrblenny/react-flow-chart'
 import Port from './port'
 
 
-const stepNames = Object.freeze({
-  audience_build_wi: 'Audience Build: Walk-in',
-  audience_build_beacon: 'Audience Build: Beacon',
-  audience_enrich_aoi: 'Enrichment: AOI',
-  audience_enrich_xd: 'Enrichment: Cross Device',
-  audience_intersect_vwi: 'Intersection: Verified Walk-in',
-  audience_intersect_xwi: 'Intersection: Cross Chain Walk-in',
-  segment: 'Segment',
-  cohort_repeat_visits: 'Cohort Analysis: Visits',
-  cohort_converted_visitors: 'Cohort Analysis: Converted Visitors',
-  propensity: 'Propensity',
-  report_wi: 'Report: Walk-in',
-  report_vwi: 'Report: Verified Walk-in',
-  report_xwi: 'Report: Cross Chain Walk-in',
+const stepProps = Object.freeze({
+  audience_build_wi: {
+    name: 'Audience Build: Walk-in',
+    level: 0,
+  },
+  audience_build_beacon: {
+    name: 'Audience Build: Beacon',
+    level: 0,
+  },
+  audience_enrich_aoi: {
+    name: 'Enrichment: AOI',
+    level: 1,
+  },
+  audience_enrich_xd: {
+    name: 'Enrichment: Cross Device',
+    level: 1,
+  },
+  audience_intersect_vwi: {
+    name: 'Intersection: Verified Walk-in',
+    level: 2,
+  },
+  audience_intersect_xwi: {
+    name: 'Intersection: Cross Chain Walk-in',
+    level: 2,
+  },
+  segment: {
+    name: 'Segment',
+    level: 3,
+  },
+  cohort_repeat_visits: {
+    name: 'Cohort Analysis: Visits',
+    level: 3,
+  },
+  cohort_converted_visitors: {
+    name: 'Cohort Analysis: Converted Visitors',
+    level: 3,
+  },
+  propensity: {
+    name: 'Propensity',
+    level: 3,
+  },
+  report_wi: {
+    name: 'Report: Walk-in',
+    level: 3,
+  },
+  report_vwi: {
+    name: 'Report: Verified Walk-in',
+    level: 3,
+  },
+  report_xwi: {
+    name: 'Report: Cross Chain Walk-in',
+    level: 3,
+  },
 })
 
 const transform = ({ job_parameters, dag_tasks, width = 1024, height = 400 }) => {
@@ -90,27 +129,25 @@ const transform = ({ job_parameters, dag_tasks, width = 1024, height = 400 }) =>
   }
 
   steps.forEach((step, i) => {
+    const props = stepProps[step.name]
     const id = `${step.i || i}.${step.name}`
     const p = step.parameters
     nodes.push({
       id,
-      type: `${stepNames[step.name]}${p.period ? ` - ${p.period}` : ''}`,
-      position: {
-        x: width / (steps.length || 1)  * i,
-        y: height / (steps.length || 1) * i,
-      },
+      type: `${props.name}${p.period ? ` - ${p.period}` : ''}`,
       properties: {
         ...step,
         dag: dag_tasks.find(d => d.task_id === id),
+        level: props.level,
       },
       ports: {
         portOut: {
           id: 'portOut',
-          type: 'output',
+          type: 'right',
         },
         portIn: {
           id: 'portIn',
-          type: 'input',
+          type: 'left',
         },
       },
     })
@@ -150,7 +187,23 @@ const transform = ({ job_parameters, dag_tasks, width = 1024, height = 400 }) =>
     }
   })
 
-  data.nodes = nodes.reduce((acc, curr) => {
+  const levels = nodes.reduce((acc, { id, properties: { level } }) => {
+    acc[level] = [...(acc[level] || []), id]
+    return acc
+  }, {})
+  data.nodes = nodes.map((node) => {
+    const { id, properties: { level } } = node
+    const x = (width / 4) * level * 1.5
+    let y = (height / levels[level].length) * (levels[level].indexOf(id)) * 1.2
+    if (level > 0 && level < 3) {
+      const sources = links.filter((link) => link.to.nodeId === id).map((link) => link.from.nodeId)
+      const prevLvl = stepProps[sources[0].split('.')[1]].level
+      if (sources.length === 1) {
+        y = (height / levels[prevLvl].length) * (levels[prevLvl].indexOf(sources[0])) * 1.2
+      }
+    }
+    return { ...node, position: { x, y } }
+  }).reduce((acc, curr) => {
     acc[curr.id] = curr
     return acc
   }, {})
@@ -167,7 +220,16 @@ const Flow = ({ data, config }) => {
 
   return (
     <FlowChartWithState
-      config={config}
+      config={{
+        zoom: {
+          zoomIn: { disabled: true },
+          zoomOut: { disabled: true },
+          wheel: { disabled: true },
+          pan: { disabled: true },
+        },
+        showArrowHead: true,
+        ...config,
+      }}
       initialValue={initialValue}
       Components={{ Port }}
     />

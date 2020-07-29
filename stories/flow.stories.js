@@ -13,7 +13,7 @@ export default {
 }
 
 export const normal = () => (
-  <Flow data={sample} />
+  <Flow data={sample} config={{ smartRouting: false }} />
 )
 
 export const flowExample = () => (
