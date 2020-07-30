@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "@mrblenny/react-flow-chart": "^0.0.14",
+    "dagre-d3-react": "^0.2.4",
     "react-d3-graph": "^2.1.0",
     "react-resize-aware": "^3.0.1",
     "styled-components": "^5.1.1",

@@ -234,6 +234,7 @@ const Flow = ({ data, config }) => {
           pan: { disabled: true },
         },
         showArrowHead: true,
+        gridSize: 1,
         ...config,
       }}
       initialValue={initialValue}
