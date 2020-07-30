@@ -203,7 +203,9 @@ export const transform = ({ job_parameters, dag_tasks = [], width = 800, height 
       const sources = links.filter((link) => link.to.nodeId === id).map((link) => link.from.nodeId)
       const prevLvl = stepProps[sources[0].split('.')[1]].level
       if (sources.length === 1) {
-        y = (height / levels[prevLvl].length) * (levels[prevLvl].indexOf(sources[0])) * 1.2
+        y = (height / levels[prevLvl].length) * levels[prevLvl].indexOf(sources[0]) * 1.2
+      } else {
+        y = (height / levels[prevLvl].length) / sources.length
       }
     }
     return { ...node, position: { x, y } }
