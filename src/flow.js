@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { FlowChartWithState } from '@mrblenny/react-flow-chart'
 
 import Port from './port'
+import NodeInner from './node-inner'
 
 
 const stepProps = Object.freeze({
@@ -130,7 +131,7 @@ const transform = ({ job_parameters, dag_tasks, width = 1024, height = 400 }) =>
 
   steps.forEach((step, i) => {
     const props = stepProps[step.name]
-    const id = `${step.i || i}.${step.name}`
+    const id = `${step.i || (i + 1)}.${step.name}`
     const p = step.parameters
     nodes.push({
       id,
@@ -144,6 +145,9 @@ const transform = ({ job_parameters, dag_tasks, width = 1024, height = 400 }) =>
         portOut: {
           id: 'portOut',
           type: 'right',
+          properties: {
+            linkColor: '#CCCCCC',
+          },
         },
         portIn: {
           id: 'portIn',
@@ -231,7 +235,7 @@ const Flow = ({ data, config }) => {
         ...config,
       }}
       initialValue={initialValue}
-      Components={{ Port }}
+      Components={{ Port, NodeInner }}
     />
   )
 }
