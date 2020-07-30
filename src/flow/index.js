@@ -7,7 +7,7 @@ import Port from './port'
 import NodeInner from './node-inner'
 
 
-const stepProps = Object.freeze({
+export const stepProps = Object.freeze({
   audience_build_wi: {
     name: 'Audience Build: Walk-in',
     level: 0,
@@ -62,7 +62,7 @@ const stepProps = Object.freeze({
   },
 })
 
-const transform = ({ job_parameters, dag_tasks, width = 1024, height = 400 }) => {
+export const transform = ({ job_parameters, dag_tasks = [], width = 800, height = 600 }) => {
   const data = {
     offset: {
       x: 0,

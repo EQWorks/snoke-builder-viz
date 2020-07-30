@@ -1,10 +1,7 @@
 import React from 'react'
 
-import { FlowChartWithState } from '@mrblenny/react-flow-chart'
-
 import { Flow } from '../src'
 import sample from './sample.json'
-import dag from './dag'
 
 
 export default {
@@ -14,8 +11,4 @@ export default {
 
 export const normal = () => (
   <Flow data={sample} config={{ smartRouting: false }} />
-)
-
-export const flowExample = () => (
-  <FlowChartWithState initialValue={dag} />
 )

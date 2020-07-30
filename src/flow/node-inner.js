@@ -43,18 +43,25 @@ const stateCSS = {
 const Wrapper = styled.div`
   padding: 1em;
 
-  ${({ properties }) => stateCSS[(properties.dag || {}).state]}
+  ${({ state }) => stateCSS[state]}
 `
 
-const NodeInner = ({ node }) => (
-  node ? (
-    <Wrapper properties={node.properties}>
+const NodeInner = ({ node }) => {
+  if (!node) {
+    return null
+  }
+
+  const { properties } = node
+  const { dag = {} } = properties
+
+  return (
+    <Wrapper state={dag.state}>
       <strong>{node.type}</strong>
-      <div>State: {(node.properties.dag || {}).state}</div>
-      <div>Run time: {humanTime((node.properties.dag || {}).duration)}</div>
+      {dag.state && (<div>State: {dag.state}</div>)}
+      {dag.duration && (<div>Run time: {humanTime(dag.duration)}</div>)}
     </Wrapper>
-  ) : null
-)
+  )
+}
 
 NodeInner.propTypes = { node: PropTypes.object }
 NodeInner.PropTypes = { node: null }
