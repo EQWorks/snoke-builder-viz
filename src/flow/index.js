@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import { FlowChartWithState } from '@mrblenny/react-flow-chart'
 
+import Container from './container'
 import Port from './port'
 import NodeInner from './node-inner'
 
@@ -64,10 +65,7 @@ export const stepProps = Object.freeze({
 
 export const transform = ({ job_parameters, dag_tasks = [], width = 800, height = 600 }) => {
   const data = {
-    offset: {
-      x: 0,
-      y: 0,
-    },
+    offset: { x: 0, y: 0 },
     scale: 1,
     selected: {},
     hovered: {},
@@ -225,21 +223,23 @@ const Flow = ({ data, config }) => {
   const initialValue = transform({ ...data })
 
   return (
-    <FlowChartWithState
-      config={{
-        zoom: {
-          zoomIn: { disabled: true },
-          zoomOut: { disabled: true },
-          wheel: { disabled: true },
-          pan: { disabled: true },
-        },
-        showArrowHead: true,
-        gridSize: 1,
-        ...config,
-      }}
-      initialValue={initialValue}
-      Components={{ Port, NodeInner }}
-    />
+    <Container>
+      <FlowChartWithState
+        config={{
+          zoom: {
+            zoomIn: { disabled: true },
+            zoomOut: { disabled: true },
+            wheel: { disabled: true },
+            pan: { disabled: true },
+          },
+          showArrowHead: true,
+          gridSize: 1,
+          ...config,
+        }}
+        initialValue={initialValue}
+        Components={{ Port, NodeInner }}
+      />
+    </Container>
   )
 }
 

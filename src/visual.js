@@ -4,13 +4,13 @@ import PropTypes from 'prop-types'
 import { Graph } from 'react-d3-graph'
 import useResizeAware from 'react-resize-aware'
 import uuid from 'uuid/v4'
+// import DAGRE from 'dagre'
 
 
 // transforms pipeline job steps into graph nodes and links
 export const transform = ({ steps = [] }, { width, height }) => {
   const nodes = []
   const links = []
-
   // stateful helpers
   function buildLink(target, src) {
     const { id: source } = nodes.find(n => n.audience_id === src) || {}
@@ -88,6 +88,22 @@ export const transform = ({ steps = [] }, { width, height }) => {
       buildReportLink(id, report)
     }
   })
+
+  // // revise position of nodes using dagre
+  // const g = new DAGRE.graphlib.Graph()
+  // g.setGraph({ marginx: 20, marginy: 20 })
+  // g.setDefaultEdgeLabel(() => ({}))
+  // nodes.forEach((node) => {
+  //   g.setNode(node.id, { width: 200, height: 100 })
+  // })
+  // Array.from(links).forEach((link) => {
+  //   g.setEdge(link.source, link.target)
+  // })
+  // DAGRE.layout(g)
+  // nodes.forEach((node) => {
+  //   node.x = g.node(node.id).x - 200 / 2
+  //   node.y = g.node(node.id).y - 100 / 2
+  // })
 
   return { nodes, links: Array.from(links) }
 }

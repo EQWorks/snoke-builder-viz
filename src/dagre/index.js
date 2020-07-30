@@ -1,7 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import DagreGraph from 'dagre-d3-react'
-import Graph from 'react-dagre-d3'
 import useResizeAware from 'react-resize-aware'
 
 
@@ -135,9 +135,7 @@ const transform = ({ job_parameters, dag_tasks }) => {
       ...step,
       id,
       label: labelParts.join('\n'),
-      config: {
-			  style: 'fill: #afa',
-		  },
+      config: { style: 'fill: #afa' },
     })
     // build links
     const {
@@ -203,5 +201,7 @@ const Dagre = ({ data, ...graphProps }) => {
     </div>
   )
 }
+
+Dagre.propTypes = { data: PropTypes.object.isRequired }
 
 export default Dagre
