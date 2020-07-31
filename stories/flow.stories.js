@@ -12,7 +12,9 @@ export default {
 }
 
 export const normal = () => (
-  <Flow data={sample} config={{ smartRouting: false }} />
+  <div style={{ height: 300 }}>
+    <Flow data={{ ...sample, height: 300 }} config={{ smartRouting: false }} />
+  </div>
 )
 
 export const dagreA = () => (

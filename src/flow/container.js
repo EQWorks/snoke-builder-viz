@@ -21,8 +21,8 @@ const Content = styled.div`
   display: flex;
   flex-direction: row;
   flex: 1;
-  max-width: 100vw;
-  max-height: 100vh;
+  max-width: 100%;
+  max-height: 100%;
 `
 
 const Container = ({ children }) => (
