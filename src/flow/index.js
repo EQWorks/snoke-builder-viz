@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { FlowChartWithState } from '@mrblenny/react-flow-chart'
+import dagre from 'dagre'
 
 import Container from './container'
 import Port from './port'
@@ -63,7 +64,7 @@ export const stepProps = Object.freeze({
   },
 })
 
-export const transform = ({ job_parameters, dag_tasks = [], width = 800, height = 600 }) => {
+export const transform = ({ job_parameters, dag_tasks = [] }) => {
   const data = {
     offset: { x: 0, y: 0 },
     scale: 1,
@@ -189,25 +190,37 @@ export const transform = ({ job_parameters, dag_tasks = [], width = 800, height 
     }
   })
 
-  const levels = nodes.reduce((acc, { id, properties: { level } }) => {
-    acc[level] = [...(acc[level] || []), id]
-    return acc
-  }, {})
-  data.nodes = nodes.map((node) => {
-    const { id, properties: { level } } = node
-    const x = (width / 4) * level * 1.5
-    let y = (height / levels[level].length) * (levels[level].indexOf(id)) * 1.2
-    if (level > 0 && level < 3) {
-      const sources = links.filter((link) => link.to.nodeId === id).map((link) => link.from.nodeId)
-      const prevLvl = stepProps[sources[0].split('.')[1]].level
-      if (sources.length === 1) {
-        y = (height / levels[prevLvl].length) * levels[prevLvl].indexOf(sources[0]) * 1.2
-      } else {
-        y = (height / levels[prevLvl].length) / sources.length
-      }
+  // dagre layout
+  const g = new dagre.graphlib.Graph()
+  g.setGraph({
+    marginx: 0,
+    marginy: 0,
+    rankdir: 'LR',
+    align: 'UL',
+    nodesep: 25,
+    edgesep: 10,
+    ranksep: 10,
+    acyclicer: 'greedy',
+    ranker: 'longest-path',
+  })
+  g.setDefaultEdgeLabel(() => ({}))
+  for (let node of nodes) {
+    // TODO: pre-determine node dimensions
+    g.setNode(node.id, { width: 280, height: 100 })
+  }
+  for (let link of links) {
+    g.setEdge(link.from.nodeId, link.to.nodeId)
+  }
+  dagre.layout(g)
+
+  for (let node of nodes) {
+    node.position = {
+      x: g.node(node.id).x - 280 / 2,
+      y: g.node(node.id).y - 100 / 2,
     }
-    return { ...node, position: { x, y } }
-  }).reduce((acc, curr) => {
+  }
+
+  data.nodes = nodes.reduce((acc, curr) => {
     acc[curr.id] = curr
     return acc
   }, {})
@@ -220,7 +233,7 @@ export const transform = ({ job_parameters, dag_tasks = [], width = 800, height 
 }
 
 const Flow = ({ data, config }) => {
-  const initialValue = transform({ ...data })
+  const initialValue = transform(data)
 
   return (
     <Container>
