@@ -41,7 +41,7 @@ const stateCSS = {
 }
 
 const Wrapper = styled.div`
-  padding: 1em;
+  padding: 0.5em;
 
   ${({ state }) => stateCSS[state]}
 `

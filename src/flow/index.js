@@ -64,10 +64,10 @@ export const stepProps = Object.freeze({
   },
 })
 
-export const transform = ({ job_parameters, dag_tasks = [] }) => {
+export const transform = ({ job_parameters, dag_tasks = [], scale = 1 }) => {
   const data = {
     offset: { x: 0, y: 0 },
-    scale: 1,
+    scale,
     selected: {},
     hovered: {},
   }
@@ -233,7 +233,7 @@ export const transform = ({ job_parameters, dag_tasks = [] }) => {
 }
 
 const Flow = ({ data, config }) => {
-  const initialValue = transform(data)
+  const initialValue = transform({ ...data, scale: 0.8 })
 
   return (
     <Container>
@@ -245,7 +245,7 @@ const Flow = ({ data, config }) => {
             wheel: { disabled: true },
             pan: { disabled: true },
           },
-          showArrowHead: true,
+          showArrowHead: false,
           gridSize: 1,
           ...config,
         }}
