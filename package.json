@@ -1,7 +1,7 @@
 {
   "name": "@eqworks/snoke-builder-viz",
   "private": false,
-  "version": "0.3.0-alpha.5",
+  "version": "0.3.0-alpha.6",
   "author": "woozyking <runzhou.li@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -21,8 +21,8 @@
   "dependencies": {
     "@mrblenny/react-flow-chart": "^0.0.14",
     "dagre": "^0.8.5",
-    "dagre-d3-react": "^0.2.4",
     "react-d3-graph": "^2.1.0",
+    "react-flow-renderer": "^5.1.0",
     "react-resize-aware": "^3.0.1",
     "styled-components": "^5.1.1",
     "uuid": "^3.3.3"

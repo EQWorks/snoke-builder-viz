@@ -1,9 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import DagreGraph from 'dagre-d3-react'
+import ReactFlow, { Controls } from 'react-flow-renderer'
+import dagre from 'dagre'
 import useResizeAware from 'react-resize-aware'
 
+import DAGNode from './dag-node'
+
+
+const nodeTypes = { DAGNode }
+
+const onLoad = (flow) => flow.fitView()
 
 export const stepProps = Object.freeze({
   audience_build_wi: {
@@ -60,35 +67,14 @@ export const stepProps = Object.freeze({
   },
 })
 
-const humanTime = (seconds) => {
-  let cd = seconds
-  const time = {}
-  time.day = Math.floor(cd / 86400)
-  cd -= time.day * 86400
-  time.hour = Math.floor(cd / 3600)
-  cd -= time.hour * 3600
-  time.minute = Math.ceil(cd / 60)
-  const parts = []
-  if (time.day) {
-    parts.push(`${time.day} day${time.day > 1 ? 's' : ''}`)
-  }
-  if (time.hour) {
-    parts.push(`${time.hour} hour${time.hour > 1 ? 's' : ''}`)
-  }
-  if (time.minute) {
-    parts.push(`${time.minute} minute${time.minute > 1 ? 's' : ''}`)
-  }
-  return parts.join(' ')
-}
-
-const transform = ({ job_parameters, dag_tasks }) => {
+export const transform = ({ job_parameters, dag_tasks = [] }) => {
   const { steps = [] } = job_parameters || {}
+
   const nodes = []
   const links = []
-
   // stateful helper functions
   function buildLink(target, src) {
-    const { id: source } = nodes.find(n => n.parameters.audience_id === src) || {}
+    const { id: source } = nodes.find(n => n.data.parameters.audience_id === src) || {}
     if (source == null) {
       return
     }
@@ -98,7 +84,12 @@ const transform = ({ job_parameters, dag_tasks }) => {
     if (links.find(l => l.source === source && l.target === target)) {
       return
     }
-    links.push({ source, target, config: { style: 'stroke: black;' } })
+    links.push({
+      id: `${source}-${target}`,
+      source,
+      target,
+      animated: true,
+    })
   }
   function buildLinks(target, sources) {
     sources.forEach((src) => {
@@ -106,7 +97,7 @@ const transform = ({ job_parameters, dag_tasks }) => {
     })
   }
   function buildReportLink(target, src) {
-    const { id: source } = nodes.find(n => n.name.startsWith('report_') && n.parameters.report === src) || {}
+    const { id: source } = nodes.find(n => n.data.name.startsWith('report_') && n.data.parameters.report === src) || {}
     if (source == null) {
       return
     }
@@ -116,26 +107,26 @@ const transform = ({ job_parameters, dag_tasks }) => {
     if (links.find(l => l.source === source && l.target === target)) {
       return
     }
-    links.push({ source, target, config: { style: 'stroke: black;' } })
+    links.push({
+      id: `${source}-${target}`,
+      source,
+      target,
+      animated: true,
+    })
   }
 
   steps.forEach((step, i) => {
     const props = stepProps[step.name]
     const id = `${step.i || (i + 1)}.${step.name}`
-    const { parameters } = step
-    const dag = dag_tasks.find(d => d.task_id === id) || {}
-    const labelParts = [props.name]
-    if (parameters.period) {
-      labelParts.push(parameters.period)
-    }
-    if (dag.duration) {
-      labelParts.push(humanTime(dag.duration))
-    }
+    const p = step.parameters
     nodes.push({
-      ...step,
       id,
-      label: labelParts.join('\n'),
-      config: { style: 'fill: #afa' },
+      type: 'DAGNode',
+      data: {
+        ...step,
+        display: `${props.name}${p.period ? ` - ${p.period}` : ''}`,
+        dag: dag_tasks.find(d => d.task_id === id),
+      },
     })
     // build links
     const {
@@ -173,35 +164,73 @@ const transform = ({ job_parameters, dag_tasks }) => {
     }
   })
 
-  return { nodes, links }
+  // dagre layout
+  const g = new dagre.graphlib.Graph()
+  g.setGraph({
+    marginx: 0,
+    marginy: 0,
+    rankdir: 'LR',
+    align: 'UL',
+    nodesep: 25,
+    edgesep: 10,
+    ranksep: 10,
+    acyclicer: 'greedy',
+    ranker: 'longest-path',
+  })
+  g.setDefaultEdgeLabel(() => ({}))
+  for (let node of nodes) {
+    // TODO: pre-determine node dimensions
+    g.setNode(node.id, { width: 225, height: 100 })
+  }
+  for (let link of links) {
+    g.setEdge(link.source, link.target)
+  }
+  dagre.layout(g)
+
+  for (let node of nodes) {
+    node.position = {
+      x: g.node(node.id).x - 225 / 2,
+      y: g.node(node.id).y - 100 / 2,
+    }
+  }
+
+  return [...nodes, ...links]
 }
 
-const Dagre = ({ data, ...graphProps }) => {
+const Flow = ({ data, config }) => {
   const [resizeListner, { width, height }] = useResizeAware()
-  const { nodes, links } = transform(data)
+  const elements = transform({ ...data, width, height })
 
   return (
-    <div style={{ width: '100%', height: '100vh' }}>
+    <div style={{ width: 'inherit', height: 'inherit' }}>
       {resizeListner}
-      <DagreGraph
-        nodes={nodes}
-        links={links}
+      <ReactFlow
         {...{
-          width,
-          height,
-          fitBoundaries: true,
-          config: {
-            rankdir: 'LR',
-            align: 'UL',
-            ranker: 'tight-tree'
-          },
-          ...graphProps,
+          // elementsSelectable: false,
+          // nodesConnectable: false,
+          // nodesDraggable: false,
+          // zoomOnScroll: false,
+          // zoomOnDoubleClick: false,
+          // paneMoveable: false,
+          onLoad,
+          nodeTypes,
+          ...config,
         }}
-      />
+        elements={elements}
+      >
+        <Controls />
+      </ReactFlow>
     </div>
   )
 }
 
-Dagre.propTypes = { data: PropTypes.object.isRequired }
+Flow.propTypes = {
+  data: PropTypes.object,
+  config: PropTypes.object,
+}
+Flow.defaultProps = {
+  data: {},
+  config: {},
+}
 
-export default Dagre
+export default Flow
