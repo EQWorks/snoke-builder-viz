@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
 import ReactFlow, { Controls } from 'react-flow-renderer'
 import dagre from 'dagre'
 import useResizeAware from 'react-resize-aware'
@@ -68,6 +67,7 @@ export const stepProps = Object.freeze({
 })
 
 export const transform = ({ job_parameters, dag_tasks = [] }) => {
+  console.log(job_parameters, dag_tasks)
   const { steps = [] } = job_parameters || {}
 
   const nodes = []
@@ -198,9 +198,11 @@ export const transform = ({ job_parameters, dag_tasks = [] }) => {
 }
 
 const Flow = ({ data, config }) => {
+  //debugger;
   const [resizeListner, { width, height }] = useResizeAware()
+  //returns inner width and height
   const elements = transform({ ...data, width, height })
-
+  // assign [data(JSON), id, position(x,y)]
   return (
     <div style={{ width: 'inherit', height: 'inherit' }}>
       {resizeListner}

@@ -55,7 +55,7 @@ export const NodeContent = styled.div`
 
 const DAGNode = ({ data }) => {
   const { display, level, dag = {} } = data
-
+  console.log(display, level, dag);
   return (
     <>
       {level !== 0 && (<Handle type='target' position='left' />)}
