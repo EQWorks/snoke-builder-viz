@@ -74,7 +74,7 @@ const Flow = () => {
       setElements(newElements);
     }
   }, [size]);
-
+  console.log(size);
   return (
     <div style={{ width: "100%", height: "100vh" }}>
       {resizeListener}
