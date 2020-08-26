@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Flow } from '../src'
-import sample from './sample.json'
+import sample from './sampleData/sample.json'
 
 
 export default {

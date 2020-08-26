@@ -66,29 +66,26 @@ export const stepProps = Object.freeze({
   },
 });
 
-
 const adjustPos = (acc, val, i) => {
   //debugger;
   let { baselines, links } = acc;
   let divisor = 0;
   let dividend = 0;
-  
-  links.forEach(link => {
-    if(link.target === val.id) {
+
+  links.forEach((link) => {
+    if (link.target === val.id) {
       const num = parseInt(link.source.charAt(0));
-      dividend += baselines[num-1].y;
+      dividend += baselines[num - 1].y;
       divisor++;
     }
   });
 
   if (divisor > 0) {
-    baselines[i].y = dividend/divisor;
+    baselines[i].y = dividend / divisor;
   }
 
-  return {baselines, links};
-
-}
-
+  return { baselines, links };
+};
 
 const mapNodes = (acc, val, i, arr) => {
   //debugger;
@@ -132,6 +129,11 @@ const mapNodes = (acc, val, i, arr) => {
 //   //const calculatePos = data.filter((d) => d.type === 'DAGNode').reduce(flattenNodes,)
 //   return basePosData;
 // };
+const findPosition = (acc, node, i, arr) => {
+  const { level, id } = node;
+  acc[level].push(id);
+  return acc;
+};
 
 const getBasePos = (data) => {
   return data.sort().reduce(mapNodes, {
@@ -147,7 +149,31 @@ const getBasePos = (data) => {
   });
 };
 
-export const transform = ({ job_parameters, dag_tasks = [], width, height }) => {
+const findSourceTarget = (links) => (acc, node, i, arr) => {
+  const { id } = node;
+  let currentSource = [];
+  let currentTarget = [];
+  links.forEach((link) => {
+    if (link.source === id) {
+      const index = parseInt(link.target.charAt(0));
+      currentTarget.push(index - 1);
+      //index - 1 because the numbering starts from 1
+    }
+    if (link.target === id) {
+      const index = parseInt(link.source.charAt(0));
+      currentSource.push(index - 1);
+    }
+  });
+  acc.push({ id: id, sourceList: currentSource, targetList: currentTarget });
+  return acc;
+};
+
+export const transform = ({
+  job_parameters,
+  dag_tasks = [],
+  width,
+  height,
+}) => {
   //console.log(job_parameters, dag_tasks)
   console.log(width, height);
   const { steps = [] } = job_parameters || {};
@@ -204,9 +230,8 @@ export const transform = ({ job_parameters, dag_tasks = [], width, height }) => 
   }
 
   steps.forEach((step, i) => {
-    //debugger;
     const props = stepProps[step.name];
-    const id = `${step.i || i + 1}.${step.name}`;
+    const id = `${step.i || i+1}.${step.name}`;
     const p = step.parameters;
     nodes.push({
       id,
@@ -260,24 +285,82 @@ export const transform = ({ job_parameters, dag_tasks = [], width, height }) => 
     }
   });
 
-  const { maxCount, baselines } = getBasePos(nodes);
-  const adjusted = nodes.sort().reduce(adjustPos,{baselines, links})
-  const baselines2 = adjusted.baselines;
+  console.log("nodes: ", nodes, "links: ", links);
+
+  const levelNum = 4;
+  //number of levels for nodes
+  const nodesArray = new Array(4).fill(null).map((element) => []);
+  const basePosition = [];
+  //generate 2D array
+  const sourceTargetList = nodes.reduce(findSourceTarget(links), []);
+  //create source-target list per each node. order + length are same as nodes
+  console.log("sourceTargetList: ", sourceTargetList);
+
+  nodes.forEach(({ level, id }) => {
+    basePosition.push({ x: level, y: nodesArray[level].length });
+    nodesArray[level].push(id);
+  });
+  console.log("basePos: ", basePosition);
+  console.log("nodesArray: ", nodesArray);
+
+  const maxCount = { x: 0, y: 0 };
+
+  maxCount.x = nodesArray.length - 1;
+
+  maxCount.y = nodesArray.reduce((acc, val) => {
+    const length = val.length - 1;
+    return acc < length ? length : acc;
+  }, 0);
+
+  console.log(maxCount);
+  const { baselines } = getBasePos(nodes);
+  //const adjusted = nodes.sort().reduce(adjustPos,{baselines, links})
+  //const baselines2 = adjusted.baselines;
   const baseWidth = width / (maxCount.x + 1);
   const baseHeight = height / (maxCount.y + 1);
+  console.log('baselines: ', baselines);
+  let nodePositions = [...basePosition];
   const newNodes = nodes.map((element, index) => {
-    return baselines[index] !== undefined
-      ? {
-          ...element,
-          position: {
-            x: baselines2[index].x * baseWidth,
-            y: baselines2[index].y * baseHeight,
-          },
-        }
-      : { ...element };
+    const currentX = basePosition[index].x;
+    const currentY = basePosition[index].y;
+    const { sourceList } = sourceTargetList[index];
+    if(sourceList.length > 0) {
+      let num = 0;
+
+      sourceList.forEach((src) => (num += basePosition[src].y));
+
+      const adjustedY = num / sourceList.length;
+
+      const isTaken = nodePositions.some(
+        (element) =>
+          (element.x === currentX && element.y === adjustedY)
+      );
+      if(isTaken) {
+        nodePositions.push({ x: currentX, y: currentY })
+
+      }
+      else {
+        nodePositions.push({ x: currentX, y: adjustedY })
+        basePosition[index].y = adjustedY;
+      }
+    }
+    else {
+      nodePositions.push({ x: currentX, y: currentY })
+    }
+
+    return {
+      ...element,
+      position: {
+        //x: baselines[index].x * baseWidth,
+        //y: baselines[index].y * baseHeight,
+        x: nodePositions[index].x * baseWidth,
+        y: nodePositions[index].y * baseHeight,
+      },
+      sourceList: sourceTargetList[index].source,
+      targetList: sourceTargetList[index].target,
+    };
   });
-
-
+  console.log("newNodes :",newNodes);
   return [...newNodes, ...links];
 };
 
@@ -288,32 +371,11 @@ const Flow = ({ data, config }) => {
   const [elements, setElements] = useState();
   // assign [data(JSON), id, position(x,y)]
 
-  // useEffect(() => {
-  //   if (size.width !== null && size.height !== null) {
-  //     const { maxCount, baselines } = getBasePos(size.width, elements);
-  //     const baseWidth = size.width / (maxCount.x + 1);
-  //     const baseHeight = size.height / (maxCount.y + 1);
-  //     const newElements = elements.map((element, index) => {
-  //       return baselines[index] !== undefined
-  //         ? {
-  //             ...element,
-  //             position: {
-  //               x: baselines[index].x * baseWidth,
-  //               y: baselines[index].y * baseHeight,
-  //             },
-  //           }
-  //         : { ...element };
-  //     });
-  //     console.log(newElements);
-  //     setElements(newElements);
-  //   }
-  // }, [size]);
-
-  useEffect(()=>{
-    if(size.width !== null && size.height !== null) {
+  useEffect(() => {
+    if (size.width !== null && size.height !== null) {
       setElements(transform({ ...data, width, height }));
     }
-  },[size])
+  }, [size]);
   return (
     <div style={{ width: "inherit", height: "inherit" }}>
       {resizeListner}

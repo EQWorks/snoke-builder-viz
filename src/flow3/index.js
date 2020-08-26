@@ -62,7 +62,7 @@ const Flow = () => {
     if (size.width !== null && size.height !== null) {
       const { maxCount, baselines } = getBasePos(size.width, elements);
       const baseWidth = size.width / (maxCount.x + 1);
-      const baseHeight = size.height / (maxCount.y + 1);
+      const baseHeight = size.height / (maxCount.y + 0.4);
       const newElements = elements.map((element, index) => ({
         ...element,
         position: {
