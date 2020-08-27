@@ -1,12 +1,16 @@
 import React from 'react'
 
-import { storiesOf } from '@storybook/react'
-
-import { Visual } from '../src'
-import sample from './sample'
+import { Flow } from '../src'
+import sample from './sample.json'
 
 
-storiesOf('Flow', module)
-  .add('Visual', () => {
-    return (<Visual job={sample} />)
-  })
+export default {
+  component: Flow,
+  title: 'Flow',
+}
+
+export const normal = () => (
+  <div style={{ height: 300 }}>
+    <Flow data={{ ...sample, height: 300 }} config={{ smartRouting: false }} />
+  </div>
+)

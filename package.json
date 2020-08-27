@@ -1,11 +1,12 @@
 {
   "name": "@eqworks/snoke-builder-viz",
   "private": false,
-  "version": "0.2.1",
+  "version": "0.3.0-alpha.6",
   "author": "woozyking <runzhou.li@gmail.com>",
   "license": "MIT",
   "scripts": {
     "test": "echo 'No test yet'",
+    "lint": "eslint src/",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build": "rimraf dist && babel src --out-dir dist --copy-files",
@@ -18,7 +19,12 @@
     "README.md"
   ],
   "dependencies": {
+    "@mrblenny/react-flow-chart": "^0.0.14",
+    "dagre": "^0.8.5",
     "react-d3-graph": "^2.1.0",
+    "react-flow-renderer": "^5.1.0",
+    "react-resize-aware": "^3.0.1",
+    "styled-components": "^5.1.1",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
@@ -34,6 +40,7 @@
     "d3": "^5.11.0",
     "eslint": "^6.2.0",
     "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^4.0.8",
     "prop-types": "^15.7.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
