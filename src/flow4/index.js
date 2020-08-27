@@ -66,90 +66,7 @@ export const stepProps = Object.freeze({
   },
 });
 
-const adjustPos = (acc, val, i) => {
-  //debugger;
-  let { baselines, links } = acc;
-  let divisor = 0;
-  let dividend = 0;
-
-  links.forEach((link) => {
-    if (link.target === val.id) {
-      const num = parseInt(link.source.charAt(0));
-      dividend += baselines[num - 1].y;
-      divisor++;
-    }
-  });
-
-  if (divisor > 0) {
-    baselines[i].y = dividend / divisor;
-  }
-
-  return { baselines, links };
-};
-
-const mapNodes = (acc, val, i, arr) => {
-  //debugger;
-  let { maxCount, currentPos, baselines } = acc;
-  baselines.push({ x: currentPos.x, y: currentPos.y });
-  if (i < arr.length - 1) {
-    const currentLevel = val.level;
-    const nextLevel = arr[i + 1].level;
-    if (currentLevel === nextLevel) {
-      currentPos.y++;
-    } else {
-      currentPos.y = 0;
-      currentPos.x++;
-    }
-    if (maxCount.y < currentPos.y) {
-      maxCount.y = currentPos.y;
-    }
-    if (maxCount.x < currentPos.x) {
-      maxCount.x = currentPos.x;
-    }
-  }
-  return { maxCount, currentPos, baselines };
-};
-
-// const getBasePos = (width, data) => {
-//   const basePosData = data
-//     .filter((d) => d.type === "DAGNode")
-//     .sort()
-//     .reduce(mapNodes, {
-//       maxCount: {
-//         x: 0,
-//         y: 0,
-//       },
-//       currentPos: {
-//         x: 0,
-//         y: 0,
-//       },
-//       baselines: [],
-//     });
-
-//   //const calculatePos = data.filter((d) => d.type === 'DAGNode').reduce(flattenNodes,)
-//   return basePosData;
-// };
-const findPosition = (acc, node, i, arr) => {
-  const { level, id } = node;
-  acc[level].push(id);
-  return acc;
-};
-
-const getBasePos = (data) => {
-  return data.sort().reduce(mapNodes, {
-    maxCount: {
-      x: 0,
-      y: 0,
-    },
-    currentPos: {
-      x: 0,
-      y: 0,
-    },
-    baselines: [],
-  });
-};
-
-const findSourceTarget = (links) => (acc, node, i, arr) => {
+const findSourceTarget = (links) => (acc, node) => {
   const { id } = node;
   let currentSource = [];
   let currentTarget = [];
@@ -175,7 +92,6 @@ export const transform = ({
   height,
 }) => {
   //console.log(job_parameters, dag_tasks)
-  console.log(width, height);
   const { steps = [] } = job_parameters || {};
   const nodes = [];
   const links = [];
@@ -285,23 +201,17 @@ export const transform = ({
     }
   });
 
-  console.log("nodes: ", nodes, "links: ", links);
-
-  const levelNum = 4;
   //number of levels for nodes
-  const nodesArray = new Array(4).fill(null).map((element) => []);
+  const nodesArray = new Array(4).fill(null).map(() => []);
   const basePosition = [];
   //generate 2D array
   const sourceTargetList = nodes.reduce(findSourceTarget(links), []);
   //create source-target list per each node. order + length are same as nodes
-  console.log("sourceTargetList: ", sourceTargetList);
 
   nodes.forEach(({ level, id }) => {
     basePosition.push({ x: level, y: nodesArray[level].length });
     nodesArray[level].push(id);
   });
-  console.log("basePos: ", basePosition);
-  console.log("nodesArray: ", nodesArray);
 
   const maxCount = { x: 0, y: 0 };
 
@@ -312,13 +222,8 @@ export const transform = ({
     return acc < length ? length : acc;
   }, 0);
 
-  console.log(maxCount);
-  const { baselines } = getBasePos(nodes);
-  //const adjusted = nodes.sort().reduce(adjustPos,{baselines, links})
-  //const baselines2 = adjusted.baselines;
   const baseWidth = width / (maxCount.x + 1);
   const baseHeight = height / (maxCount.y + 1);
-  console.log('baselines: ', baselines);
   let nodePositions = [...basePosition];
   const newNodes = nodes.map((element, index) => {
     const currentX = basePosition[index].x;
@@ -351,8 +256,6 @@ export const transform = ({
     return {
       ...element,
       position: {
-        //x: baselines[index].x * baseWidth,
-        //y: baselines[index].y * baseHeight,
         x: nodePositions[index].x * baseWidth,
         y: nodePositions[index].y * baseHeight,
       },
@@ -360,7 +263,7 @@ export const transform = ({
       targetList: sourceTargetList[index].target,
     };
   });
-  console.log("newNodes :",newNodes);
+
   return [...newNodes, ...links];
 };
 
