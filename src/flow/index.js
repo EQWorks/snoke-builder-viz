@@ -5,15 +5,14 @@ import ReactFlow, { Controls } from 'react-flow-renderer'
 import useResizeAware from 'react-resize-aware'
 
 import DAGNode from './dag-node'
-import { transform, buildLayout } from './utils'
+import { useElements } from './hooks'
 
 
 export const nodeTypes = { DAGNode }
 
 const Flow = ({ data, config }) => {
   const [resizeListner, { width, height }] = useResizeAware()
-  const { nodes, links } = transform({ ...data, width, height })
-  const elements = buildLayout(config)({ nodes, links, width, height })
+  const elements = useElements({ data, config, width, height })
 
   return (
     <div style={{ width: 'inherit', height: 'inherit' }}>
