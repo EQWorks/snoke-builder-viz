@@ -3,27 +3,33 @@ import { graphlib, layout } from 'dagre'
 
 export const stepProps = Object.freeze({
   audience_build_wi: {
-    name: 'Audience Build: Walk-in',
+    name: 'Audience Build',
+    sub: 'Walk-in',
     level: 0,
   },
   audience_build_beacon: {
-    name: 'Audience Build: Beacon',
+    name: 'Audience Build',
+    sub: 'Beacon',
     level: 0,
   },
   audience_enrich_aoi: {
-    name: 'Enrichment: AOI',
+    name: 'Enrichment',
+    sub: 'AOI',
     level: 1,
   },
   audience_enrich_xd: {
-    name: 'Enrichment: Cross Device',
+    name: 'Enrichment',
+    sub: 'Cross Device',
     level: 1,
   },
   audience_intersect_vwi: {
-    name: 'Intersection: Verified Walk-in',
+    name: 'Intersection',
+    sub: 'Verified Walk-in',
     level: 2,
   },
   audience_intersect_xwi: {
-    name: 'Intersection: Cross Chain Walk-in',
+    name: 'Intersection',
+    sub: 'Cross Chain Walk-in',
     level: 2,
   },
   segment: {
@@ -31,11 +37,13 @@ export const stepProps = Object.freeze({
     level: 3,
   },
   cohort_repeat_visits: {
-    name: 'Cohort Analysis: Visits',
+    name: 'Cohort Analysis',
+    sub: 'Visits',
     level: 3,
   },
   cohort_converted_visitors: {
-    name: 'Cohort Analysis: Converted Visitors',
+    name: 'Cohort Analysis',
+    sub: 'Converted Visitors',
     level: 3,
   },
   propensity: {
@@ -43,15 +51,18 @@ export const stepProps = Object.freeze({
     level: 3,
   },
   report_wi: {
-    name: 'Report: Walk-in',
+    name: 'Report',
+    sub: 'Walk-in',
     level: 3,
   },
   report_vwi: {
-    name: 'Report: Verified Walk-in',
+    name: 'Report',
+    sub: 'Verified Walk-in',
     level: 3,
   },
   report_xwi: {
-    name: 'Report: Cross Chain Walk-in',
+    name: 'Report',
+    sub: 'Cross Chain Walk-in',
     level: 3,
   },
 })
@@ -114,9 +125,9 @@ export const transform = ({ job_parameters, dag_tasks = [] }) => {
       type: 'DAGNode',
       data: {
         ...step,
-        display: `${props.name}${p.period ? ` - ${p.period}` : ''}`,
         dag: dag_tasks.find((d) => d.task_id === id),
-        level: props.level,
+        period: p.period,
+        ...props,
       },
     })
     // build links
@@ -194,7 +205,7 @@ const dagre = ({ nodes, links, width, height }) => {
   g.setDefaultEdgeLabel(() => ({}))
   for (let node of nodes) {
     // TODO: pre-determine node dimensions
-    g.setNode(node.id, { width: 200, height: 100 })
+    g.setNode(node.id, { width: 303, height: 53 })
   }
   for (let link of links) {
     g.setEdge(link.source, link.target)
