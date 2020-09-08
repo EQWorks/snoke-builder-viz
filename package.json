@@ -21,10 +21,10 @@
   ],
   "dependencies": {
     "dagre": "^0.8.5",
+    "goober": "^2.0.5",
     "react-d3-graph": "^2.1.0",
     "react-flow-renderer": "^5.1.0",
     "react-resize-aware": "^3.0.1",
-    "styled-components": "^5.1.1",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
