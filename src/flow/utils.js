@@ -116,8 +116,8 @@ export const transform = ({ job_parameters, dag_tasks = [] }) => {
         ...step,
         display: `${props.name}${p.period ? ` - ${p.period}` : ''}`,
         dag: dag_tasks.find((d) => d.task_id === id),
+        level: props.level,
       },
-      level: props.level,
     })
     // build links
     const {
@@ -219,7 +219,7 @@ const custom = ({ nodes, links, width, height }) => {
   // create source-target list per each node. order + length are same as nodes
   const sourceTargetList = nodes.reduce(findSourceTarget(links), [])
 
-  nodes.forEach(({ level, id }) => {
+  nodes.forEach(({ data: { level }, id }) => {
     basePosition.push({ x: level, y: nodesArray[level].length })
     nodesArray[level].push(id)
   })
