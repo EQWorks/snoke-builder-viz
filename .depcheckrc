@@ -1,0 +1,11 @@
+ignore-dirs: ["dist", "node_modules", "storybook-static"]
+ignores: [
+    "jest",
+    "eslint",
+    "babel-*",
+    "eslint-*",
+    "@babel/*",
+    "@storybook/*",
+    "size-limit",
+    "@size-limit/*"
+]

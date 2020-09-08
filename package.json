@@ -16,10 +16,10 @@
   "source": "src/index.js",
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "dependencies": {
-    "@mrblenny/react-flow-chart": "^0.0.14",
     "dagre": "^0.8.5",
     "react-d3-graph": "^2.1.0",
     "react-flow-renderer": "^5.1.0",

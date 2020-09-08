@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+
 import ReactFlow, { Controls } from 'react-flow-renderer'
 import dagre from 'dagre'
 import useResizeAware from 'react-resize-aware'
@@ -66,8 +67,7 @@ export const stepProps = Object.freeze({
   },
 })
 
-export const transform = ({ job_parameters, dag_tasks = [] }) => {
-  console.log(job_parameters, dag_tasks)
+export const transform = ({ job_parameters, dag_tasks = [], width, height }) => {
   const { steps = [] } = job_parameters || {}
 
   const nodes = []
@@ -176,6 +176,8 @@ export const transform = ({ job_parameters, dag_tasks = [] }) => {
     ranksep: 10,
     acyclicer: 'greedy',
     ranker: 'longest-path',
+    width,
+    height,
   })
   g.setDefaultEdgeLabel(() => ({}))
   for (let node of nodes) {
@@ -188,9 +190,10 @@ export const transform = ({ job_parameters, dag_tasks = [] }) => {
   dagre.layout(g)
 
   for (let node of nodes) {
+    const n = g.node(node.id)
     node.position = {
-      x: g.node(node.id).x - 225 / 2,
-      y: g.node(node.id).y - 100 / 2,
+      x: n.x - n.width / 2,
+      y: n.y - n.height / 2,
     }
   }
 
@@ -198,28 +201,13 @@ export const transform = ({ job_parameters, dag_tasks = [] }) => {
 }
 
 const Flow = ({ data, config }) => {
-  //debugger;
   const [resizeListner, { width, height }] = useResizeAware()
-  //returns inner width and height
   const elements = transform({ ...data, width, height })
-  // assign [data(JSON), id, position(x,y)]
+
   return (
     <div style={{ width: 'inherit', height: 'inherit' }}>
       {resizeListner}
-      <ReactFlow
-        {...{
-          // elementsSelectable: false,
-          // nodesConnectable: false,
-          // nodesDraggable: false,
-          // zoomOnScroll: false,
-          // zoomOnDoubleClick: false,
-          // paneMoveable: false,
-          onLoad,
-          nodeTypes,
-          ...config,
-        }}
-        elements={elements}
-      >
+      <ReactFlow {...{ onLoad, nodeTypes, ...config }} elements={elements}>
         <Controls />
       </ReactFlow>
     </div>

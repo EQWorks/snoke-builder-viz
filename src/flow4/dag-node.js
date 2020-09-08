@@ -53,21 +53,17 @@ export const NodeContent = styled.div`
   ${({ state }) => getStateStyle(state)};
 `
 
-const DAGNode = ({ data }) => {
-  const { display, level, dag = {} } = data
-  //console.log(data);
-  return (
-    <>
-      {level !== 0 && (<Handle type='target' position='left' />)}
-      <NodeContent state={dag.state}>
-        <div>{display}</div>
-        {dag.state && (<div>State: {dag.state}</div>)}
-        {dag.duration && (<div>Run time: {humanTime(dag.duration)}</div>)}
-      </NodeContent>
-      {level !== 3 && (<Handle type='source' position='right' />)}
-    </>
-  )
-}
+const DAGNode = ({ data: { display, level, dag = {} } }) => (
+  <>
+    {level !== 0 && (<Handle type='target' position='left' />)}
+    <NodeContent state={dag.state}>
+      <div>{display}</div>
+      {dag.state && (<div>State: {dag.state}</div>)}
+      {dag.duration && (<div>Run time: {humanTime(dag.duration)}</div>)}
+    </NodeContent>
+    {level !== 3 && (<Handle type='source' position='right' />)}
+  </>
+)
 
 DAGNode.propTypes = { data: PropTypes.object.isRequired }
 
