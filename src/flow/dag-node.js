@@ -44,9 +44,9 @@ const getStateStyle = (state) => ({
 `)
 
 export const NodeContent = styled.div`
-  max-width: 200;
-  max-height: 100;
-  overflow: auth;
+  width: 200;
+  height: 100;
+  overflow: auto;
   padding: 0.5em;
   font-size: 1rem;
 
