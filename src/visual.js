@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import { Graph } from 'react-d3-graph'
 import useResizeAware from 'react-resize-aware'
 import uuid from 'uuid/v4'
-// import DAGRE from 'dagre'
 
 
 // transforms pipeline job steps into graph nodes and links

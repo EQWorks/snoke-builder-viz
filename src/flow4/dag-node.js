@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import styled, { css } from 'styled-components'
+import { Handle } from 'react-flow-renderer'
 
 
 const humanTime = (seconds) => {
@@ -25,45 +26,45 @@ const humanTime = (seconds) => {
   return parts.join(' ')
 }
 
-const stateCSS = {
+const getStateStyle = (state) => ({
   failed: css`
-    border: 3px solid #d3401b;
+    border: 1px solid #d3401b;
   `,
   success: css`
-    border: 3px solid #77d31b;
+    border: 1px solid #77d31b;
   `,
   running: css`
-    border: 3px solid #d3d31b;
+    border: 1px solid #d3d31b;
   `,
   skipped: css`
-    border: 3px solid #474544;
+    border: 1px dashed #474544;
   `,
-}
+}[state] || css`
+  border: 1px dashed #ccc;
+`)
 
-const Wrapper = styled.div`
+export const NodeContent = styled.div`
+  max-width: 200;
+  max-height: 100;
+  overflow: auth;
   padding: 0.5em;
+  font-size: 1rem;
 
-  ${({ state }) => stateCSS[state]}
+  ${({ state }) => getStateStyle(state)};
 `
 
-const NodeInner = ({ node }) => {
-  if (!node) {
-    return null
-  }
-
-  const { properties } = node
-  const { dag = {} } = properties
-
-  return (
-    <Wrapper state={dag.state}>
-      <strong>{node.type}</strong>
+const DAGNode = ({ data: { display, level, dag = {} } }) => (
+  <>
+    {level !== 0 && (<Handle type='target' position='left' />)}
+    <NodeContent state={dag.state}>
+      <div>{display}</div>
       {dag.state && (<div>State: {dag.state}</div>)}
       {dag.duration && (<div>Run time: {humanTime(dag.duration)}</div>)}
-    </Wrapper>
-  )
-}
+    </NodeContent>
+    {level !== 3 && (<Handle type='source' position='right' />)}
+  </>
+)
 
-NodeInner.propTypes = { node: PropTypes.object }
-NodeInner.PropTypes = { node: null }
+DAGNode.propTypes = { data: PropTypes.object.isRequired }
 
-export default NodeInner
+export default DAGNode

@@ -1,16 +1,13 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 
 import ReactFlow, { Controls } from 'react-flow-renderer'
-import dagre from 'dagre'
 import useResizeAware from 'react-resize-aware'
 
 import DAGNode from './dag-node'
 
 
 const nodeTypes = { DAGNode }
-
-const onLoad = (flow) => flow.fitView()
 
 export const stepProps = Object.freeze({
   audience_build_wi: {
@@ -67,25 +64,46 @@ export const stepProps = Object.freeze({
   },
 })
 
+const findSourceTarget = (links) => (acc, node) => {
+  const { id } = node
+  let currentSource = []
+  let currentTarget = []
+  links.forEach((link) => {
+    if (link.source === id) {
+      const index = parseInt(link.target.charAt(0))
+      currentTarget.push(index - 1)
+      // index - 1 because the numbering starts from 1
+    }
+    if (link.target === id) {
+      const index = parseInt(link.source.charAt(0))
+      currentSource.push(index - 1)
+    }
+  })
+  acc.push({ id: id, sourceList: currentSource, targetList: currentTarget })
+  return acc
+}
+
 export const transform = ({ job_parameters, dag_tasks = [], width, height }) => {
   const { steps = [] } = job_parameters || {}
-
   const nodes = []
   const links = []
+
   // stateful helper functions
   function buildLink(target, src) {
-    const { id: source } = nodes.find(n => n.data.parameters.audience_id === src) || {}
+    const { id: source } =
+      nodes.find((n) => n.data.parameters.audience_id === src) || {}
     if (source == null) {
       return
     }
     if (source === target) {
       return
     }
-    if (links.find(l => l.source === source && l.target === target)) {
+    if (links.find((l) => l.source === source && l.target === target)) {
       return
     }
     links.push({
       id: `${source}-${target}`,
+      type: 'link',
       source,
       target,
       animated: true,
@@ -97,14 +115,18 @@ export const transform = ({ job_parameters, dag_tasks = [], width, height }) => 
     })
   }
   function buildReportLink(target, src) {
-    const { id: source } = nodes.find(n => n.data.name.startsWith('report_') && n.data.parameters.report === src) || {}
+    const { id: source } =
+      nodes.find(
+        (n) =>
+          n.data.name.startsWith('report_') && n.data.parameters.report === src,
+      ) || {}
     if (source == null) {
       return
     }
     if (source === target) {
       return
     }
-    if (links.find(l => l.source === source && l.target === target)) {
+    if (links.find((l) => l.source === source && l.target === target)) {
       return
     }
     links.push({
@@ -117,7 +139,7 @@ export const transform = ({ job_parameters, dag_tasks = [], width, height }) => 
 
   steps.forEach((step, i) => {
     const props = stepProps[step.name]
-    const id = `${step.i || (i + 1)}.${step.name}`
+    const id = `${step.i || i+1}.${step.name}`
     const p = step.parameters
     nodes.push({
       id,
@@ -125,8 +147,9 @@ export const transform = ({ job_parameters, dag_tasks = [], width, height }) => 
       data: {
         ...step,
         display: `${props.name}${p.period ? ` - ${p.period}` : ''}`,
-        dag: dag_tasks.find(d => d.task_id === id),
+        dag: dag_tasks.find((d) => d.task_id === id),
       },
+      level: props.level,
     })
     // build links
     const {
@@ -159,55 +182,97 @@ export const transform = ({ job_parameters, dag_tasks = [], width, height }) => 
     if (step.name === 'cohort_converted_visitors') {
       buildLinks(id, [visit_audience, beacon_audience])
     }
-    if (['propensity', 'cohort_repeat_visits', 'cohort_converted_visitors'].includes(step.name)) {
+    if (
+      [
+        'propensity',
+        'cohort_repeat_visits',
+        'cohort_converted_visitors',
+      ].includes(step.name)
+    ) {
       buildReportLink(id, report)
     }
   })
 
-  // dagre layout
-  const g = new dagre.graphlib.Graph()
-  g.setGraph({
-    marginx: 0,
-    marginy: 0,
-    rankdir: 'LR',
-    align: 'UL',
-    nodesep: 25,
-    edgesep: 10,
-    ranksep: 10,
-    acyclicer: 'greedy',
-    ranker: 'longest-path',
-    width,
-    height,
+  // number of levels for nodes
+  const nodesArray = new Array(4).fill(null).map(() => [])
+  const basePosition = []
+  // generate 2D array
+  const sourceTargetList = nodes.reduce(findSourceTarget(links), [])
+  // create source-target list per each node. order + length are same as nodes
+
+  nodes.forEach(({ level, id }) => {
+    basePosition.push({ x: level, y: nodesArray[level].length })
+    nodesArray[level].push(id)
   })
-  g.setDefaultEdgeLabel(() => ({}))
-  for (let node of nodes) {
-    // TODO: pre-determine node dimensions
-    g.setNode(node.id, { width: 225, height: 100 })
-  }
-  for (let link of links) {
-    g.setEdge(link.source, link.target)
-  }
-  dagre.layout(g)
 
-  for (let node of nodes) {
-    const n = g.node(node.id)
-    node.position = {
-      x: n.x - n.width / 2,
-      y: n.y - n.height / 2,
+  const maxCount = { x: 0, y: 0 }
+
+  maxCount.x = nodesArray.length - 1
+
+  maxCount.y = nodesArray.reduce((acc, val) => {
+    const length = val.length - 1
+    return acc < length ? length : acc
+  }, 0)
+
+  const baseWidth = width / (maxCount.x + 1)
+  const baseHeight = height / (maxCount.y + 1)
+  let nodePositions = [...basePosition]
+  const newNodes = nodes.map((element, index) => {
+    const currentX = basePosition[index].x
+    const currentY = basePosition[index].y
+    const { sourceList } = sourceTargetList[index]
+    if(sourceList.length > 0) {
+      let num = 0
+
+      sourceList.forEach((src) => (num += basePosition[src].y))
+
+      const adjustedY = num / sourceList.length
+
+      const isTaken = nodePositions.some(
+        (element) =>
+          (element.x === currentX && element.y === adjustedY),
+      )
+      if(isTaken) {
+        nodePositions.push({ x: currentX, y: currentY })
+
+      }
+      else {
+        nodePositions.push({ x: currentX, y: adjustedY })
+        basePosition[index].y = adjustedY
+      }
     }
-  }
+    else {
+      nodePositions.push({ x: currentX, y: currentY })
+    }
 
-  return [...nodes, ...links]
+    return {
+      ...element,
+      position: {
+        x: nodePositions[index].x * baseWidth,
+        y: nodePositions[index].y * baseHeight,
+      },
+      sourceList: sourceTargetList[index].source,
+      targetList: sourceTargetList[index].target,
+    }
+  })
+
+  return [...newNodes, ...links]
 }
 
 const Flow = ({ data, config }) => {
   const [resizeListner, { width, height }] = useResizeAware()
-  const elements = transform({ ...data, width, height })
+  const [elements, setElements] = useState([])
+
+  useEffect(() => {
+    if (width !== null && height !== null) {
+      setElements(transform({ ...data, width, height }))
+    }
+  }, [width, height])
 
   return (
     <div style={{ width: 'inherit', height: 'inherit' }}>
       {resizeListner}
-      <ReactFlow {...{ onLoad, nodeTypes, ...config }} elements={elements}>
+      <ReactFlow {...{ nodeTypes, ...config }} elements={elements}>
         <Controls />
       </ReactFlow>
     </div>

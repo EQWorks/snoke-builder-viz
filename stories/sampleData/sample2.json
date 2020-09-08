@@ -1,0 +1,611 @@
+{
+    "id": 3328,
+    "aws_id": "5eb1b20bbbb64a829b78a3b1c8992acc",
+    "job_name": "Demo-Walmart-2020",
+    "job_type": "xwi,xd,aoi",
+    "job_parameters": {
+        "steps": [
+            {
+                "name": "audience_build_wi",
+                "parameters": {
+                    "audience_id": 1907,
+                    "poi_list": 2365,
+                    "type": "wi",
+                    "data_sources": "eq-reqdata,eq-sds,eq-sdr,eq-sdko",
+                    "start": "2020010100",
+                    "end": "2020013123",
+                    "whitelabel": 608,
+                    "customer": 16100,
+                    "poi_file": "608_16100_2365@poi"
+                },
+                "price": {
+                    "base": 1050,
+                    "mult": 1
+                }
+            },
+            {
+                "name": "audience_enrich_aoi",
+                "parameters": {
+                    "audience_id": 1908,
+                    "ori_audience": 1907,
+                    "type": "wi,aoi",
+                    "start": "2020010100",
+                    "end": "2020013123",
+                    "whitelabel": 608,
+                    "customer": 16100,
+                    "poi_list": 2365
+                },
+                "price": {
+                    "base": 1050,
+                    "mult": 1
+                }
+            },
+            {
+                "name": "audience_enrich_xd",
+                "parameters": {
+                    "audience_id": 1909,
+                    "ori_audience": 1908,
+                    "type": "wi,xd,aoi",
+                    "start": "2020010100",
+                    "end": "2020013123",
+                    "whitelabel": 608,
+                    "customer": 16100
+                },
+                "price": {
+                    "base": 300,
+                    "mult": 1
+                }
+            },
+            {
+                "name": "audience_build_wi",
+                "parameters": {
+                    "audience_id": 1910,
+                    "poi_list": 2366,
+                    "type": "wi",
+                    "data_sources": "eq-reqdata,eq-sds,eq-sdr,eq-sdko",
+                    "start": "2020010100",
+                    "end": "2020013123",
+                    "whitelabel": 608,
+                    "customer": 16100,
+                    "poi_file": "608_16100_2366@poi"
+                },
+                "price": {
+                    "base": 1050,
+                    "mult": 1
+                }
+            },
+            {
+                "name": "audience_enrich_aoi",
+                "parameters": {
+                    "audience_id": 1911,
+                    "ori_audience": 1910,
+                    "type": "wi,aoi",
+                    "start": "2020010100",
+                    "end": "2020013123",
+                    "whitelabel": 608,
+                    "customer": 16100,
+                    "poi_list": 2366
+                },
+                "price": {
+                    "base": 1050,
+                    "mult": 1
+                }
+            },
+            {
+                "name": "audience_enrich_xd",
+                "parameters": {
+                    "audience_id": 1912,
+                    "ori_audience": 1911,
+                    "type": "wi,xd,aoi",
+                    "start": "2020010100",
+                    "end": "2020013123",
+                    "whitelabel": 608,
+                    "customer": 16100
+                },
+                "price": {
+                    "base": 300,
+                    "mult": 1
+                }
+            },
+            {
+                "name": "audience_intersect_xwi",
+                "parameters": {
+                    "audience_id": 1913,
+                    "pri_audience": 1909,
+                    "sec_audience": 1912,
+                    "type": "xwi,xd,aoi",
+                    "intersect_type": "visit::xwi",
+                    "start": "2020010100",
+                    "end": "2020013123",
+                    "whitelabel": 608,
+                    "customer": 16100
+                },
+                "price": {
+                    "base": 1050,
+                    "mult": 1
+                }
+            },
+            {
+                "name": "segment",
+                "parameters": {
+                    "audience_id": 1909,
+                    "level": 3,
+                    "type": "wi,xd,aoi",
+                    "frequency_filter": "gte_1",
+                    "job_segment_display": "608 16100 2365",
+                    "start": "2020-01-01T00:00:00.000Z",
+                    "end": "2020-01-31T23:00:00.000Z",
+                    "whitelabel": 608,
+                    "customer": 16100
+                },
+                "price": {
+                    "base": 750,
+                    "mult": 1,
+                    "add": 75
+                }
+            },
+            {
+                "name": "report_xwi",
+                "parameters": {
+                    "report": 2163,
+                    "walkin_audid": 1909,
+                    "cross_walkin_audid": 1913,
+                    "period": "weekly",
+                    "type": "xwi,xd,aoi",
+                    "xd": 1,
+                    "start": "2020-01-01T00:00:00.000Z",
+                    "end": "2020-01-31T23:00:00.000Z",
+                    "whitelabel": 608,
+                    "customer": 16100,
+                    "aoi": 1
+                },
+                "price": {
+                    "base": 450,
+                    "mult": 1,
+                    "add": 450
+                }
+            },
+            {
+                "name": "report_xwi",
+                "parameters": {
+                    "report": 2163,
+                    "walkin_audid": 1909,
+                    "cross_walkin_audid": 1913,
+                    "period": "monthly",
+                    "type": "xwi,xd,aoi",
+                    "xd": 1,
+                    "start": "2020-01-01T00:00:00.000Z",
+                    "end": "2020-01-31T23:00:00.000Z",
+                    "whitelabel": 608,
+                    "customer": 16100,
+                    "aoi": 1
+                },
+                "price": {
+                    "base": 135,
+                    "mult": 1,
+                    "add": 135
+                }
+            },
+            {
+                "name": "cohort_repeat_visits",
+                "parameters": {
+                    "report": 2163,
+                    "visit_audience": 1909,
+                    "start": "20200101",
+                    "end": "20200131",
+                    "whitelabel": 608,
+                    "customer": 16100
+                },
+                "price": {
+                    "base": 450,
+                    "mult": 1
+                }
+            },
+            {
+                "name": "propensity",
+                "parameters": {
+                    "report": 2163,
+                    "propensity_density": "fsa,postalcode,da,ct",
+                    "audience_id": 1909,
+                    "propensity_level": 0,
+                    "start": "2020-01-01T00:00:00.000Z",
+                    "end": "2020-01-31T23:00:00.000Z",
+                    "whitelabel": 608,
+                    "customer": 16100
+                },
+                "price": {
+                    "base": 450,
+                    "mult": 4
+                }
+            }
+        ],
+        "parameters": {
+            "job_name": "Demo-Walmart-2020",
+            "job_io": "2020-80005",
+            "job_description": "",
+            "job_website": "",
+            "whitelabel": 608,
+            "customer": 16100,
+            "job_type": "xwi,xd,aoi",
+            "job_ver": "v3.5",
+            "job_origin": "ui",
+            "schedule_frequency": "once",
+            "schedule_start": "2020-06-15T00:00:00.000Z",
+            "schedule_end": "2020-06-16T00:00:00.000Z",
+            "start_date": "2020-01-01T00:00:00.000Z",
+            "end_date": "2020-01-31T23:00:00.000Z"
+        }
+    },
+    "schedule_start": "2020-06-15T00:00:00.000Z",
+    "schedule_end": "2020-06-16T00:00:00.000Z",
+    "schedule_frequency": "once",
+    "creation_time": "2020-06-15T13:44:40.928Z",
+    "time_used": 19,
+    "time_need": 0,
+    "update_time_previous": null,
+    "update_time_next": null,
+    "whitelabel": 608,
+    "stage": null,
+    "results": {
+        "segments": [
+            {
+                "id": 138611,
+                "name": "608 16100 2365",
+                "unique_user": 104822
+            }
+        ]
+    },
+    "status": "FINISHED",
+    "push_seg_status": null,
+    "financial_approve_user": "benjamun.ng@eqworks.com",
+    "financial_approve_time": "2020-06-15T15:16:41.840Z",
+    "financial_approve_status": true,
+    "dataops_approve_user": "dhruv.thapar@eqworks.com",
+    "dataops_approve_time": "2020-06-15T13:44:59.848Z",
+    "dataops_approve_status": true,
+    "author": "dhruv.thapar@eqworks.com",
+    "whitelabel_name": "demo",
+    "customer_name": "Retail",
+    "customer": 16100,
+    "logs": [
+        {
+            "id": 1983,
+            "aws_id": "5eb1b20bbbb64a829b78a3b1c8992acc",
+            "details": {
+                "price": {
+                    "run": {},
+                    "steps": [
+                        {
+                            "name": "audience_build_wi",
+                            "price": {
+                                "base": 1050,
+                                "mult": 1
+                            }
+                        },
+                        {
+                            "name": "audience_enrich_aoi",
+                            "price": {
+                                "base": 1050,
+                                "mult": 1
+                            }
+                        },
+                        {
+                            "name": "audience_enrich_xd",
+                            "price": {
+                                "base": 300,
+                                "mult": 1
+                            }
+                        },
+                        {
+                            "name": "audience_build_wi",
+                            "price": {
+                                "base": 1050,
+                                "mult": 1
+                            }
+                        },
+                        {
+                            "name": "audience_enrich_aoi",
+                            "price": {
+                                "base": 1050,
+                                "mult": 1
+                            }
+                        },
+                        {
+                            "name": "audience_enrich_xd",
+                            "price": {
+                                "base": 300,
+                                "mult": 1
+                            }
+                        },
+                        {
+                            "name": "audience_intersect_xwi",
+                            "price": {
+                                "base": 1050,
+                                "mult": 1
+                            }
+                        },
+                        {
+                            "name": "segment",
+                            "price": {
+                                "add": 75,
+                                "base": 750,
+                                "mult": 1
+                            }
+                        },
+                        {
+                            "name": "report_xwi",
+                            "price": {
+                                "add": 450,
+                                "base": 450,
+                                "mult": 1
+                            }
+                        },
+                        {
+                            "name": "report_xwi",
+                            "price": {
+                                "add": 135,
+                                "base": 135,
+                                "mult": 1
+                            }
+                        },
+                        {
+                            "name": "cohort_repeat_visits",
+                            "price": {
+                                "base": 450,
+                                "mult": 1
+                            }
+                        },
+                        {
+                            "name": "propensity",
+                            "price": {
+                                "base": 450,
+                                "mult": 4
+                            }
+                        }
+                    ],
+                    "total": {
+                        "type": "steps",
+                        "amount": 10095
+                    }
+                }
+            },
+            "run_time": "2020-06-15T13:44:00",
+            "unit_type": 1,
+            "final_cost": 10095,
+            "unit_count": 12
+        }
+    ],
+    "report_id": 2163,
+    "report_name": "Demo-Walmart-2020",
+    "map_id": 1504,
+    "poi_list_id": 2365,
+    "poi_list_name": "Walmart-Toronto-GTA",
+    "customer_id": 16100,
+    "whitelabel_id": 608,
+    "dag_tasks": [
+        {
+            "task_id": "4.audience_build_wi",
+            "start_date": "2020-06-15T15:16:48.194374+00:00",
+            "end_date": "2020-06-16T11:55:33.72456+00:00",
+            "duration": 74325.530186,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 965,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 6,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-06-15T15:16:46.017128+00:00",
+            "pid": 594,
+            "max_tries": 1
+        },
+        {
+            "task_id": "7.audience_intersect_xwi",
+            "start_date": "2020-07-08T16:00:16.453553+00:00",
+            "end_date": "2020-07-08T16:09:27.977495+00:00",
+            "duration": 551.523942,
+            "state": "success",
+            "try_number": 2,
+            "job_id": 1574,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 3,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-07-08T16:00:14.602447+00:00",
+            "pid": 1559,
+            "max_tries": 2
+        },
+        {
+            "task_id": "1.audience_build_wi",
+            "start_date": "2020-06-15T15:16:47.688746+00:00",
+            "end_date": "2020-06-16T12:19:24.450445+00:00",
+            "duration": 75756.761699,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 964,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 11,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-06-15T15:16:46.017154+00:00",
+            "pid": 574,
+            "max_tries": 1
+        },
+        {
+            "task_id": "12.propensity",
+            "start_date": "2020-07-09T15:30:33.828016+00:00",
+            "end_date": "2020-07-09T15:44:53.198609+00:00",
+            "duration": 859.370593,
+            "state": "success",
+            "try_number": 6,
+            "job_id": 1605,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 1,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-07-09T15:44:48.970794+00:00",
+            "pid": 2253,
+            "max_tries": 6
+        },
+        {
+            "task_id": "5.audience_enrich_aoi",
+            "start_date": "2020-06-16T11:55:39.054249+00:00",
+            "end_date": "2020-06-16T12:39:57.025907+00:00",
+            "duration": 2657.971658,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 977,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 5,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-06-16T11:55:37.339031+00:00",
+            "pid": 450,
+            "max_tries": 1
+        },
+        {
+            "task_id": "6.audience_enrich_xd",
+            "start_date": "2020-06-16T12:40:01.039596+00:00",
+            "end_date": "2020-06-16T12:54:44.162548+00:00",
+            "duration": 883.122952,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 979,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 4,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-06-16T12:39:59.313957+00:00",
+            "pid": 601,
+            "max_tries": 1
+        },
+        {
+            "task_id": "2.audience_enrich_aoi",
+            "start_date": "2020-06-16T12:19:28.934272+00:00",
+            "end_date": "2020-06-16T13:20:50.855412+00:00",
+            "duration": 3681.92114,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 978,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 10,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-06-16T12:19:26.853991+00:00",
+            "pid": 386,
+            "max_tries": 1
+        },
+        {
+            "task_id": "3.audience_enrich_xd",
+            "start_date": "2020-06-16T13:20:56.308818+00:00",
+            "end_date": "2020-06-16T13:38:10.116024+00:00",
+            "duration": 1033.807206,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 980,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 9,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-06-16T13:20:54.051875+00:00",
+            "pid": 614,
+            "max_tries": 1
+        },
+        {
+            "task_id": "10.report_xwi",
+            "start_date": "2020-07-08T16:09:35.386803+00:00",
+            "end_date": "2020-07-08T16:18:46.404182+00:00",
+            "duration": 551.017379,
+            "state": "success",
+            "try_number": 2,
+            "job_id": 1578,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 3,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-07-08T16:09:33.112665+00:00",
+            "pid": 1907,
+            "max_tries": 2
+        },
+        {
+            "task_id": "failed_dag_task",
+            "start_date": "2020-07-08T16:19:45.416644+00:00",
+            "end_date": "2020-07-08T16:19:45.701748+00:00",
+            "duration": 0.285104,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 1579,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 1,
+            "operator": "PythonOperator",
+            "queued_dttm": "2020-07-08T16:19:43.60191+00:00",
+            "pid": 914,
+            "max_tries": 1
+        },
+        {
+            "task_id": "11.cohort_repeat_visits",
+            "start_date": "2020-07-08T16:05:25.378172+00:00",
+            "end_date": "2020-07-08T16:20:07.670882+00:00",
+            "duration": 882.29271,
+            "state": "success",
+            "try_number": 2,
+            "job_id": 1576,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 1,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-07-08T16:05:23.229247+00:00",
+            "pid": 2218,
+            "max_tries": 2
+        },
+        {
+            "task_id": "9.report_xwi",
+            "start_date": "2020-07-08T16:09:34.762574+00:00",
+            "end_date": "2020-07-08T16:24:47.964733+00:00",
+            "duration": 913.202159,
+            "state": "success",
+            "try_number": 2,
+            "job_id": 1577,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 5,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-07-08T16:09:33.112633+00:00",
+            "pid": 1843,
+            "max_tries": 2
+        },
+        {
+            "task_id": "8.segment",
+            "start_date": "2020-06-16T13:38:16.463026+00:00",
+            "end_date": "2020-06-16T13:54:05.453904+00:00",
+            "duration": 948.990878,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 986,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 3,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-06-16T13:38:13.345857+00:00",
+            "pid": 393,
+            "max_tries": 1
+        },
+        {
+            "task_id": "successful_dag_task",
+            "start_date": "2020-07-08T16:14:37.539415+00:00",
+            "end_date": "2020-07-08T16:14:37.539425+00:00",
+            "duration": 0.395319,
+            "state": "success",
+            "try_number": 5,
+            "job_id": 1090,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 1,
+            "operator": "PythonOperator",
+            "queued_dttm": "2020-06-23T16:05:00.085412+00:00",
+            "pid": 803,
+            "max_tries": 6
+        }
+    ]
+}

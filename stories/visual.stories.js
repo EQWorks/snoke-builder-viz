@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Visual } from '../src'
-import sample from './sample'
+import sample from './sampleData/sample.json'
 
 
 export default {

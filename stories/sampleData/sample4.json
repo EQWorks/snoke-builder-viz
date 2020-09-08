@@ -1,0 +1,242 @@
+{
+    "id": 3674,
+    "aws_id": "a11d6dddbb0e4bcba693704cbabfa6c6",
+    "job_name": "Federated Cooperatives LTD - Win Your Fill - Own Locations - June 1 to 30 - 8382",
+    "job_type": "wi,xd",
+    "job_parameters": {
+        "steps": [
+            {
+                "name": "audience_build_wi",
+                "parameters": {
+                    "audience_id": 2152,
+                    "poi_list": 2116,
+                    "type": "wi",
+                    "data_sources": "eq-reqdata,eq-sds,eq-sdr,eq-sdko",
+                    "start": "2020060100",
+                    "end": "2020063023",
+                    "whitelabel": 8,
+                    "customer": 13581,
+                    "poi_file": "8_13581_2116@poi"
+                },
+                "price": {
+                    "base": 1050,
+                    "mult": 1
+                }
+            },
+            {
+                "name": "audience_enrich_xd",
+                "parameters": {
+                    "audience_id": 2153,
+                    "ori_audience": 2152,
+                    "type": "wi,xd",
+                    "start": "2020060100",
+                    "end": "2020063023",
+                    "whitelabel": 8,
+                    "customer": 13581
+                },
+                "price": {
+                    "base": 300,
+                    "mult": 1
+                }
+            },
+            {
+                "name": "segment",
+                "parameters": {
+                    "audience_id": 2153,
+                    "level": 1,
+                    "type": "wi,xd",
+                    "frequency_filter": "gte_1",
+                    "job_segment_display": "FCL Own Locations - Win Your Fill - June 2020",
+                    "start": "2020-06-01T00:00:00.000Z",
+                    "end": "2020-06-30T23:00:00.000Z",
+                    "whitelabel": 8,
+                    "customer": 13581
+                },
+                "price": {
+                    "base": 300,
+                    "mult": 1,
+                    "add": 75
+                }
+            }
+        ],
+        "parameters": {
+            "job_name": "Federated Cooperatives LTD - Win Your Fill - Own Locations - June 1 to 30 - 8382",
+            "job_io": "8382",
+            "job_description": "",
+            "job_website": "",
+            "whitelabel": 8,
+            "customer": 13581,
+            "job_type": "wi,xd",
+            "job_ver": "v3.5",
+            "job_origin": "ui",
+            "schedule_frequency": "once",
+            "schedule_start": "2020-07-10T00:00:00.000Z",
+            "schedule_end": "2020-07-11T00:00:00.000Z",
+            "start_date": "2020-06-01T00:00:00.000Z",
+            "end_date": "2020-06-30T23:00:00.000Z"
+        }
+    },
+    "schedule_start": "2020-07-10T00:00:00.000Z",
+    "schedule_end": "2020-07-11T00:00:00.000Z",
+    "schedule_frequency": "once",
+    "creation_time": "2020-07-10T16:49:17.819Z",
+    "time_used": 1186,
+    "time_need": 0,
+    "update_time_previous": null,
+    "update_time_next": null,
+    "whitelabel": 8,
+    "stage": null,
+    "results": {
+        "segments": [
+            {
+                "id": 140436,
+                "name": "FCL Own Locations - Win Your Fill - June 2020",
+                "unique_user": 111034
+            }
+        ]
+    },
+    "status": "FINISHED",
+    "push_seg_status": null,
+    "financial_approve_user": "benjamun.ng@eqworks.com",
+    "financial_approve_time": "2020-07-10T20:45:58.787Z",
+    "financial_approve_status": true,
+    "dataops_approve_user": "dhruv.thapar@eqworks.com",
+    "dataops_approve_time": "2020-07-10T20:45:31.525Z",
+    "dataops_approve_status": true,
+    "author": "ben.goliath@f-media.ca",
+    "whitelabel_name": "FreeMedia",
+    "customer_name": "FCL",
+    "customer": 13581,
+    "logs": [
+        {
+            "id": 2272,
+            "aws_id": "a11d6dddbb0e4bcba693704cbabfa6c6",
+            "details": {
+                "price": {
+                    "run": {},
+                    "steps": [
+                        {
+                            "name": "audience_build_wi",
+                            "price": {
+                                "base": 1050,
+                                "mult": 1
+                            }
+                        },
+                        {
+                            "name": "audience_enrich_xd",
+                            "price": {
+                                "base": 300,
+                                "mult": 1
+                            }
+                        },
+                        {
+                            "name": "segment",
+                            "price": {
+                                "add": 75,
+                                "base": 300,
+                                "mult": 1
+                            }
+                        }
+                    ],
+                    "total": {
+                        "type": "steps",
+                        "amount": 1725
+                    }
+                }
+            },
+            "run_time": "2020-07-10T16:49:00",
+            "unit_type": 1,
+            "final_cost": 1725,
+            "unit_count": 3
+        }
+    ],
+    "report_id": null,
+    "report_name": null,
+    "map_id": null,
+    "poi_list_id": 2116,
+    "poi_list_name": "FCL Own Locations 2020",
+    "customer_id": 13581,
+    "whitelabel_id": 8,
+    "dag_tasks": [
+        {
+            "task_id": "1.audience_build_wi",
+            "start_date": "2020-07-10T20:51:09.460877+00:00",
+            "end_date": "2020-07-11T15:59:17.946406+00:00",
+            "duration": 68888.485529,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 1625,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 5,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-07-10T20:51:07.220315+00:00",
+            "pid": 1997,
+            "max_tries": 1
+        },
+        {
+            "task_id": "3.segment",
+            "start_date": "2020-07-11T16:15:44.246678+00:00",
+            "end_date": "2020-07-11T16:32:57.348229+00:00",
+            "duration": 1033.101551,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 1651,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 3,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-07-11T16:15:42.384794+00:00",
+            "pid": 2039,
+            "max_tries": 1
+        },
+        {
+            "task_id": "failed_dag_task",
+            "start_date": "2020-07-11T16:32:58.544563+00:00",
+            "end_date": "2020-07-11T16:32:58.544572+00:00",
+            "duration": null,
+            "state": "skipped",
+            "try_number": 0,
+            "job_id": null,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 1,
+            "operator": null,
+            "queued_dttm": null,
+            "pid": null,
+            "max_tries": 1
+        },
+        {
+            "task_id": "2.audience_enrich_xd",
+            "start_date": "2020-07-11T16:04:29.112063+00:00",
+            "end_date": "2020-07-11T16:15:40.702124+00:00",
+            "duration": 671.590061,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 1649,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 4,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-07-11T16:04:27.432106+00:00",
+            "pid": 1622,
+            "max_tries": 1
+        },
+        {
+            "task_id": "successful_dag_task",
+            "start_date": "2020-07-11T16:33:00.592707+00:00",
+            "end_date": "2020-07-11T16:33:00.93278+00:00",
+            "duration": 0.340073,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 1652,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 1,
+            "operator": "PythonOperator",
+            "queued_dttm": "2020-07-11T16:32:58.868813+00:00",
+            "pid": 2046,
+            "max_tries": 1
+        }
+    ]
+}

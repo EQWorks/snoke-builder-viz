@@ -1,0 +1,203 @@
+{
+    "id": 3537,
+    "aws_id": "8597ac182ee24dc492859d0565440da1",
+    "job_name": "Moby - Data & Media Campaign 2020 - Own Locations - May 1 to May 31",
+    "job_type": "wi",
+    "job_parameters": {
+        "steps": [
+            {
+                "name": "audience_build_wi",
+                "parameters": {
+                    "audience_id": 2042,
+                    "poi_list": 2946,
+                    "type": "wi",
+                    "data_sources": "eq-reqdata,eq-sds,eq-sdr,eq-sdko",
+                    "start": "2020050100",
+                    "end": "2020053023",
+                    "whitelabel": 8,
+                    "customer": 19664,
+                    "poi_file": "8_19664_2946@poi"
+                },
+                "price": {
+                    "base": 1050,
+                    "mult": 1
+                }
+            },
+            {
+                "name": "segment",
+                "parameters": {
+                    "audience_id": 2042,
+                    "level": 1,
+                    "type": "wi",
+                    "frequency_filter": "gte_1",
+                    "job_segment_display": "8 19664 2946",
+                    "start": "2020-05-01T00:00:00.000Z",
+                    "end": "2020-05-30T23:00:00.000Z",
+                    "whitelabel": 8,
+                    "customer": 19664
+                },
+                "price": {
+                    "base": 300,
+                    "mult": 1,
+                    "add": 75
+                }
+            }
+        ],
+        "parameters": {
+            "job_name": "Moby - Data & Media Campaign 2020 - Own Locations - May 1 to May 31",
+            "job_io": "8387",
+            "job_description": "",
+            "job_website": "",
+            "whitelabel": 8,
+            "customer": 19664,
+            "job_type": "wi",
+            "job_ver": "v3.5",
+            "job_origin": "ui",
+            "schedule_frequency": "once",
+            "schedule_start": "2020-06-30T06:00:00",
+            "schedule_end": "2020-06-30T00:00:00.000Z",
+            "start_date": "2020-05-01T00:00:00.000Z",
+            "end_date": "2020-05-30T23:00:00.000Z"
+        }
+    },
+    "schedule_start": "2020-06-30T06:00:00.000Z",
+    "schedule_end": "2020-06-30T00:00:00.000Z",
+    "schedule_frequency": "once",
+    "creation_time": "2020-06-29T19:31:17.992Z",
+    "time_used": 485,
+    "time_need": 0,
+    "update_time_previous": null,
+    "update_time_next": null,
+    "whitelabel": 8,
+    "stage": null,
+    "results": {
+        "segments": [
+            {
+                "id": 139786,
+                "name": "8 19664 2946",
+                "unique_user": 2269
+            }
+        ]
+    },
+    "status": "FINISHED",
+    "push_seg_status": null,
+    "financial_approve_user": "benjamun.ng@eqworks.com",
+    "financial_approve_time": "2020-07-06T18:55:45.584Z",
+    "financial_approve_status": true,
+    "dataops_approve_user": "tom.wainas@eqworks.com",
+    "dataops_approve_time": "2020-07-06T18:03:17.593Z",
+    "dataops_approve_status": true,
+    "author": "brian.chapman@f-media.ca",
+    "whitelabel_name": "FreeMedia",
+    "customer_name": "Moby",
+    "customer": 19664,
+    "logs": [
+        {
+            "id": 2188,
+            "aws_id": "8597ac182ee24dc492859d0565440da1",
+            "details": {
+                "price": {
+                    "run": {},
+                    "steps": [
+                        {
+                            "name": "audience_build_wi",
+                            "price": {
+                                "base": 1050,
+                                "mult": 1
+                            }
+                        },
+                        {
+                            "name": "segment",
+                            "price": {
+                                "add": 75,
+                                "base": 300,
+                                "mult": 1
+                            }
+                        }
+                    ],
+                    "total": {
+                        "type": "steps",
+                        "amount": 1425
+                    }
+                }
+            },
+            "run_time": "2020-06-29T19:31:00",
+            "unit_type": 1,
+            "final_cost": 1425,
+            "unit_count": 2
+        }
+    ],
+    "report_id": null,
+    "report_name": null,
+    "map_id": null,
+    "poi_list_id": 2946,
+    "poi_list_name": "Moby - Own Locations - May 2020",
+    "customer_id": 19664,
+    "whitelabel_id": 8,
+    "dag_tasks": [
+        {
+            "task_id": "1.audience_build_wi",
+            "start_date": "2020-07-06T18:55:51.6123+00:00",
+            "end_date": "2020-07-07T02:41:03.102624+00:00",
+            "duration": 27911.490324,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 1533,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 4,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-07-06T18:55:49.823553+00:00",
+            "pid": 1760,
+            "max_tries": 1
+        },
+        {
+            "task_id": "2.segment",
+            "start_date": "2020-07-07T02:41:07.943289+00:00",
+            "end_date": "2020-07-07T02:51:21.491835+00:00",
+            "duration": 613.548546,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 1550,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 3,
+            "operator": "KubernetesPodOperator",
+            "queued_dttm": "2020-07-07T02:41:05.951862+00:00",
+            "pid": 1873,
+            "max_tries": 1
+        },
+        {
+            "task_id": "failed_dag_task",
+            "start_date": "2020-07-07T02:51:22.700808+00:00",
+            "end_date": "2020-07-07T02:51:22.700817+00:00",
+            "duration": null,
+            "state": "skipped",
+            "try_number": 0,
+            "job_id": null,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 1,
+            "operator": null,
+            "queued_dttm": null,
+            "pid": null,
+            "max_tries": 1
+        },
+        {
+            "task_id": "successful_dag_task",
+            "start_date": "2020-07-07T03:01:36.610355+00:00",
+            "end_date": "2020-07-07T03:01:36.893322+00:00",
+            "duration": 0.282967,
+            "state": "success",
+            "try_number": 1,
+            "job_id": 1551,
+            "pool": "default_pool",
+            "queue": "default",
+            "priority_weight": 1,
+            "operator": "PythonOperator",
+            "queued_dttm": "2020-07-07T03:01:34.98856+00:00",
+            "pid": 886,
+            "max_tries": 1
+        }
+    ]
+}
