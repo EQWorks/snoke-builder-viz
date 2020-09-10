@@ -1,7 +1,7 @@
 {
   "name": "@eqworks/snoke-builder-viz",
   "private": false,
-  "version": "0.3.0-alpha.7",
+  "version": "0.3.0-alpha.8",
   "author": "woozyking <runzhou.li@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -21,10 +21,10 @@
   ],
   "dependencies": {
     "dagre": "^0.8.5",
+    "goober": "^2.0.5",
     "react-d3-graph": "^2.1.0",
     "react-flow-renderer": "^5.1.0",
     "react-resize-aware": "^3.0.1",
-    "styled-components": "^5.1.1",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
@@ -36,6 +36,7 @@
     "@storybook/addon-links": "^5.1.11",
     "@storybook/addons": "^5.1.11",
     "@storybook/react": "^5.1.11",
+    "@storybook/storybook-deployer": "^2.8.6",
     "babel-loader": "^8.0.6",
     "d3": "^5.11.0",
     "eslint": "^6.2.0",
