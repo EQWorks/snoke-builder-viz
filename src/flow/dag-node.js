@@ -16,6 +16,11 @@ export const NodeContent = styled('div')`
   font-size: 0.9rem;
   border-radius: 10px;
   border: solid 1px ${({ selected }) => selected ? '#0075ff' : '#bdbdbd'};
+  transition: background .2s;
+  &:hover {
+    background-color: #e2f3ff;
+    border: solid 1px #8bceff;
+  }
 `
 
 const DAGNode = ({ id, data: { name, sub, level, period, dag = {} } }) => {
