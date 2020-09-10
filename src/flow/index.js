@@ -1,28 +1,46 @@
-import React from 'react'
+import React, { createElement } from 'react'
 import PropTypes from 'prop-types'
 
-import ReactFlow, { Controls } from 'react-flow-renderer'
-import useResizeAware from 'react-resize-aware'
+import { ReactFlowProvider } from 'react-flow-renderer'
+import AutoSizer from 'react-virtualized-auto-sizer'
+import { styled, setup } from 'goober'
 
 import DAGNode from './dag-node'
-import { useElements } from './hooks'
+import Layout from './layout'
+import Panel from './panel'
 
+
+setup(createElement)
 
 export const nodeTypes = { DAGNode }
 
-const Flow = ({ data, config }) => {
-  const [resizeListner, { width, height }] = useResizeAware()
-  const elements = useElements({ data, config, width, height })
+export const Container = styled('div')`
+  width: inherit;
+  height: inherit;
+  display: flex;
+`
 
-  return (
-    <div style={{ width: 'inherit', height: 'inherit' }}>
-      {resizeListner}
-      <ReactFlow {...{ nodeTypes, ...config }} elements={elements}>
-        <Controls />
-      </ReactFlow>
-    </div>
-  )
-}
+export const FlowContainer = styled('div')`
+  flex: 8;
+  height: inherit;
+  margin: auto;
+  padding-left: 1rem;
+`
+
+const Flow = ({ data, config }) => (
+  <Container>
+    <ReactFlowProvider>
+      <Panel />
+      <FlowContainer>
+        <AutoSizer>
+          {({ width, height }) => (
+            <Layout data={data} config={config} width={width} height={height} />
+          )}
+        </AutoSizer>
+      </FlowContainer>
+    </ReactFlowProvider>
+  </Container>
+)
 
 Flow.propTypes = {
   data: PropTypes.object,

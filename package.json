@@ -25,6 +25,7 @@
     "react-d3-graph": "^2.1.0",
     "react-flow-renderer": "^5.1.0",
     "react-resize-aware": "^3.0.1",
+    "react-virtualized-auto-sizer": "^1.0.2",
     "uuid": "^3.3.3"
   },
   "devDependencies": {

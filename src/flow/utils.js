@@ -305,3 +305,5 @@ export const humanTime = (seconds) => {
   }
   return parts.join(' ')
 }
+
+export const calcPrice = ({ base = 0, mult = 1, add = 0 }) => (base * mult) + add
