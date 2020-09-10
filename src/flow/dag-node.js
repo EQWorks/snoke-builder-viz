@@ -13,7 +13,7 @@ export const NodeContent = styled('div')`
   max-width: 275px;
   overflow: auto;
   padding: 1rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
   border-radius: 10px;
   border: solid 1px ${({ selected }) => selected ? '#0075ff' : '#bdbdbd'};
 `

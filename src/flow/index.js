@@ -18,6 +18,7 @@ export const Container = styled('div')`
   width: inherit;
   height: inherit;
   display: flex;
+  font-family: "OpenSans", Helvetica, sans-serif;
 `
 
 export const FlowContainer = styled('div')`

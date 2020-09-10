@@ -19,7 +19,6 @@ export const Container = styled('div')`
 `
 
 export const Title = styled('h3')`
-  font-family: "OpenSans", Helvetica, sans-serif;
   font-size: 1rem;
   font-weight: 600;
   font-stretch: normal;
@@ -29,7 +28,6 @@ export const Title = styled('h3')`
 `
 
 export const Sub = styled('h4')`
-  font-family: "OpenSans", Helvetica, sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
   font-stretch: normal;
