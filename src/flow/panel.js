@@ -1,6 +1,6 @@
-import React, { createElement } from 'react'
+import React, { createElement, useEffect } from 'react'
 
-import { useStoreState } from 'react-flow-renderer'
+import { useStoreState, useStoreActions } from 'react-flow-renderer'
 import { styled, setup } from 'goober'
 
 import { Dot } from './common'
@@ -44,9 +44,27 @@ export const Value = styled('div')`
 
 const Panel = () => {
   const nodes = useStoreState((store) => store.nodes)
+  const edges = useStoreState((store) => store.edges)
   const [{ id: selected } = {}] = useStoreState((store) => store.selectedElements || [])
+  const setElements = useStoreActions((store) => store.setElements)
   const { data = {} } = nodes.find(({ id }) => id === selected) || {}
   const { name, sub, period, price = {}, dag = {} } = data
+
+  useEffect(() => {
+    if (selected) {
+      // find all edges that contains selected in id
+      const match = edges.filter((edge) => edge.id.includes(selected))
+      const unmatch = edges.filter((edge) => !edge.id.includes(selected))
+
+      setElements([
+        ...nodes,
+        ...unmatch.map((edge) => ({ ...edge, style: {} })),
+        ...match.map((edge) => ({ ...edge, style: { stroke: '#0075ff' } })),
+      ])
+    } else {
+      setElements([...nodes, ...edges.map((edge) => ({ ...edge, style: {} }))])
+    }
+  }, [selected])
 
   if (!Object.keys(data).length) {
     return null
