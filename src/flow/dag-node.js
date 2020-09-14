@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Handle, useStoreState } from 'react-flow-renderer'
 import { Dot } from './common'
 import { makeStyles } from '@material-ui/core/styles'
-import { Typography } from '@eqworks/react-labs'
+import Typography from '@eqworks/react-labs/dist/typography'
 import clsx from 'clsx'
 
 const useStyles = makeStyles((theme) => ({

@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import { Dot } from './common'
 import { humanTime, calcPrice } from './utils'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
-import { Grid } from '@material-ui/core'
-import { Typography } from '@eqworks/react-labs'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@eqworks/react-labs/dist/typography'
 
 const useStyles = makeStyles((theme) => ({
   container: ({ width, height, isSelected }) => ({
@@ -20,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
   item: {
     width: '100%',
     display: 'block',
+  },
+  status: {
+    display: 'inline-block', 
+    marginRight: theme.spacing(1),
   },
 }))
 
@@ -67,7 +71,7 @@ const Panel = ({ width, height }) => {
       {dag.state && (
         <Grid item className={classes.item}>
           <Typography variant="subtitle1">Status</Typography>
-          <Typography marginBottom={3} variant="body1" style={{ display: 'inline-block', marginRight: theme.spacing(1) }}>
+          <Typography marginBottom={3} variant="body1" className={classes.status}>
             {dag.state}
           </Typography>
           <Dot state={dag.state}></Dot>

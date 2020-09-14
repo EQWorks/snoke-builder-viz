@@ -4,7 +4,7 @@ import { ReactFlowProvider } from 'react-flow-renderer'
 import DAGNode from './dag-node'
 import Layout from './layout'
 import { ThemeProvider } from '@material-ui/core/styles'
-import { Theme } from '@eqworks/react-labs'
+import Theme from '@eqworks/react-labs/dist/theme'
 import { useWindowDimensions } from './hooks'
 
 export const nodeTypes = { DAGNode }

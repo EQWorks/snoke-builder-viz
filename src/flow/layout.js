@@ -11,7 +11,7 @@ export const nodeTypes = { DAGNode }
 const onLoad = (flow) => {
   flow.fitView()
 }
-//console.log(flow.project);
+
 const Layout = ({ data, config, width, height }) => {
   const panelWidth = width * 0.3
   const elements = useElements({ data, config, width, height })
