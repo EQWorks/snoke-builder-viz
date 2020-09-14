@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: '0 8px 16px 0 rgba(0, 0, 0, 0.25)',
     flexDirection: 'column',
     transition: 'width .6s',
+    flexWrap: 'nowrap',
   }),
   item: {
     width: '100%',
