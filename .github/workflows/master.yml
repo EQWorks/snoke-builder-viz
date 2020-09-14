@@ -1,4 +1,4 @@
-name: Master
+name: Master PR and push
 
 on:
   pull_request:
@@ -9,39 +9,58 @@ on:
       - master
 
 jobs:
-  lint:
+  build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
       - name: Set Node.js version
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12
+          registry-url: https://npm.pkg.github.com/
+          scope: '@eqworks'
 
       - name: Cache Node Modules
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: ${{ runner.OS }}-${{ matrix.node-version }}-build-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.OS }}-${{ matrix.node-version }}-build-${{ env.cache-name }}-
-            ${{ runner.OS }}-${{ matrix.node-version }}-build-
-            ${{ runner.OS }}-${{ matrix.node-version }}-
+            ${{ runner.OS }}-build-${{ env.cache-name }}-
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+
+      - run: yarn install
+      - run: yarn build
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://npm.pkg.github.com/
+          scope: '@eqworks'
+
+      - name: Cache Node Modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ env.cache-name }}-
+            ${{ runner.OS }}-build-
             ${{ runner.OS }}-
 
       - run: yarn install
       - run: yarn lint
 
-  test:
+  depcheck:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -49,46 +68,6 @@ jobs:
       - name: Set Node.js version
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 12
 
-      - name: Cache Node Modules
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-${{ matrix.node-version }}-build-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.OS }}-${{ matrix.node-version }}-build-${{ env.cache-name }}-
-            ${{ runner.OS }}-${{ matrix.node-version }}-build-
-            ${{ runner.OS }}-${{ matrix.node-version }}-
-            ${{ runner.OS }}-
-
-      - run: yarn install
-      - run: yarn test
-
-  build:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Set Node.js version
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Cache Node Modules
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-${{ matrix.node-version }}-build-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.OS }}-${{ matrix.node-version }}-build-${{ env.cache-name }}-
-            ${{ runner.OS }}-${{ matrix.node-version }}-build-
-            ${{ runner.OS }}-${{ matrix.node-version }}-
-            ${{ runner.OS }}-
-
-      - run: yarn install
-      - run: yarn build
+      - run: npx depcheck
