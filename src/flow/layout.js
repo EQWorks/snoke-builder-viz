@@ -7,6 +7,18 @@ import DAGNode from './dag-node'
 import { useElements } from './hooks'
 import Panel from './panel'
 
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  graph: ({width, height}) => ({
+    width: width,
+    height: height,
+  }),
+}))
+
 export const nodeTypes = { DAGNode }
 const onLoad = (flow) => {
   flow.fitView()
@@ -15,9 +27,10 @@ const onLoad = (flow) => {
 const Layout = ({ data, config, width, height }) => {
   const panelWidth = width * 0.3
   const elements = useElements({ data, config, width, height })
-  
+  const classes = useStyles({width, height});
+
   return (
-    <div style={{ display: 'flex' }}>
+    <div className={classes.root}>
       <Panel width={panelWidth} height={height} />
       <div style={{ width, height }}>
         <ReactFlow {...{ onLoad, nodeTypes, ...config }} elements={elements}>
