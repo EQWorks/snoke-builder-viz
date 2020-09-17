@@ -9,11 +9,11 @@ import Panel from './panel'
 
 import { makeStyles } from '@material-ui/core/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
   },
-  graph: ({width, height}) => ({
+  graph: ({ width, height }) => ({
     width: width,
     height: height,
   }),
@@ -27,7 +27,7 @@ const onLoad = (flow) => {
 const Layout = ({ data, config, width, height }) => {
   const panelWidth = width * 0.3
   const elements = useElements({ data, config, width, height })
-  const classes = useStyles({width, height});
+  const classes = useStyles({ width, height })
 
   return (
     <div className={classes.root}>
