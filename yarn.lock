@@ -4351,9 +4351,9 @@ escape-string-regexp@1.0.5, escape-string-regexp@^1.0.2, escape-string-regexp@^1
   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
 
 eslint-plugin-react-hooks@^4.0.8:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-4.1.0.tgz#6323fbd5e650e84b2987ba76370523a60f4e7925"
-  integrity sha512-36zilUcDwDReiORXmcmTc6rRumu9JIM3WjSvV0nclHoUQ0CNrX866EwONvLR/UqaeqFutbAnVu8PEmctdo2SRQ==
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-4.1.2.tgz#2eb53731d11c95826ef7a7272303eabb5c9a271e"
+  integrity sha512-ykUeqkGyUGgwTtk78C0o8UG2fzwmgJ0qxBGPp2WqRKsTwcLuVf01kTDRAtOsd4u6whX2XOC8749n2vPydP82fg==
 
 eslint-plugin-react@^7.14.3:
   version "7.20.6"
@@ -7612,9 +7612,9 @@ react-fast-compare@^3.0.1:
   integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
 
 react-flow-renderer@^5.1.0:
-  version "5.7.1"
-  resolved "https://registry.yarnpkg.com/react-flow-renderer/-/react-flow-renderer-5.7.1.tgz#edaf9a4c4c9ff8e7ecd22109e4f315974adb874e"
-  integrity sha512-mY7xC9E9QipDabsSYB2JrIwTg9PsAH4atqK1hjHH2QZtt9qIGrP0mO66IyV2O4Q3qVXxopOkVFTw3Wu/K4yY1w==
+  version "5.9.3"
+  resolved "https://registry.yarnpkg.com/react-flow-renderer/-/react-flow-renderer-5.9.3.tgz#442974f274f7455ad92533e919955a3d1a735190"
+  integrity sha512-/IEMtpfrAZjrP04vUFETkHCqILNlKuM/dghK+oAxSc7nryIdevKfDSRi5wVu/gWohONRmX6YQpZugYg+r5EjqQ==
   dependencies:
     "@welldone-software/why-did-you-render" "^4.3.1"
     classcat "^4.1.0"
