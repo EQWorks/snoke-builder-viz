@@ -12,17 +12,7 @@ module.exports = {
     }
   },
   extends: ['eslint:recommended', 'plugin:react/recommended'],
-  globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly',
-  },
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 2018,
-    sourceType: 'module',
-  },
+  parser: '@babel/eslint-parser',
   plugins: ['react'],
   rules: {
     'comma-dangle': ['error', 'always-multiline'],

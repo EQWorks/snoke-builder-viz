@@ -1,18 +1,26 @@
-import { createElement } from 'react'
-import { styled, setup } from 'goober'
+import React from 'react'
+import PropTypes from 'prop-types'
+
+import { makeStyles } from '@material-ui/core/styles'
 
 
-setup(createElement)
+const useStyles = makeStyles((theme) => ({
+  dot: ({ state }) => ({
+    height: '0.5rem',
+    width: '0.5rem',
+    backgroundColor: ({
+      failed: theme?.palette?.error?.main || '#ea0000',
+      success: theme?.palette?.success?.main || '#00d308',
+      running: theme?.palette?.primary?.light || '#009aff',
+      skipped: theme?.palette?.primary[200] || '#eeeeee',
+    }[state] || '#eeeeee'),
+    borderRadius: '50%',
+    display: 'inline-block',
+  }),
+}))
 
-export const Dot = styled('span')`
-  height: 0.5rem;
-  width: 0.5rem;
-  background-color: ${({ state }) => ({
-    failed: '#ea0000;',
-    success: '#00d308;',
-    running: '#009aff;',
-    skipped: '#eeeeee;',
-  }[state] || '#eeeeee')};
-  border-radius: 50%;
-  display: inline-block;
-`
+export const Dot = ({ state }) => {
+  const classes = useStyles({ state })
+  return (<span className={classes.dot} />)
+}
+Dot.propTypes = { state: PropTypes.string.isRequired }

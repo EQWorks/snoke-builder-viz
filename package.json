@@ -22,12 +22,13 @@
   "dependencies": {
     "clsx": "^1.1.1",
     "dagre": "^0.8.5",
-    "goober": "^2.0.5",
     "react-flow-renderer": "^5.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
+    "@babel/eslint-parser": "^7.11.5",
+    "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "@eqworks/react-labs": "^1.9.0",
