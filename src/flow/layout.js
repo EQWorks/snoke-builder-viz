@@ -10,19 +10,12 @@ import Panel from './panel'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
-  root: {
-    display: 'flex',
-  },
-  graph: ({ width, height }) => ({
-    width: width,
-    height: height,
-  }),
+  root: { display: 'flex' },
+  graph: (dimensions) => dimensions,
 }))
 
 export const nodeTypes = { DAGNode }
-const onLoad = (flow) => {
-  flow.fitView()
-}
+const onLoad = (flow) => flow.fitView()
 
 const Layout = ({ data, config, width, height }) => {
   const panelWidth = width * 0.3
@@ -32,7 +25,7 @@ const Layout = ({ data, config, width, height }) => {
   return (
     <div className={classes.root}>
       <Panel width={panelWidth} height={height} />
-      <div style={{ width, height }}>
+      <div className={classes.graph}>
         <ReactFlow {...{ onLoad, nodeTypes, ...config }} elements={elements}>
           <Controls />
         </ReactFlow>

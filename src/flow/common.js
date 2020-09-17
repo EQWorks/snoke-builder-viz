@@ -6,8 +6,8 @@ import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
   dot: ({ state }) => ({
-    height: '0.5rem',
-    width: '0.5rem',
+    height: theme.spacing(1),
+    width: theme.spacing(1),
     backgroundColor: ({
       failed: theme?.palette?.error?.main || '#ea0000',
       success: theme?.palette?.success?.main || '#00d308',
