@@ -1,12 +1,12 @@
 {
   "name": "@eqworks/snoke-builder-viz",
   "private": false,
-  "version": "0.4.0",
+  "version": "0.5.0",
   "author": "woozyking <runzhou.li@gmail.com>",
   "license": "MIT",
   "scripts": {
     "test": "echo 'No test yet'",
-    "lint": "eslint src/",
+    "lint": "eslint src/ stories/",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build": "rimraf dist && babel src --out-dir dist --copy-files",
@@ -22,19 +22,17 @@
   "dependencies": {
     "clsx": "^1.1.1",
     "dagre": "^0.8.5",
-    "goober": "^2.0.5",
-    "react-d3-graph": "^2.1.0",
-    "react-flow-renderer": "^5.1.0",
-    "react-resize-aware": "^3.0.1",
-    "uuid": "^3.3.3"
+    "react-flow-renderer": "^5.1.0"
   },
   "devDependencies": {
-    "@eqworks/react-labs": "^1.9.0",
-    "@material-ui/core": "^4.11.0",
     "@babel/cli": "^7.5.5",
     "@babel/core": "^7.5.5",
+    "@babel/eslint-parser": "^7.11.5",
+    "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "@eqworks/react-labs": "^1.9.0",
+    "@material-ui/core": "^4.11.0",
     "@storybook/addon-actions": "^5.1.11",
     "@storybook/addon-links": "^5.1.11",
     "@storybook/addons": "^5.1.11",
