@@ -1,4 +1,7 @@
 import React from 'react'
+
+import { Modal, Card } from 'semantic-ui-react'
+
 import { Flow } from '../src'
 import sample1 from './sample-data/sample.json'
 import sample2 from './sample-data/sample2.json'
@@ -34,4 +37,16 @@ export const Sample3Dagre = () => (
 
 export const Sample4Dagre = () => (
   <Flow data={sample4} config={{ layout: 'dagre' }} />
+)
+
+export const InSUIModal = () => (
+  <Modal open>
+    <Modal.Content>
+      <Card fluid>
+        <Card.Content style={{ height: 300 }}>
+          <Flow data={sample1} />
+        </Card.Content>
+      </Card>
+    </Modal.Content>
+  </Modal>
 )
