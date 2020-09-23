@@ -1,5 +1,6 @@
-import { useMemo, useState, useEffect } from 'react'
-
+// core
+import { useMemo, useState, useEffect, useRef } from 'react'
+// internal
 import { transform, buildLayout } from './utils'
 
 
@@ -12,7 +13,6 @@ export const useElements = ({ data, config: { layout }, width, height }) => {
 
   return elements
 }
-
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window
@@ -35,4 +35,21 @@ export const useWindowDimensions = () => {
   }, [])
 
   return windowDimensions
+}
+
+// based on https://github.com/plouc/nivo/blob/7d52c07/packages/core/src/hooks/useMeasure.js
+export const useResizeObserver = () => {
+  const ref = useRef(null)
+  const [bounds, setBounds] = useState({ left: 0, top: 0, width: 0, height: 0 })
+  const observer = useMemo(() => new ResizeObserver(([entry]) => setBounds(entry.contentRect)))
+
+  useEffect(() => {
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
+  return [ref, bounds]
 }

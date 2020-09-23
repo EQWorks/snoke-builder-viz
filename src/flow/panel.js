@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
   },
   status: {
-    display: 'inline-block', 
+    display: 'inline-block',
     marginRight: theme.spacing(1),
   },
 }))
@@ -42,7 +42,7 @@ const Panel = ({ width, height }) => {
   const { name, sub, period, price = {}, dag = {} } = data
   const isSelected = selected !== undefined ? true : false
   const classes = useStyles({ width, height, isSelected })
- 
+
   useEffect(() => {
     if (selected) {
       // find all edges that contains selected in id

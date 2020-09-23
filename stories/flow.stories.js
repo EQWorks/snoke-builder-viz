@@ -12,7 +12,7 @@ export default {
   component: Flow,
   title: 'Flow',
 }
-export const Sample1 = () => <Flow data={sample1} />
+export const Sample1 = () => <div style={{ height: '100vh' }}><Flow data={sample1} /></div>
 
 export const Sample2 = () => <Flow data={sample2} />
 
