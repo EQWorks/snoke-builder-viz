@@ -7,18 +7,17 @@ import { useWindowDimensions } from './hooks'
 
 export const nodeTypes = { DAGNode }
 
-const Flow = ({ data, config }) => {
-  const { width, height } = useWindowDimensions()
-  return (
-    <ReactFlowProvider>
-      <Layout data={data} config={config} width={width} height={height} />
-    </ReactFlowProvider>
-  )
-}
+const Flow = ({ data, config, width = useWindowDimensions().width, height = useWindowDimensions().height }) =>
+  <ReactFlowProvider>
+    <Layout data={data} config={config} width={width} height={height} />
+  </ReactFlowProvider>
+
 
 Flow.propTypes = {
   data: PropTypes.object,
   config: PropTypes.object,
+  width: PropTypes.number,
+  height: PropTypes.number,
 }
 Flow.defaultProps = {
   data: {},

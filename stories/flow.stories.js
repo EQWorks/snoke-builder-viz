@@ -43,8 +43,8 @@ export const InSUIModal = () => (
   <Modal open>
     <Modal.Content>
       <Card fluid>
-        <Card.Content style={{ height: 300 }}>
-          <Flow data={sample1} />
+        <Card.Content id='content' style={{ padding: '0em', height: 500 }}>
+          <Flow data={sample1} height={500}/>
         </Card.Content>
       </Card>
     </Modal.Content>
