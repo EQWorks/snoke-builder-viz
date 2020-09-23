@@ -1,13 +1,14 @@
-import React from 'react'
+// core
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-
+// 3rd party
 import ReactFlow, { Controls } from 'react-flow-renderer'
-
+import { makeStyles } from '@material-ui/core/styles'
+// internal
 import DAGNode from './dag-node'
 import { useElements } from './hooks'
 import Panel from './panel'
 
-import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() => ({
   root: { display: 'flex' },
@@ -15,18 +16,29 @@ const useStyles = makeStyles(() => ({
 }))
 
 export const nodeTypes = { DAGNode }
-const onLoad = (flow) => flow.fitView()
 
 const Layout = ({ data, config, width, height }) => {
   const panelWidth = width * 0.3
   const elements = useElements({ data, config, width, height })
   const classes = useStyles({ width, height })
+  const [flow, setFlow] = useState(null)
+
+  const onLoad = (flow) => {
+    setFlow(flow)
+    setTimeout(() => flow.fitView(), 0)
+  }
+
+  useEffect(() => {
+    if (flow) {
+      flow.fitView()
+    }
+  }, [flow, width, height])
 
   return (
     <div className={classes.root}>
       <Panel width={panelWidth} height={height} />
       <div className={classes.graph}>
-        <ReactFlow {...{ onLoad, nodeTypes, ...config }} elements={elements}>
+        <ReactFlow {...{ onLoad, nodeTypes, ...config }} elements={elements} style={{ height }}>
           <Controls />
         </ReactFlow>
       </div>
