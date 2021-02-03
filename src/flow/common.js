@@ -19,8 +19,8 @@ const useStyles = makeStyles((theme) => ({
   }),
 }))
 
-export const Dot = ({ state }) => {
+export const Dot = ({ state = 'skipped' }) => {
   const classes = useStyles({ state })
   return (<span className={classes.dot} />)
 }
-Dot.propTypes = { state: PropTypes.string.isRequired }
+Dot.propTypes = { state: PropTypes.string }
