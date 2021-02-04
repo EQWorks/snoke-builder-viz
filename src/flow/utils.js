@@ -12,6 +12,10 @@ export const stepProps = Object.freeze({
     sub: 'Beacon',
     level: 0,
   },
+  preprocess: {
+    name: 'Pre-process',
+    level: 0,
+  },
   audience_enrich_aoi: {
     name: 'Enrichment',
     sub: 'AOI',
@@ -22,6 +26,16 @@ export const stepProps = Object.freeze({
     sub: 'Cross Device',
     level: 1,
   },
+  lookalike_app: {
+    name: 'Look Alike',
+    sub: 'App',
+    level: 1,
+  },
+  lookalike_geo: {
+    name: 'Look Alike',
+    sub: 'Geo',
+    level: 1,
+  },
   audience_intersect_vwi: {
     name: 'Intersection',
     sub: 'Verified Walk-in',
@@ -30,6 +44,10 @@ export const stepProps = Object.freeze({
   audience_intersect_xwi: {
     name: 'Intersection',
     sub: 'Cross Chain Walk-in',
+    level: 2,
+  },
+  target_control: {
+    name: 'Target Control',
     level: 2,
   },
   segment: {
@@ -63,6 +81,10 @@ export const stepProps = Object.freeze({
   report_xwi: {
     name: 'Report',
     sub: 'Cross Chain Walk-in',
+    level: 3,
+  },
+  trigger_initial: {
+    name: 'Trigger Initial',
     level: 3,
   },
 })
@@ -117,15 +139,26 @@ export const transform = ({ job_parameters, dag_tasks = [] }) => {
   }
 
   steps.forEach((step, i) => {
-    const props = stepProps[step.name]
-    const id = `${step.i || (i + 1)}.${step.name}`
+    const stepName = (step.name).startsWith('bell_')
+      ? (step.name).substring(5)
+      : step.name
+
+    const parsedName = stepName
+      .split('_')
+      .join(' ')
+      .replace(/\b\w/g, (l) => l.toUpperCase())
+    const props = stepProps[stepName] || { name: parsedName, level: i }
+    const id = `${step.i || (i + 1)}.${stepName}`
     const p = step.parameters
+    const dag = dag_tasks
+      ? dag_tasks.find((d) => d.task_id === id)
+      : []
     nodes.push({
       id,
       type: 'DAGNode',
       data: {
         ...step,
-        dag: dag_tasks.find((d) => d.task_id === id),
+        dag,
         period: p.period,
         ...props,
       },
@@ -143,25 +176,25 @@ export const transform = ({ job_parameters, dag_tasks = [] }) => {
       beacon_audience,
       report,
     } = step.parameters
-    if (step.name.startsWith('audience_enrich_')) {
+    if (stepName.startsWith('audience_enrich_')) {
       buildLink(id, ori_audience)
     }
-    if (step.name.startsWith('audience_intersect_')) {
+    if (stepName.startsWith('audience_intersect_')) {
       buildLinks(id, [pri_audience, sec_audience])
     }
-    if (['segment', 'propensity'].includes(step.name)) {
+    if (['segment', 'propensity'].includes(stepName)) {
       buildLink(id, audience_id)
     }
-    if (step.name.startsWith('report_')) {
+    if (stepName.startsWith('report_')) {
       buildLinks(id, [walkin_audid, beacon_audid, conversion_audid])
     }
-    if (step.name === 'cohort_repeat_visits') {
+    if (stepName === 'cohort_repeat_visits') {
       buildLink(id, visit_audience)
     }
-    if (step.name === 'cohort_converted_visitors') {
+    if (stepName === 'cohort_converted_visitors') {
       buildLinks(id, [visit_audience, beacon_audience])
     }
-    if (['propensity', 'cohort_repeat_visits', 'cohort_converted_visitors'].includes(step.name)) {
+    if (['propensity', 'cohort_repeat_visits', 'cohort_converted_visitors'].includes(stepName)) {
       buildReportLink(id, report)
     }
   })
@@ -224,12 +257,12 @@ const dagre = ({ nodes, links, width, height }) => {
 
 const custom = ({ nodes, links, width, height }) => {
   // number of levels for nodes
-  const nodesArray = new Array(4).fill(null).map(() => [])
+  const length =  Math.max(nodes.length, 4)
+  const nodesArray = new Array(length).fill(null).map(() => [])
   const basePosition = []
   // generate 2D array
   // create source-target list per each node. order + length are same as nodes
   const sourceTargetList = nodes.reduce(findSourceTarget(links), [])
-
   nodes.forEach(({ data: { level }, id }) => {
     basePosition.push({ x: level, y: nodesArray[level].length })
     nodesArray[level].push(id)

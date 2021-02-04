@@ -1,0 +1,101 @@
+{
+  "id": 5000,
+  "aws_id": "xxx",
+  "job_name": "xxx",
+  "job_type": "lookalike_segment",
+  "job_parameters": {
+    "steps": [
+      {
+        "name": "preprocess",
+        "parameters": {
+          "start_date": "20191128",
+          "end_date": "20191211",
+          "timestamp": "201912141049",
+          "whitelabel": 500,
+          "customer": 10000,
+          "type": "preprocess"
+        }
+      },
+      {
+        "name": "lookalike_app",
+        "parameters": {
+          "start_date": "20191128",
+          "end_date": "20191211",
+          "timestamp": "201912141049",
+          "whitelabel": 500,
+          "customer": 10000,
+          "type": "lookalike_app"
+        }
+      },
+      {
+        "name": "lookalike_geo",
+        "parameters": {
+          "start_date": "20191128",
+          "end_date": "20191211",
+          "timestamp": "201912141049",
+          "whitelabel": 500,
+          "customer": 10000,
+          "look_back_days": "14",
+          "type": "lookalike_geo"
+        }
+      },
+      {
+        "name": "target_control",
+        "parameters": {
+          "start_date": "20191128",
+          "end_date": "20191211",
+          "timestamp": "201912141049",
+          "whitelabel": 500,
+          "customer": 10000,
+          "type": "target_control"
+        }
+      },
+      {
+        "name": "trigger_initial",
+        "parameters": {
+          "start_date": "20191128",
+          "end_date": "20191211",
+          "timestamp": "201912141049",
+          "whitelabel": "500",
+          "customer": "10000",
+          "type": "trigger_initial"
+        }
+      }
+    ],
+    "job_ver": "v3",
+    "whitelabel_id": 500,
+    "customer_id": 10000
+  },
+  "schedule_start": "2019-12-14T05:00:00.000Z",
+  "schedule_end": null,
+  "schedule_frequency": "once",
+  "creation_time": "2019-12-14T20:49:00.000Z",
+  "time_used": 1170,
+  "time_need": 0,
+  "update_time_previous": "2019-12-15T00:29:58.000Z",
+  "update_time_next": null,
+  "whitelabel": 500,
+  "stage": "",
+  "results": null,
+  "status": "FINISHED",
+  "push_seg_status": "FINISHED",
+  "financial_approve_user": null,
+  "financial_approve_time": null,
+  "financial_approve_status": false,
+  "dataops_approve_user": null,
+  "dataops_approve_time": null,
+  "dataops_approve_status": false,
+  "author": "stevenl@eqworks.com",
+  "whitelabel_name": "Test",
+  "customer_name": "Test",
+  "customer": 10000,
+  "logs": null,
+  "report_id": null,
+  "report_name": null,
+  "map_id": null,
+  "poi_list_id": null,
+  "poi_list_name": null,
+  "customer_id": 10000,
+  "whitelabel_id": 500,
+  "dag_tasks": null
+}
