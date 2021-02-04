@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
     transition: 'width .6s',
     flexWrap: 'nowrap',
     overflowX: 'hidden',
-    whiteSpace: 'nowrap',
   }),
   item: {
     width: '100%',
