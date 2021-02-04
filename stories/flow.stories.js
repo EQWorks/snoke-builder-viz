@@ -44,7 +44,7 @@ export const InSUIModal = () => (
     <Modal.Content>
       <Card fluid>
         <Card.Content id='content' style={{ padding: '0em', height: 500 }}>
-          <Flow data={sample1} height={500}/>
+          <Flow data={sample1} dimension={{ height: 500 }}/>
         </Card.Content>
       </Card>
     </Modal.Content>
