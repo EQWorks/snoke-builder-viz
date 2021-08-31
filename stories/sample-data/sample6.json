@@ -1,0 +1,173 @@
+{
+  "id": 7117,
+  "aws_id": "e1b19248dea84ff48bd27597a2e9c3b7",
+  "job_name": "geo_cohort step test",
+  "job_type": "wi,aoi",
+  "job_parameters": {
+    "steps": [
+      {
+        "name": "audience_build_wi",
+        "parameters": {
+          "audience_id": 4397,
+          "poi_list": 133,
+          "type": "wi",
+          "data_sources": "eq-reqdata,eq-sds,eq-sdr,eq-sdko",
+          "start": "2021060100",
+          "end": "2021062423",
+          "whitelabel": 4,
+          "customer": 9533,
+          "poi_file": "4_9533_133@poi"
+        },
+        "price": { "base": 1050, "mult": 1 },
+        "i": 1
+      },
+      {
+        "name": "audience_enrich_aoi",
+        "parameters": {
+          "audience_id": 4398,
+          "ori_audience": 4397,
+          "type": "wi,aoi",
+          "start": "2021060100",
+          "end": "2021062423",
+          "whitelabel": 4,
+          "customer": 9533,
+          "poi_list": 133
+        },
+        "price": { "base": 1050, "mult": 1 },
+        "i": 2
+      },
+      {
+        "name": "report_wi",
+        "parameters": {
+          "report": 3841,
+          "walkin_audid": 4398,
+          "period": "weekly",
+          "type": "wi,aoi",
+          "start": "2021-06-01T00:00:00.000Z",
+          "end": "2021-06-24T23:00:00.000Z",
+          "whitelabel": 4,
+          "customer": 9533,
+          "aoi": 1,
+          "xd": 0
+        },
+        "price": { "base": 300, "mult": 1, "add": 450 },
+        "i": 3
+      },
+      {
+        "name": "report_wi",
+        "parameters": {
+          "report": 3841,
+          "walkin_audid": 4398,
+          "period": "monthly",
+          "type": "wi,aoi",
+          "start": "2021-06-01T00:00:00.000Z",
+          "end": "2021-06-24T23:00:00.000Z",
+          "whitelabel": 4,
+          "customer": 9533,
+          "aoi": 1,
+          "xd": 0
+        },
+        "price": { "base": 90, "mult": 1, "add": 135 },
+        "i": 4
+      },
+      {
+        "name": "geo_cohort",
+        "parameters": {
+          "report": 3841,
+          "audience_id": 4398,
+          "start": "2021-06-01T00:00:00.000Z",
+          "end": "2021-06-24T23:00:00.000Z",
+          "whitelabel": 4,
+          "customer": 9533
+        },
+        "price": { "base": 0, "mult": 1, "add": 0 },
+        "i": 5
+      }
+    ],
+    "parameters": {
+      "job_name": "geo_cohort step test",
+      "job_io": "gc 1",
+      "job_description": "",
+      "job_website": "",
+      "whitelabel": 4,
+      "customer": 9533,
+      "job_type": "wi,aoi",
+      "job_ver": "v3.5",
+      "job_origin": "ui",
+      "schedule_frequency": "once",
+      "schedule_start": "2021-07-29T00:00:00.000Z",
+      "schedule_end": "2021-07-30T00:00:00.000Z",
+      "start_date": "2021-06-01T00:00:00.000Z",
+      "end_date": "2021-06-24T23:00:00.000Z"
+    }
+  },
+  "schedule_start": "2021-07-29T00:00:00.000Z",
+  "schedule_end": "2021-07-30T00:00:00.000Z",
+  "schedule_frequency": "once",
+  "creation_time": "2021-07-29T21:13:39.093Z",
+  "time_used": 0,
+  "time_need": 0,
+  "update_time_previous": null,
+  "update_time_next": null,
+  "whitelabel": 4,
+  "stage": null,
+  "results": null,
+  "status": "PENDING",
+  "push_seg_status": null,
+  "financial_approve_user": null,
+  "financial_approve_time": null,
+  "financial_approve_status": false,
+  "dataops_approve_user": null,
+  "dataops_approve_time": null,
+  "dataops_approve_status": false,
+  "author": "leo.li@eqworks.com",
+  "whitelabel_name": "WL TEST",
+  "customer_name": "Paulo Simoes",
+  "customer": 9533,
+  "logs": [
+    {
+      "id": 5475,
+      "aws_id": "e1b19248dea84ff48bd27597a2e9c3b7",
+      "details": {
+        "price": {
+          "run": {},
+          "steps": [
+            {
+              "name": "audience_build_wi",
+              "price": { "base": 1050, "mult": 1 }
+            },
+            {
+              "name": "audience_enrich_aoi",
+              "price": { "base": 1050, "mult": 1 }
+            },
+            {
+              "name": "report_wi",
+              "price": { "add": 450, "base": 300, "mult": 1 }
+            },
+            {
+              "name": "report_wi",
+              "price": { "add": 135, "base": 90, "mult": 1 }
+            },
+            {
+              "name": "geo_cohort",
+              "price": { "add": 0, "base": 0, "mult": 1 }
+            }
+          ],
+          "total": { "type": "steps", "amount": 3075 }
+        }
+      },
+      "run_time": "2021-07-29T21:13:00",
+      "unit_type": 1,
+      "final_cost": 3075,
+      "unit_count": 5
+    }
+  ],
+  "report_id": 3841,
+  "report_name": "geo_cohort step test",
+  "map_id": 3185,
+  "poi_list_id": 133,
+  "poi_list_name": "Pandora",
+  "customer_id": 9533,
+  "whitelabel_id": 4,
+  "dag_tasks": null
+}

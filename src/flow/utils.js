@@ -1,126 +1,16 @@
 import { graphlib, layout } from 'dagre'
 
-
-export const stepProps = Object.freeze({
-  audience_build_wi: {
-    name: 'Audience Build',
-    sub: 'Walk-in',
-    level: 0,
-  },
-  audience_build_beacon: {
-    name: 'Audience Build',
-    sub: 'Beacon',
-    level: 0,
-  },
-  preprocess: {
-    name: 'Pre-process',
-    level: 0,
-  },
-  audience_enrich_aoi: {
-    name: 'Enrichment',
-    sub: 'AOI',
-    level: 1,
-  },
-  audience_enrich_xd: {
-    name: 'Enrichment',
-    sub: 'Cross Device',
-    level: 1,
-  },
-  lookalike_app: {
-    name: 'Look Alike',
-    sub: 'App',
-    level: 1,
-  },
-  lookalike_geo: {
-    name: 'Look Alike',
-    sub: 'Geo',
-    level: 1,
-  },
-  audience_intersect_vwi: {
-    name: 'Intersection',
-    sub: 'Verified Walk-in',
-    level: 2,
-  },
-  audience_intersect_xwi: {
-    name: 'Intersection',
-    sub: 'Cross Chain Walk-in',
-    level: 2,
-  },
-  target_control: {
-    name: 'Target Control',
-    level: 2,
-  },
-  segment: {
-    name: 'Segment',
-    level: 3,
-  },
-  cohort_repeat_visits: {
-    name: 'Cohort Analysis',
-    sub: 'Visits',
-    level: 3,
-  },
-  cohort_converted_visitors: {
-    name: 'Cohort Analysis',
-    sub: 'Converted Visitors',
-    level: 3,
-  },
-  propensity: {
-    name: 'Propensity',
-    level: 3,
-  },
-  report_wi: {
-    name: 'Report',
-    sub: 'Walk-in',
-    level: 3,
-  },
-  report_vwi: {
-    name: 'Report',
-    sub: 'Verified Walk-in',
-    level: 3,
-  },
-  report_xwi: {
-    name: 'Report',
-    sub: 'Cross Chain Walk-in',
-    level: 3,
-  },
-  trigger_initial: {
-    name: 'Trigger Initial',
-    level: 3,
-  },
-})
-
-export const transform = ({ job_parameters, dag_tasks = [] }) => {
+export const transform = ({ job_parameters, dag_tasks = [], stepConfig }) => {
   const { steps = [] } = job_parameters || {}
   const nodes = []
   const links = []
 
-  function buildLink(target, src) {
-    const { id: source } = nodes.find((n) => n.data.parameters.audience_id === src) || {}
-    if (source == null) {
-      return
-    }
-    if (source === target) {
-      return
-    }
-    if (links.find((l) => l.source === source && l.target === target)) {
-      return
-    }
-    links.push({
-      id: `${source}-${target}`,
-      source,
-      target,
-      animated: true,
-    })
-  }
-
-  function buildLinks(target, sources) {
-    sources.forEach((src) => {
-      buildLink(target, src)
-    })
-  }
-
-  function buildReportLink(target, src) {
-    const { id: source } = nodes.find((n) => n.data.name.startsWith('report_') && n.data.parameters.report === src) || {}
+  function buildLink({ 
+    target, 
+    src, 
+    findSrcNode = (nodeData, src) => nodeData.parameters.audience_id === src,
+  }) {
+    const { id: source } = nodes.find(({ data }) => findSrcNode(data, src)) || {}
     if (source == null) {
       return
     }
@@ -147,7 +37,7 @@ export const transform = ({ job_parameters, dag_tasks = [] }) => {
       .split('_')
       .join(' ')
       .replace(/\b\w/g, (l) => l.toUpperCase())
-    const props = stepProps[stepName] || { name: parsedName, level: i }
+    const props = stepConfig.props ? stepConfig.props[stepName] : { name: parsedName, level: i }
     const id = `${step.i || (i + 1)}.${stepName}`
     const p = step.parameters
     const dag = dag_tasks
@@ -163,42 +53,25 @@ export const transform = ({ job_parameters, dag_tasks = [] }) => {
         ...props,
       },
     })
-    // build links
-    const {
-      ori_audience,
-      pri_audience,
-      sec_audience,
-      audience_id,
-      walkin_audid,
-      beacon_audid,
-      conversion_audid,
-      visit_audience,
-      beacon_audience,
-      report,
-    } = step.parameters
-    if (stepName.startsWith('audience_enrich_')) {
-      buildLink(id, ori_audience)
+    if (!stepConfig.relations) {
+      return
     }
-    if (stepName.startsWith('audience_intersect_')) {
-      buildLinks(id, [pri_audience, sec_audience])
-    }
-    if (['segment', 'propensity'].includes(stepName)) {
-      buildLink(id, audience_id)
-    }
-    if (stepName.startsWith('report_')) {
-      buildLinks(id, [walkin_audid, beacon_audid, conversion_audid])
-    }
-    if (stepName === 'cohort_repeat_visits') {
-      buildLink(id, visit_audience)
-    }
-    if (stepName === 'cohort_converted_visitors') {
-      buildLinks(id, [visit_audience, beacon_audience])
-    }
-    if (['propensity', 'cohort_repeat_visits', 'cohort_converted_visitors'].includes(stepName)) {
-      buildReportLink(id, report)
+    const relation = stepConfig.relations.find(({ match }) => {
+      return (
+        (typeof match === 'function' && match(stepName))
+        || (typeof match === 'string' && stepName === match)
+        || (Array.isArray(match) && match.includes(stepName))
+      )
+    })
+    if (relation) {
+      const { src, findSrcNode } = relation
+      if (Array.isArray(src)) {
+        src.forEach(s => buildLink({ target: id, src: step.parameters[s], findSrcNode }))
+      } else {
+        buildLink({ target: id, src: step.parameters[src], findSrcNode })
+      }
     }
   })
-
   return { nodes, links }
 }
 
@@ -263,7 +136,10 @@ const custom = ({ nodes, links, width, height }) => {
   // generate 2D array
   // create source-target list per each node. order + length are same as nodes
   const sourceTargetList = nodes.reduce(findSourceTarget(links), [])
-  nodes.forEach(({ data: { level }, id }) => {
+  nodes.forEach(({ data: { level }, id }, i) => {
+    if (!level) {
+      level = i
+    }
     basePosition.push({ x: level, y: nodesArray[level].length })
     nodesArray[level].push(id)
   })

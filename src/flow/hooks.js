@@ -3,8 +3,9 @@ import { useMemo, useState, useEffect } from 'react'
 import { transform, buildLayout } from './utils'
 
 
-export const useElements = ({ data, config: { layout }, width, height }) => {
-  const { nodes, links } = useMemo(() => transform({ ...data, width, height }), [data, width, height])
+export const useElements = ({ data, config: { layout }, width, height, stepConfig }) => {
+  
+  const { nodes, links } = useMemo(() => transform({ ...data, width, height, stepConfig }), [data, width, height, stepConfig])
   const elements = useMemo(
     () => buildLayout({ layout: layout })({ nodes, links, width, height }),
     [layout, nodes, links, width, height],
