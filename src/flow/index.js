@@ -4,12 +4,12 @@ import { ReactFlowProvider } from 'react-flow-renderer'
 import DAGNode from './dag-node'
 import Layout from './layout'
 import { useWindowDimensions } from './hooks'
+import stepConfig from './step-config'
 
 export const nodeTypes = { DAGNode }
 
 
 const Flow = ({ data, config, dimension = useWindowDimensions(), stepConfig }) => { 
-
   const { width, height } = dimension 
   
   return (
@@ -28,7 +28,7 @@ Flow.propTypes = {
 Flow.defaultProps = {
   data: {},
   config: {},
-  stepConfig: {},
+  stepConfig: stepConfig,
 }
 
 export default Flow
