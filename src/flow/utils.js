@@ -7,24 +7,26 @@ export const transform = ({ job_parameters, dag_tasks = [], stepConfig }) => {
 
   function buildLink({ 
     target, 
-    src, 
-    findSrcNode = (nodeData, src) => nodeData.parameters.audience_id === src,
+    src,
+    srcType,
+    findSrcNode = ({ data, src }) => data.parameters.audience_id === src,
   }) {
-    const { id: source } = nodes.find(({ data }) => findSrcNode(data, src)) || {}
-    if (source == null) {
-      return
-    }
-    if (source === target) {
-      return
-    }
-    if (links.find((l) => l.source === source && l.target === target)) {
-      return
-    }
-    links.push({
-      id: `${source}-${target}`,
-      source,
-      target,
-      animated: true,
+    nodes.filter(({ data }) => findSrcNode({ data, src, srcType })).forEach(({ id: source }) => {
+      if (source == null) {
+        return
+      }
+      if (source === target) {
+        return
+      }
+      if (links.find((l) => l.source === source && l.target === target)) {
+        return
+      }
+      links.push({
+        id: `${source}-${target}`,
+        source,
+        target,
+        animated: true,
+      })
     })
   }
 
@@ -66,9 +68,9 @@ export const transform = ({ job_parameters, dag_tasks = [], stepConfig }) => {
     if (relation) {
       const { src, findSrcNode } = relation
       if (Array.isArray(src)) {
-        src.forEach(s => buildLink({ target: id, src: step.parameters[s], findSrcNode }))
+        src.forEach(s => buildLink({ target: id, src: step.parameters[s], srcType: s, findSrcNode }))
       } else {
-        buildLink({ target: id, src: step.parameters[src], findSrcNode })
+        buildLink({ target: id, src: step.parameters[src], srcType: src, findSrcNode })
       }
     }
   })

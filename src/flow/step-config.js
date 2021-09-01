@@ -86,7 +86,7 @@ const props = Object.freeze({
   },
   geo_cohort: {
     name: 'Geo Cohort',
-    level: 1,
+    level: 4,
   },
 })
 
@@ -102,8 +102,17 @@ const stepConfig = {
       src: ['pri_audience', 'sec_audience'],
     },
     {
-      match: ['segment', 'propensity', 'geo_cohort'],
+      match: ['segment', 'propensity'],
       src: ['audience_id'],
+    },
+    {
+      match: ['geo_cohort'],
+      src: ['report', 'audience_id'],
+      findSrcNode: ({ data, src, srcType }) => {
+        return srcType === 'report' 
+          ? data.parameters.report === src 
+          : data.parameters.audience_id === src
+      },
     },
     {
       match: (stepName) => stepName.startsWith('report_'),
@@ -120,7 +129,7 @@ const stepConfig = {
     {
       match: ['propensity', 'cohort_repeat_visits', 'cohort_converted_visitors'],
       src: ['report'],
-      findSrcNode: (nodeData, src) => nodeData.name.startsWith('report_') && nodeData.parameters.report === src,
+      findSrcNode: ({ data, src }) => data.name.startsWith('report_') && data.parameters.report === src,
     },
   ],
 }
