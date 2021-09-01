@@ -28,7 +28,7 @@ Flow.propTypes = {
 Flow.defaultProps = {
   data: {},
   config: {},
-  stepConfig: stepConfig,
+  stepConfig,
 }
 
 export default Flow
