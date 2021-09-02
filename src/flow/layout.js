@@ -17,9 +17,10 @@ const useStyles = makeStyles(() => ({
 export const nodeTypes = { DAGNode }
 const onLoad = (flow) => flow.fitView()
 
-const Layout = ({ data, config, width, height }) => {
+const Layout = ({ data, config, width, height, stepConfig }) => {
   const panelWidth = width * 0.3
-  const elements = useElements({ data, config, width, height })
+
+  const elements = useElements({ data, config, width, height, stepConfig })
   const classes = useStyles({ width, height })
 
   return (
@@ -39,12 +40,14 @@ Layout.propTypes = {
   config: PropTypes.object,
   width: PropTypes.number,
   height: PropTypes.number,
+  stepConfig: PropTypes.object,
 }
 Layout.defaultProps = {
   data: {},
   config: {},
   width: 1000,
   height: 800,
+  stepConfig: {},
 }
 
 export default Layout

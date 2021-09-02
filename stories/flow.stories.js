@@ -8,6 +8,7 @@ import sample2 from './sample-data/sample2.json'
 import sample3 from './sample-data/sample3.json'
 import sample4 from './sample-data/sample4.json'
 import sample5 from './sample-data/sample5.json'
+import sample6 from './sample-data/sample6.json'
 
 export default {
   component: Flow,
@@ -22,6 +23,8 @@ export const Sample3 = () => <Flow data={sample3} />
 export const Sample4 = () => <Flow data={sample4} />
 
 export const Sample5 = () => <Flow data={sample5} />
+
+export const Sample6 = () => <Flow data={sample6} />
 
 export const Sample1Dagre = () => (
   <Flow data={sample1} config={{ layout: 'dagre' }} />
