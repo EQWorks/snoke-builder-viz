@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 
-import ReactFlow, { Controls } from 'react-flow-renderer'
+import ReactFlow, { Controls, useZoomPanHelper } from 'react-flow-renderer'
 
 import DAGNode from './dag-node'
 import { useElements } from './hooks'
@@ -18,10 +18,15 @@ export const nodeTypes = { DAGNode }
 const onLoad = (flow) => flow.fitView()
 
 const Layout = ({ data, config, width, height, stepConfig }) => {
+  const { fitView } = useZoomPanHelper()
   const panelWidth = width * 0.3
 
   const elements = useElements({ data, config, width, height, stepConfig })
   const classes = useStyles({ width, height })
+
+  useEffect(() => {
+    fitView()
+  }, [data])
 
   return (
     <div className={classes.root}>
