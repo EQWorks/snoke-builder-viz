@@ -130,61 +130,57 @@ const dagre = ({ nodes, links, width, height }) => {
   return [...nodes, ...links]
 }
 
-const custom = ({ nodes, links, width, height }) => {
+const custom = ({ nodes, links, nodeSize }) => {
   // number of levels for nodes
-  const length =  Math.max(nodes.length, 4)
-  const nodesArray = new Array(length).fill(null).map(() => [])
+  const nodesArray = []
   const basePosition = []
+  const colWidth = []
+  const colHeight = []
   // generate 2D array
   // create source-target list per each node. order + length are same as nodes
   const sourceTargetList = nodes.reduce(findSourceTarget(links), [])
-  nodes.forEach(({ data: { level }, id }, i) => {
+  nodes.forEach(({ data }, i) => {
+    let { level } = data
     if (!level) {
       level = i
     }
-    basePosition.push({ x: level, y: nodesArray[level].length })
-    nodesArray[level].push(id)
+    const cur = { x: level, y: nodesArray[level] || 0 }
+    basePosition[i] = cur
+    nodesArray[cur.x] = nodesArray[cur.x] === undefined ? 1 : nodesArray[cur.x] + 1
+    colWidth[cur.x] = Math.max(colWidth[cur.x] || 0, nodeSize[i]?.width || 0)
+    colHeight[cur.y] = Math.max(colHeight[cur.y] || 0, nodeSize[i]?.height || 0)
   })
 
-  const maxCount = { x: 0, y: 0 }
-
-  maxCount.x = nodesArray.length - 1
-
-  maxCount.y = nodesArray.reduce((acc, val) => {
-    const length = val.length - 1
-    return acc < length ? length : acc
-  }, 0)
-
-  const baseWidth = width / (maxCount.x + 1)
-  const baseHeight = height / (maxCount.y + 1)
   const nodePositions = [...basePosition]
+  const margin = { x: 50, y: 15 }
 
   return [
     ...nodes.map((element, index) => {
       const currentX = basePosition[index].x
       const currentY = basePosition[index].y
-      const { sourceList } = sourceTargetList[index]
+      nodePositions.push({ x: currentX, y: currentY })
+      // const { sourceList } = sourceTargetList[index]
+      // if (sourceList.length > 0) {
+      //   const num = sourceList.reduce((acc, src) => acc + basePosition[src].y, 0)
+      //   const adjustedY = num / sourceList.length
+      //   const isTaken = nodePositions.some((p) => (p.x === currentX && p.y === adjustedY))
+      //   if(isTaken) {
+      //     nodePositions.push({ x: currentX, y: currentY })
 
-      if (sourceList.length > 0) {
-        const num = sourceList.reduce((acc, src) => acc + basePosition[src].y, 0)
-        const adjustedY = num / sourceList.length
-        const isTaken = nodePositions.some((p) => (p.x === currentX && p.y === adjustedY))
-        if(isTaken) {
-          nodePositions.push({ x: currentX, y: currentY })
-
-        } else {
-          nodePositions.push({ x: currentX, y: adjustedY })
-          basePosition[index].y = adjustedY
-        }
-      } else {
-        nodePositions.push({ x: currentX, y: currentY })
-      }
+      //   } else {
+      //     nodePositions.push({ x: currentX, y: adjustedY })
+      //     basePosition[index].y = adjustedY
+      //   }
+      // } else {
+      //   nodePositions.push({ x: currentX, y: currentY })
+      // }
+      const cur = nodePositions[index]
 
       return {
         ...element,
         position: {
-          x: nodePositions[index].x * baseWidth,
-          y: nodePositions[index].y * baseHeight,
+          x: colWidth.slice(0, cur.x).reduce((acc, cur) => acc+cur, 0) + margin.x * cur.x,
+          y: colHeight.slice(0, cur.y).reduce((acc, cur) => acc+cur, 0) + margin.y * cur.y,
         },
         sourceList: sourceTargetList[index].source,
         targetList: sourceTargetList[index].target,
