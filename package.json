@@ -22,7 +22,6 @@
   "dependencies": {
     "clsx": "^1.1.1",
     "dagre": "^0.8.5",
-    "lodash": "^4.17.21",
     "react-flow-renderer": "^5.1.0"
   },
   "devDependencies": {

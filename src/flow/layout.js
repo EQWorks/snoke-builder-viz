@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
-import { isEqual } from 'lodash'
 
 import ReactFlow, { Controls, useStoreState } from 'react-flow-renderer'
 
@@ -29,7 +28,7 @@ const Layout = ({ data, config, width, height, stepConfig }) => {
 
   useEffect(() => {
     const newSize = nodes.map(({ __rf: { width, height } }) => ({ width, height })).filter(({ width, height }) => width && height)
-    if (nodes.length > 0 && (!isEqual(oldSize.current, nodeSize) || nodeSize.length === 0)) {
+    if (nodes.length > 0 && (oldSize.current.reduce((a, b) => a && nodeSize.includes(b), true) || nodeSize.length === 0)) {
       oldSize.current = newSize
       setNodeSize(newSize)
     }
