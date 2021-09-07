@@ -28,8 +28,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
   },
   handle: {
-    visibility: 'hidden'
-  }
+    visibility: 'hidden',
+  },
 }))
 
 
