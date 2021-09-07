@@ -10,7 +10,7 @@ export const useElements = ({ data, config: { layout }, width, height, stepConfi
     () => buildLayout({ layout: layout })({ nodes, links, width, height, nodeSize }),
     [layout, nodes, links, width, height, nodeSize],
   )
-
+  
   return elements
 }
 

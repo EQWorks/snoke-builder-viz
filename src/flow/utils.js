@@ -34,7 +34,7 @@ export const transform = ({ job_parameters, dag_tasks = [], stepConfig }) => {
     const stepName = (step.name).startsWith('bell_')
       ? (step.name).substring(5)
       : step.name
-
+    
     const parsedName = stepName
       .split('_')
       .join(' ')
@@ -55,6 +55,7 @@ export const transform = ({ job_parameters, dag_tasks = [], stepConfig }) => {
         ...props,
       },
     })
+
     if (!stepConfig.relations) {
       return
     }
@@ -74,6 +75,7 @@ export const transform = ({ job_parameters, dag_tasks = [], stepConfig }) => {
       }
     }
   })
+  
   return { nodes, links }
 }
 
@@ -144,6 +146,7 @@ const custom = ({ nodes, links, nodeSize }) => {
     if (!level) {
       level = i
     }
+    
     const cur = { x: level, y: nodesArray[level] || 0 }
     basePosition[i] = cur
     nodesArray[cur.x] = nodesArray[cur.x] === undefined ? 1 : nodesArray[cur.x] + 1
@@ -152,7 +155,7 @@ const custom = ({ nodes, links, nodeSize }) => {
   })
 
   const nodePositions = [...basePosition]
-  const margin = { x: 50, y: 15 }
+  const margin = { x: 50, y: 30 }
 
   return [
     ...nodes.map((element, index) => {

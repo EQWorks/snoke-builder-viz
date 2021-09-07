@@ -22,7 +22,7 @@
   "dependencies": {
     "clsx": "^1.1.1",
     "dagre": "^0.8.5",
-    "react-flow-renderer": "^5.1.0"
+    "react-flow-renderer": "^9.6.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",
