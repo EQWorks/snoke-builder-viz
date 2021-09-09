@@ -3,14 +3,14 @@ import { useMemo, useState, useEffect } from 'react'
 import { transform, buildLayout } from './utils'
 
 
-export const useElements = ({ data, config: { layout }, width, height, stepConfig }) => {
+export const useElements = ({ data, config: { layout }, width, height, stepConfig, nodeSize }) => {
   
   const { nodes, links } = useMemo(() => transform({ ...data, width, height, stepConfig }), [data, width, height, stepConfig])
   const elements = useMemo(
-    () => buildLayout({ layout: layout })({ nodes, links, width, height }),
-    [layout, nodes, links, width, height],
+    () => buildLayout({ layout: layout })({ nodes, links, width, height, nodeSize }),
+    [layout, nodes, links, width, height, nodeSize],
   )
-
+  
   return elements
 }
 

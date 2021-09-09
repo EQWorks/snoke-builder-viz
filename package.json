@@ -1,7 +1,7 @@
 {
   "name": "@eqworks/snoke-builder-viz",
   "private": false,
-  "version": "0.6.2",
+  "version": "0.6.3",
   "author": "woozyking <runzhou.li@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -22,7 +22,7 @@
   "dependencies": {
     "clsx": "^1.1.1",
     "dagre": "^0.8.5",
-    "react-flow-renderer": "^5.1.0"
+    "react-flow-renderer": "^9.6.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",

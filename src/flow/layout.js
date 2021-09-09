@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 
-import ReactFlow, { Controls } from 'react-flow-renderer'
+import ReactFlow, { Controls, useStoreState, useZoomPanHelper } from 'react-flow-renderer'
 
 import DAGNode from './dag-node'
 import { useElements } from './hooks'
@@ -19,9 +19,22 @@ const onLoad = (flow) => flow.fitView()
 
 const Layout = ({ data, config, width, height, stepConfig }) => {
   const panelWidth = width * 0.3
+  const oldSize = useRef([])
+  const [nodeSize, setNodeSize] = useState([])
 
-  const elements = useElements({ data, config, width, height, stepConfig })
+  const elements = useElements({ data, config, width, height, stepConfig, nodeSize })
   const classes = useStyles({ width, height })
+  const nodes = useStoreState(state => state.nodes)
+  const { fitView } = useZoomPanHelper()
+
+  useEffect(() => {
+    const newSize = nodes.map(({ __rf: { width, height } }) => ({ width, height })).filter(({ width, height }) => width && height)
+    if (nodes.length > 0 && (!oldSize.current.reduce((a, b) => a && nodeSize.includes(b), true) || nodeSize.length === 0)) {
+      oldSize.current = newSize
+      setNodeSize(newSize)
+    }
+    fitView()
+  }, [nodes])
 
   return (
     <div className={classes.root}>
